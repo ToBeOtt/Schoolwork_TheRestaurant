@@ -19,11 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheRestaurant.SharedKernel"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{DE53B216-0DA9-47BF-94A8-45FADA86E569}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheRestaurant.Presentation.Server", "TheRestaurant.Presentation\Server\TheRestaurant.Presentation.Server.csproj", "{5F2692B1-6034-4B4A-AA31-CB54448606E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheRestaurant.Presentation.Server", "TheRestaurant.Presentation\Server\TheRestaurant.Presentation.Server.csproj", "{5F2692B1-6034-4B4A-AA31-CB54448606E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheRestaurant.Presentation.Client", "TheRestaurant.Presentation\Client\TheRestaurant.Presentation.Client.csproj", "{56B07954-A429-4E8A-AA8D-75CD0F78F77A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheRestaurant.Presentation.Client", "TheRestaurant.Presentation\Client\TheRestaurant.Presentation.Client.csproj", "{56B07954-A429-4E8A-AA8D-75CD0F78F77A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheRestaurant.Presentation.Shared", "TheRestaurant.Presentation\Shared\TheRestaurant.Presentation.Shared.csproj", "{632D30BC-E1C1-4539-85E4-2FFC0FDB67CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheRestaurant.Presentation.Shared", "TheRestaurant.Presentation\Shared\TheRestaurant.Presentation.Shared.csproj", "{632D30BC-E1C1-4539-85E4-2FFC0FDB67CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

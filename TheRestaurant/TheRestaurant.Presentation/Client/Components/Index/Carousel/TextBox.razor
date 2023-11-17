@@ -1,0 +1,23 @@
+﻿@using MudBlazor
+
+<style>
+    .floating-text-description-box {
+        position: absolute;
+        top: 15%;
+        right: 10%;
+        border: 1px black;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 75px;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="floating-text-description-box">
+    <MudText Align="Align.Start" Color="Color.Dark" Typo="Typo.h3">@Title</MudText>
+        <MudText Align="Align.Start" Color="Color.Dark" Typo="Typo.subtitle1">@Text</MudText>
+</div>
+
+@code {
+[Parameter] public string Title{ get; set; }
+[Parameter] public string Text { get; set; }
+}
