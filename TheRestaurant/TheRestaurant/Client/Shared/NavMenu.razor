@@ -1,0 +1,23 @@
+﻿@using MudBlazor
+
+<MudPaper Elevation="25" Style="rounded-0">
+    <MudToolBar >
+        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Class="mr-5" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Add" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Edit" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Remove" Color="Color.Inherit" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Settings" Color="Color.Inherit" />
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Outlined.PushPin" />
+
+        <NavLink class="nav-link" href="/register">
+            <MudIconButton Icon="@Icons.Material.Outlined.MoreVert" Color="Color.Inherit" />
+        </NavLink>
+
+        <a href="/Register">
+            <MudIconButton Icon="@Icons.Material.Outlined.PeopleAlt" />
+        </a>
+       
+       
+    </MudToolBar>
+</MudPaper>

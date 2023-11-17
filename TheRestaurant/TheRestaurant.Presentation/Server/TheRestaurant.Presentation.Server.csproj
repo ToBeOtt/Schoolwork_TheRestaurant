@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\TheRestaurant.Application\TheRestaurant.Application.csproj" />
+    <ProjectReference Include="..\..\TheRestaurant.Authentication\TheRestaurant.Authentication.csproj" />
+    <ProjectReference Include="..\..\TheRestaurant.Common.Infrastructure\TheRestaurant.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\TheRestaurant.Contracts\TheRestaurant.Contracts.csproj" />
+    <ProjectReference Include="..\..\TheRestaurant.SharedKernel\TheRestaurant.SharedKernel.csproj" />
+    <ProjectReference Include="..\Client\TheRestaurant.Presentation.Client.csproj" />
+    <ProjectReference Include="..\Shared\TheRestaurant.Presentation.Shared.csproj" />
+  </ItemGroup>
+
+
+</Project>

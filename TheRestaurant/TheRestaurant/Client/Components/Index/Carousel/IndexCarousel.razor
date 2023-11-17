@@ -1,0 +1,43 @@
+﻿@using MudBlazor;
+@using TheRestaurant.Client.Components.Index.Carousel;
+@using TheRestaurant.Client.Components.Index.BookTable;
+
+
+<MudCarousel Class="mud-width-full" Style="height:100%;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+    
+    <MudCarouselItem Transition="transition" Color="@Color.Primary">
+        <div class="d-flex" style="height:100%">
+             <Image1/>
+            <BookTableContainer />
+        </div>
+        
+    </MudCarouselItem>
+    
+    <MudCarouselItem Transition="transition" Color="@Color.Secondary">
+        <div class="d-flex" style="height:100%">
+            <Image2 />
+        </div>
+        <BookTableContainer />
+    </MudCarouselItem>
+    
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex" style="height:100%">
+            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Color="@Color.Primary" Size="@Size.Large" />
+        </div>
+        <BookTableContainer />
+    </MudCarouselItem>
+</MudCarousel>
+
+
+
+
+@code{ 
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+}
+
+@* Link to mudblazor-component:
+https://mudblazor.com/components/carousel#example *@

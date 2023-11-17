@@ -1,0 +1,34 @@
+﻿@inherits LayoutComponentBase
+@using MudBlazor
+
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+           
+<MudLayout>
+     
+<MudGrid>
+        <MudItem xs="12" >
+            <MudPaper Width="100%" Style="border-radius:0;">
+                <NavMenu />
+            </MudPaper>  
+    </MudItem>
+
+        <MudItem xs="12" Style="rounded-0">
+            <MudPaper Height="60vh" Width="100%" Style="border-radius:0;">
+            @Body
+            </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12">
+            <MudPaper Height="30vh" Width="100%" Style="background-color:burlywood; border-radius:0;">
+               <h1>
+                    FOOTER
+               </h1>
+            </MudPaper>
+    </MudItem>
+
+</MudGrid>
+
+</MudLayout>
