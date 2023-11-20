@@ -9,15 +9,15 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Authentication
     public class RegistrationRepository : IRegistrationRepository
     {
         private readonly RestaurantDbContext _context;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<Employee> _userManager;
 
-        public RegistrationRepository(RestaurantDbContext context, UserManager<AppUser> userManager)
+        public RegistrationRepository(RestaurantDbContext context, UserManager<Employee> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        public async Task<IdentityResult> AddUser(AppUser user, string password)
+        public async Task<IdentityResult> AddUser(Employee user, string password)
         {
             var result = await _userManager.CreateAsync(user, password);
             return result;

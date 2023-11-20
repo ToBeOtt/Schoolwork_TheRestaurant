@@ -3,5 +3,5 @@
 namespace TheRestaurant.Authentication.Services.RegistrationServices.DTO
 {
     public record RegistrationDto(
-          AppUser AppUser);
+          Employee AppUser);
 }

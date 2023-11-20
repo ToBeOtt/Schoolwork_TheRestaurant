@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,12 +12,16 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Authentication
     public class JwtTokenRepository : IJwtTokenRepository
     {
         private readonly IConfiguration _config;
+        private readonly UserManager<Employee> _userManager;
 
-        public JwtTokenRepository(IConfiguration config)
+        public JwtTokenRepository(
+            IConfiguration config,
+            UserManager<Employee> userManager)
         {
             _config = config;
+            _userManager = userManager;
         }
-        public async Task<string> GenerateToken(AppUser user)
+        public async Task<string> GenerateToken(Employee user)
         {
             var jwtSettings = _config.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]);
@@ -29,6 +34,13 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Authentication
                 new Claim(JwtRegisteredClaimNames.Aud, jwtSettings["Audience"]),
                 new Claim(JwtRegisteredClaimNames.Iss, jwtSettings["Issuer"])
             };
+
+            // Add Identity roles to claims
+            var userRoles = await _userManager.GetRolesAsync(user);
+            foreach (var role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

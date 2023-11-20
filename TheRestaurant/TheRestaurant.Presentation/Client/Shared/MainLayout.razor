@@ -1,17 +1,17 @@
 ﻿@inherits LayoutComponentBase
 @using MudBlazor
+@using TheRestaurant.Presentation.Client.Components.Themes
 
-<MudThemeProvider/>
+<TheRestaurantColorTheme/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-           
 <MudLayout>
      
 <MudGrid>
         <MudItem xs="12" >
             <MudPaper Width="100%" Style="border-radius:0;">
-                <NavMenu />
+                <HeaderNavBar />
             </MudPaper>  
     </MudItem>
 
@@ -22,10 +22,17 @@
     </MudItem>
 
     <MudItem xs="12">
-            <MudPaper Height="30vh" Width="100%" Style="background-color:burlywood; border-radius:0;">
-               <h1>
+            <MudPaper Class="mud-primary"
+                Height="30vh" 
+                Width="100"
+                Style="border-radius:0;">
+
+                <MudText 
+                    Class="mud-secondary"
+                    Typo="Typo.h6"
+                >
                     FOOTER
-               </h1>
+                </MudText>
             </MudPaper>
     </MudItem>
 

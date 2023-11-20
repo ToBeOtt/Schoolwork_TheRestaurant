@@ -2,14 +2,17 @@
 
 <MudGrid Justify="Justify.Center">
     <MudItem>
-        <MudImage Src="/css/images/dish.jpg"
+        <div style="position: relative;">
+            <MudImage Src="/css/images/dish.jpg"
                   style="width: 100%; height: 100%;"
                   ObjectFit="@ImageFit"
-                  Alt="Dish" />
-        
-    </MudItem>
-    <MudItem>
-        <MudText Typo="Typo.h6">Smarrigt</MudText>
+                      Alt="Dish" />
+                   <TextBox
+                        Title="Och vilken mat.."
+                        Text =
+                        "Den smakar bäst i stan!" 
+                    />
+        </div>
     </MudItem>
 </MudGrid>
 

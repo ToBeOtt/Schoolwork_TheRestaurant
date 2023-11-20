@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231120130753_updated-entities")]
+    partial class updatedentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -497,7 +500,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItemCategory", b =>
                 {
                     b.HasOne("TheRestaurant.Domain.Entities.Menu.Category", "Categories")
-                        .WithMany("MenuItemCategories")
+                        .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -555,11 +558,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Authentication.Employee", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Category", b =>
-                {
-                    b.Navigation("MenuItemCategories");
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItem", b =>

@@ -5,7 +5,7 @@ namespace TheRestaurant.Authentication.Interfaces
 {
     public interface IJwtTokenRepository
     {
-        Task<string> GenerateToken(AppUser user);
+        Task<string> GenerateToken(Employee user);
         Task<ClaimsPrincipal> ValidateToken(string token);
     }
 }

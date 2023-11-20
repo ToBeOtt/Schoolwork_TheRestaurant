@@ -8,21 +8,21 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Authentication
     public class AuthenticationRepository : IAuthenticationRepository
     {
         private readonly RestaurantDbContext _context;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly SignInManager<Employee> _signInManager;
 
         public AuthenticationRepository(
             RestaurantDbContext context,
-            SignInManager<AppUser> signInManager)
+            SignInManager<Employee> signInManager)
         {
             _context = context;
             _signInManager = signInManager;
         }
-        public async Task<AppUser> GetUserByEmail(string email)
+        public async Task<Employee> GetUserByEmail(string email)
         {
             return _context.Users.Where(u => u.Email == email).SingleOrDefault();
         }
 
-        public async Task<AppUser> GetUserById(string id)
+        public async Task<Employee> GetUserById(string id)
         {
             return _context.Users.Where(u => u.Id == id).SingleOrDefault();
         }

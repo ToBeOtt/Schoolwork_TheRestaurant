@@ -1,0 +1,92 @@
+﻿@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Net.Http
+@using System.Text.Json
+@using System.Text
+@using TheRestaurant.Contracts.Requests.Authentication
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+
+<style>
+    .form {
+        padding-left: 25px;
+    }
+</style>
+
+@if (Error)
+{
+    <p>ErrorMessage</p>
+}
+
+<div class="form">
+    <EditForm Method="Post">
+        <DataAnnotationsValidator />
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Mail</label>
+            <div class="col-md-3">
+                <InputText 
+                    value="@Username"
+                    @bind="@Username" 
+                    class="form-control" 
+                    />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Lösenord</label>
+            <div class="col-md-3">
+                <InputText 
+                    value="@Password"
+                    @bind="@Password"
+                    class="form-control"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
+                <button type="submit" class="btn esh-button esh-button-primary"
+                        onclick="@Login_User">
+                    [ Login ]
+                </button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private string? Username { get; set; }
+    private string? Password { get; set; }
+
+    private bool Error;
+    private string ErrorMessage;
+
+    private async Task Login_User()
+    {
+        var request = new LoginRequest(
+            Email: Username,
+            Password: Password);
+
+        var json = JsonSerializer.Serialize(request);
+
+        var apiUrl = "/auth/login";
+
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await HttpClient.PostAsync(apiUrl, content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/index");
+        }
+        else
+        {
+            Error = true;
+            ErrorMessage = "Det gick inte att logga in.";
+        }
+    }
+
+}

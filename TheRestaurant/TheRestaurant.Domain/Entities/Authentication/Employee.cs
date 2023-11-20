@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using TheRestaurant.Domain.Entities.OrderEntities;
 
 namespace TheRestaurant.Domain.Entities.Authentication
 {
-    public sealed class AppUser : IdentityUser
+    public sealed class Employee : IdentityUser
     {
         public string Alias { get; private set; }
+        public ICollection<EmployeeOrder> Orders {  get; set; } 
 
-        public AppUser() { }
+        public Employee() { }
 
         public void CreateUser(string email, string alias)
         {
@@ -15,11 +17,11 @@ namespace TheRestaurant.Domain.Entities.Authentication
         }
 
 
-        private void UpdateRole(AppUser user)
+        private void UpdateRole(Employee user)
         {
             throw new NotImplementedException();
         }
-        private void DeleteUser(AppUser user)
+        private void DeleteUser(Employee user)
         {
             throw new NotImplementedException();
         }
