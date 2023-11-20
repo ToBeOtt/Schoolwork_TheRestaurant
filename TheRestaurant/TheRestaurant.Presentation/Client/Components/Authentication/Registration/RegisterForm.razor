@@ -100,29 +100,3 @@
     }
    
 }
-
- @* private async Task Register_User()
-    {
-        var request = new RegisterRequest(
-            Email: _register.Email,
-            Alias: _register.Username,
-            Password: _register.Password);
-
-        var json = JsonSerializer.Serialize(request);
-
-        var apiUrl = "auth/Test";
-
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var response = await HttpClient.GetAsync(apiUrl);
-
-        if (response.IsSuccessStatusCode)
-        {
-            NavigationManager.NavigateTo("/index");
-        }
-        else
-        {
-            Error = true;
-            ErrorMessage = "Det gick inte att registrera informationen.";
-        }
-    } *@

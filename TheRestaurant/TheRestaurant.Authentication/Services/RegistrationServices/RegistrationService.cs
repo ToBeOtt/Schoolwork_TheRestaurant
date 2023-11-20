@@ -27,7 +27,7 @@ namespace TheRestaurant.Authentication.Services.RegistrationServices
                 return await response.ErrorResponse
                     (response, "Invalid credentials.", _logger, "Invalid credentials.");
 
-            var user = new AppUser();
+            var user = new Employee();
             user.CreateUser(email, alias);
             user.UserName = alias;
 

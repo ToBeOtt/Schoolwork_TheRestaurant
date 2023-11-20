@@ -9,12 +9,12 @@ namespace TheRestaurant.Authentication.Services.RoleServices
     {
         private readonly ILogger<RoleService> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<Employee> _userManager;
 
         public RoleService(
             ILogger<RoleService> logger,
             RoleManager<IdentityRole> roleManager, 
-            UserManager<AppUser> userManager)
+            UserManager<Employee> userManager)
         {
             _logger = logger;
             _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));

@@ -5,8 +5,8 @@ namespace TheRestaurant.Authentication.Interfaces
 {
     public interface IAuthenticationRepository
     {
-        Task<AppUser> GetUserByEmail(string email);
-        Task<AppUser> GetUserById(string id);
+        Task<Employee> GetUserByEmail(string email);
+        Task<Employee> GetUserById(string id);
         Task<SignInResult> CheckLoginCredentials(string username, string password);
     }
 }

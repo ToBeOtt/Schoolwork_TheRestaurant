@@ -12,16 +12,16 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Authentication
     public class JwtTokenRepository : IJwtTokenRepository
     {
         private readonly IConfiguration _config;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<Employee> _userManager;
 
         public JwtTokenRepository(
             IConfiguration config,
-            UserManager<AppUser> userManager)
+            UserManager<Employee> userManager)
         {
             _config = config;
             _userManager = userManager;
         }
-        public async Task<string> GenerateToken(AppUser user)
+        public async Task<string> GenerateToken(Employee user)
         {
             var jwtSettings = _config.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]);

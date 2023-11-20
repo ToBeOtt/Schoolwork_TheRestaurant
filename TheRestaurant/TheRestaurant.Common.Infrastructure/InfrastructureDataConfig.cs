@@ -24,7 +24,7 @@ namespace Common.Infrastructure
                 (connectionString, x => x.MigrationsHistoryTable
                     ("__DwellerAuthenticationMigrationsHistory", "DwellerAuthenticationSchema")));
 
-            services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<RestaurantDbContext>()
                 .AddDefaultTokenProviders();

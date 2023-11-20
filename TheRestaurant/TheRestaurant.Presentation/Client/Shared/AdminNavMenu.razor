@@ -1,7 +1,10 @@
-﻿
-@using MudBlazor
+﻿@using MudBlazor
 
 <MudMenu Icon="@Icons.Material.Filled.Settings">
-    <MudMenuItem>Admin</MudMenuItem>
+    <MudMenuItem>
+        <MudNavLink 
+            href="/Admin/Index">Admin
+        </MudNavLink>
+    </MudMenuItem>
     <MudMenuItem>Logga ut</MudMenuItem>
 </MudMenu>
