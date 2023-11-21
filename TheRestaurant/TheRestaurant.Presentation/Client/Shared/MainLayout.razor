@@ -14,32 +14,24 @@
                 <HeaderNavBar />
             </MudPaper>
         </MudItem>
-
+         
         <MudItem xs="12" Style="rounded-0">
             <MudPaper Height="60vh" Width="100%" Style="border-radius:0;">
                 @Body
             </MudPaper>
+           
         </MudItem>
-
+        <ThemeReference />
         <MudItem xs="12">
             @* Lab Area, should be replaced with a proper footer component *@
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary">Primary</MudButton>
-
-            <MudText Class="mud-text-primary" Align="Align.Center"
-                     Typo="Typo.h1">
-                H1 FOOTER
-            </MudText>
-
-            <MudText Align="Align.Center"
-                     Typo="Typo.h2">
-                H2 FOOTER
-            </MudText>
-
-            <MudPaper>
-                <MudLink href="/About/AboutPage" Underline="Underline.None">
-                    About
-                </MudLink>
+           
+            <MudPaper Class="mud-primary">
+                <MudText Class="mud-text-primary" Align="Align.Center"
+                         Typo="Typo.h1">
+                    FOOTER Placeholder
+                </MudText>
             </MudPaper>
+
             @* Lab Area, should be replaced with a proper footer component *@
 
         </MudItem>
@@ -47,3 +39,7 @@
     </MudGrid>
 
 </MudLayout>
+
+@code{
+
+}
