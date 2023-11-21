@@ -2,12 +2,14 @@
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Net.Http
+@using Blazored.LocalStorage;
 @using System.Text.Json
 @using System.Text
 @using TheRestaurant.Contracts.Requests.Authentication
+@using TheRestaurant.Presentation.Client.Components.Authentication.Login.DTO
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
-
+@inject ILocalStorageService LocalStorage
 
 <style>
     .form {
@@ -21,16 +23,15 @@
 }
 
 <div class="form">
-    <EditForm Method="Post">
+    <EditForm Method="Post" Model="_login" OnSubmit=@Login_User>
         <DataAnnotationsValidator />
 
         <div class="form-group">
             <label class="control-label col-md-2">Mail</label>
             <div class="col-md-3">
                 <InputText 
-                    value="@Username"
-                    @bind="@Username" 
-                    class="form-control" 
+                    class="form-control"
+                    @bind-Value="_login.Email"
                     />
             </div>
         </div>
@@ -38,18 +39,18 @@
         <div class="form-group">
             <label class="control-label col-md-2">Lösenord</label>
             <div class="col-md-3">
-                <InputText 
-                    value="@Password"
-                    @bind="@Password"
-                    class="form-control"
+                <InputText type=password
+                           class="form-control"
+                           @bind-Value="_login.Password"
                 />
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
-                <button type="submit" class="btn esh-button esh-button-primary"
-                        onclick="@Login_User">
+                <button 
+                    type="submit"
+                    class="btn esh-button esh-button-primary">
                     [ Login ]
                 </button>
             </div>
@@ -58,8 +59,7 @@
 </div>
 
 @code {
-    private string? Username { get; set; }
-    private string? Password { get; set; }
+    private readonly LoginDto _login = new LoginDto();
 
     private bool Error;
     private string ErrorMessage;
@@ -67,8 +67,8 @@
     private async Task Login_User()
     {
         var request = new LoginRequest(
-            Email: Username,
-            Password: Password);
+            Email: _login.Email,
+            Password: _login.Password);
 
         var json = JsonSerializer.Serialize(request);
 
@@ -80,7 +80,14 @@
 
         if (response.IsSuccessStatusCode)
         {
-            NavigationManager.NavigateTo("/index");
+            var token = await response.Content.ReadAsStringAsync();
+
+            await LocalStorage.SetItemAsync("authToken", token);
+
+            if (NavigationManager.Uri.Contains("login"))
+            {
+                NavigationManager.NavigateTo("/");
+            }
         }
         else
         {
@@ -88,5 +95,7 @@
             ErrorMessage = "Det gick inte att logga in.";
         }
     }
+
+
 
 }

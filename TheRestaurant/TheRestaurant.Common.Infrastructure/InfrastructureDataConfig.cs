@@ -21,8 +21,7 @@ namespace Common.Infrastructure
                throw new InvalidOperationException("Connection string not found.");
 
             services.AddDbContext<RestaurantDbContext>(options => options.UseSqlServer
-                (connectionString, x => x.MigrationsHistoryTable
-                    ("__DwellerAuthenticationMigrationsHistory", "DwellerAuthenticationSchema")));
+                (connectionString));
 
             services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddRoles<IdentityRole>()
