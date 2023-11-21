@@ -1,0 +1,33 @@
+﻿@using System.Net.Http.Headers
+@using Blazored.LocalStorage
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+
+@if (Success)
+{
+    <p>Hej</p>
+}
+else
+{
+    <p>suck..</p>
+}
+
+@code {
+    private bool Success;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authToken = await LocalStorage.GetItemAsync<string>("authToken");
+
+        if (!string.IsNullOrEmpty(authToken))
+        {
+            // Set header with token
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+
+            Success = await Http.GetFromJsonAsync<bool>("/adminHome/index");
+        }
+        else
+            Success = false;
+        
+    }
+}

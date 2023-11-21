@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -17,6 +18,9 @@ namespace TheRestaurant.Presentation.Client
 
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+
+            builder.Services.AddBlazoredLocalStorage();
 
             builder.Services.AddMudServices();
 

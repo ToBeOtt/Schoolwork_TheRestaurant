@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using TheRestaurant.Authentication.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 using TheRestaurant.Authentication.Requests;
 using TheRestaurant.Authentication.Services.AuthenticationServices;
 using TheRestaurant.Authentication.Services.RegistrationServices;
@@ -10,24 +7,18 @@ namespace TheRestaurant.Presentation.Server.Controllers.Authentication
 {
     [ApiController]
     [Route("auth")]
-    public class HomeController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly RegistrationService _registrationService;
         private readonly AuthenticationService _authenticationService;
-        private readonly IJwtTokenRepository _jwtTokenRepository;
-        private readonly HttpContext _httpContext;
 
-        public HomeController(
+        public AuthenticationController(
             RegistrationService registrationService,
-            AuthenticationService authenticationService,
-             IJwtTokenRepository jwtTokenRepository,
-            HttpContext httpContext
+            AuthenticationService authenticationService
            )
         {
             _registrationService = registrationService;
             _authenticationService = authenticationService;
-            _jwtTokenRepository = jwtTokenRepository;
-            _httpContext = httpContext;
         }
 
         // REGISTRATION
@@ -37,7 +28,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Authentication
         {
             var result = await _registrationService.Register
                 (request.Email, request.Alias, request.Password);
-            if(!result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 return BadRequest(result.ErrorResponse);
             }
@@ -56,19 +47,16 @@ namespace TheRestaurant.Presentation.Server.Controllers.Authentication
             {
                 return Unauthorized();
             }
-
-            return Ok(result);
+            string token = result.Data.Token;
+            return Ok(token);
         }
 
-        // Token
-        [HttpPost]
-        [Route("GetToken")]
-        public async Task<IActionResult> GetToken(IAccessTokenProvider TokenProvider)
-        {
-            var hm = await TokenProvider.RequestAccessToken();
-            //var result = await _jwtTokenRepository.ValidateToken(hm);
 
-            return Ok();
+        [HttpGet("Example")]
+        public async Task<bool> TestExample()
+        {
+            bool validated = true;
+            return validated;
         }
     }
 }
