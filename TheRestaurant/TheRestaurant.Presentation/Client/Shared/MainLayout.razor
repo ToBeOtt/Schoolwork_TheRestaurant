@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using MudBlazor
+@using TheRestaurant.Presentation.Client.Components.Index.Carousel
 @using TheRestaurant.Presentation.Client.Components.Themes
 
 <TheRestaurantColorTheme />
@@ -7,24 +8,59 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@DrawerToggle" />
+        <MudNavLink href="/" OnClick="@DrawerToggle">
+            <MudText Typo="Typo.h5">The Resturant</MudText>
+        </MudNavLink>
+
+        <MudSpacer />
+        <AdminNavMenu />
+        <UserNavMenu />
+    </MudAppBar>
+
+
+    <MudDrawer @bind-Open="@_drawerOpen">
+        <MainNavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+    <ThemeReference/>
+    <MainFooterComponent/>
+
+</MudLayout>
+
+@code {
+    bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}
+
+
+@* <MudLayout>
+
     <MudGrid>
         <MudItem xs="12">
             <MudPaper Width="100%" Style="border-radius:0;">
                 <HeaderNavBar />
             </MudPaper>
         </MudItem>
-         
+
         <MudItem xs="12" Style="rounded-0">
             <MudPaper Height="60vh" Width="100%" Style="border-radius:0;">
                 @Body
             </MudPaper>
-           
+
         </MudItem>
         <ThemeReference />
         <MudItem xs="12">
-            @* Lab Area, should be replaced with a proper footer component *@
-           
+            Lab Area, should be replaced with a proper footer component
+
             <MudPaper Class="mud-primary">
                 <MudText Class="mud-text-primary" Align="Align.Center"
                          Typo="Typo.h1">
@@ -32,14 +68,11 @@
                 </MudText>
             </MudPaper>
 
-            @* Lab Area, should be replaced with a proper footer component *@
+            Lab Area, should be replaced with a proper footer component
 
         </MudItem>
 
     </MudGrid>
 
-</MudLayout>
+</MudLayout> *@
 
-@code{
-
-}
