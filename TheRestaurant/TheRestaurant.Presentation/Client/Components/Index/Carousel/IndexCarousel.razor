@@ -1,12 +1,14 @@
-﻿@using MudBlazor;
+﻿
 
+
+<MudPaper Height="60vh" Width="100%" Style="border-radius:0;">
 
 <MudCarousel Class="mud-width-full" Style="height:100%;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
     
     <MudCarouselItem Transition="transition" Color="@Color.Primary">
         <div class="d-flex" style="height:100%">
              <Image1/>
-            <BookTableContainer />
+            
         </div>
         
     </MudCarouselItem>
@@ -15,18 +17,18 @@
         <div class="d-flex" style="height:100%">
             <Image2 />
         </div>
-        <BookTableContainer />
+       
     </MudCarouselItem>
     
     <MudCarouselItem Transition="transition">
         <div class="d-flex" style="height:100%">
             <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Color="@Color.Primary" Size="@Size.Large" />
         </div>
-        <BookTableContainer />
+       
     </MudCarouselItem>
 </MudCarousel>
 
-
+</MudPaper>
 
 
 @code{ 

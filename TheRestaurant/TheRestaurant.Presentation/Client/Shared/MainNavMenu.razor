@@ -1,0 +1,30 @@
+﻿
+<MudNavMenu>
+    <MudNavLink href="/Menu" OnClick="@DrawerToggle">
+        <MudText Typo="Typo.h6">
+            Se meny
+        </MudText>
+
+    </MudNavLink>
+    <MudNavLink href="/Order" OnClick="@DrawerToggle">
+
+        <MudText Typo="Typo.h6">
+            Beställning
+        </MudText>
+    </MudNavLink>
+    <MudNavLink href="/AboutPage" OnClick="@DrawerToggle">
+        <MudText Typo="Typo.h6">
+            Om restaurangen
+        </MudText>
+    </MudNavLink>
+</MudNavMenu>
+
+
+@code {
+    bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}
