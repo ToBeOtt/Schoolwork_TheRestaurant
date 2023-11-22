@@ -1,6 +1,5 @@
 using Authentication;
 using Common.Infrastructure;
-using Microsoft.AspNetCore.ResponseCompression;
 
 namespace TheRestaurant.Presentation
 {
@@ -11,6 +10,8 @@ namespace TheRestaurant.Presentation
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddHttpClient();
+
             // Persistence and DA
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthServices(builder.Configuration);
@@ -39,6 +40,7 @@ namespace TheRestaurant.Presentation
 
             app.UseRouting();
 
+            app.UseAuthorization();   
 
             app.MapRazorPages();
             app.MapControllers();

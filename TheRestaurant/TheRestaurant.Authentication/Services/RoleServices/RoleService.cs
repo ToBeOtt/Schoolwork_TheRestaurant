@@ -39,19 +39,20 @@ namespace TheRestaurant.Authentication.Services.RoleServices
 
             var role = await _roleManager.FindByNameAsync(roleName);
             if (role == null)
-                return await response.ErrorResponse
-                   (response, "Role could not be found.", _logger, "Role could not be found.");
-
-            var result = await _userManager.IsInRoleAsync(user, roleName);
-            if (!result)
-                return await response.ErrorResponse
-                  (response, "Role could not be assigned.", _logger);
-
-            if(!await CreateRoleIfNotExistsAsync(roleName))
             {
+                if (!await CreateRoleIfNotExistsAsync(roleName))
+                {
+                    return await response.ErrorResponse
+                      (response, "Role could not be assigned.", _logger);
+                }
+            }
+              
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+            if (!result.Succeeded)
                 return await response.ErrorResponse
                   (response, "Role could not be assigned.", _logger);
-            }
+
+           
             return await response.SuccessResponse
                   (response, true);
         }

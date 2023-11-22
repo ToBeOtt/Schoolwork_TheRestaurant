@@ -1,6 +1,23 @@
 ﻿@using MudBlazor
 
-<MudMenu Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Primary">
-    <MudMenuItem>Logga in</MudMenuItem>
-    <MudMenuItem>Logga ut</MudMenuItem>
+
+<MudMenu Icon="@Icons.Material.Filled.AccountCircle">
+    
+    <MudMenuItem>
+        <MudNavLink href="/register">
+            Registrering
+        </MudNavLink>
+     </MudMenuItem>
+
+    <MudMenuItem>
+        <MudNavLink href="/login">
+            Logga in
+        </MudNavLink>
+     </MudMenuItem>
+
+    <MudMenuItem>
+        <MudNavLink href="/logout">
+            Logga ut
+        </MudNavLink>
+    </MudMenuItem>
 </MudMenu>

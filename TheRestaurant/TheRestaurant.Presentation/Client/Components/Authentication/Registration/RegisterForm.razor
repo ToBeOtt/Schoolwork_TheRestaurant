@@ -44,7 +44,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Lösenord</label>
             <div class="col-md-3">
-                <InputText class="form-control" @bind-Value="_register.Password" />
+                <InputText type=password class ="form-control" @bind-Value="_register.Password" />
                 <ValidationMessage For="(() => _register.Password)" />
             </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Repetera lösenord</label>
             <div class="col-md-3">
-                <InputText class="form-control" @bind-Value="_register.RepeatPassword" />
+                <InputText type=password class="form-control" @bind-Value="_register.RepeatPassword" />
                 <ValidationMessage For="(() => _register.RepeatPassword)" />
             </div>
         </div>
@@ -72,6 +72,7 @@
     private readonly RegisterValidation _register = new RegisterValidation();
     private bool Error;
     private string ErrorMessage;
+
 
     private async Task Register_User()
     {
