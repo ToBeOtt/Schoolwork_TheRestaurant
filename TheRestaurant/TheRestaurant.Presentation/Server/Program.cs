@@ -1,5 +1,7 @@
 using Authentication;
 using Common.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using TheRestaurant.Common.Infrastructure.Data;
 
 namespace TheRestaurant.Presentation
 {
@@ -40,13 +42,27 @@ namespace TheRestaurant.Presentation
 
             app.UseRouting();
 
-            app.UseAuthorization();   
+            app.UseAuthorization();
 
             app.MapRazorPages();
             app.MapControllers();
             app.MapFallbackToFile("index.html");
 
+            SeedDataAsync(app).GetAwaiter().GetResult();
+
             app.Run();
+        }
+
+
+        private static async Task SeedDataAsync(WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+                var userSeeds = serviceProvider.GetRequiredService<UserSeeds>();
+                await userSeeds.SeedManager();
+                await userSeeds.SeedEmployee();
+            }
         }
     }
 }

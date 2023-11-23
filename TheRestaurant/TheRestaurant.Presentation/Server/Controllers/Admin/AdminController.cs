@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
-    [Authorize(Roles = "admin, manager")]
+    [Authorize(Roles = "admin")]
     [ApiController]
     [Route("adminHome")]
 
@@ -11,6 +11,14 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
     {
         public AdminController()
         {
+        }
+
+
+        [HttpGet("Example")]
+        public async Task<bool> Example()
+        {
+            bool validated = true;
+            return validated;
         }
 
     }

@@ -30,7 +30,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Authentication
             var claims = new List<Claim>
             {
                 new Claim("UserId", user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Name, user.Email),
                 new Claim(JwtRegisteredClaimNames.Aud, jwtSettings["Audience"]),
                 new Claim(JwtRegisteredClaimNames.Iss, jwtSettings["Issuer"])
             };

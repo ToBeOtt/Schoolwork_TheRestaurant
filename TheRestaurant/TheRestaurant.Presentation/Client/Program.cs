@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using System.Net.NetworkInformation;
 using TheRestaurant.Presentation.Client;
+using TheRestaurant.Presentation.Client.ClientServices;
 
 namespace TheRestaurant.Presentation.Client
 {
@@ -19,6 +20,7 @@ namespace TheRestaurant.Presentation.Client
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+            builder.Services.AddScoped<RoleService>();
 
             builder.Services.AddBlazoredLocalStorage();
 

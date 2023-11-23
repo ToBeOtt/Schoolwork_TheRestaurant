@@ -84,6 +84,7 @@
 
             await LocalStorage.SetItemAsync("authToken", token);
 
+
             if (NavigationManager.Uri.Contains("login"))
             {
                 NavigationManager.NavigateTo("/");
