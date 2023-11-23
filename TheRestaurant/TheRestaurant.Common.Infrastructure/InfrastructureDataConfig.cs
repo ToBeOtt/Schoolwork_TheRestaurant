@@ -7,8 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TheRestaurant.Application.Interfaces;
+using TheRestaurant.Application.Services;
 using TheRestaurant.Authentication.Interfaces;
 using TheRestaurant.Common.Infrastructure.Repositories.Authentication;
+using TheRestaurant.Common.Infrastructure.Repositories.Category;
 using TheRestaurant.Domain.Entities.Authentication;
 
 namespace Common.Infrastructure
@@ -38,6 +41,8 @@ namespace Common.Infrastructure
             //Repositories
             services.AddTransient<IRegistrationRepository, RegistrationRepository>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             return services;
         }
