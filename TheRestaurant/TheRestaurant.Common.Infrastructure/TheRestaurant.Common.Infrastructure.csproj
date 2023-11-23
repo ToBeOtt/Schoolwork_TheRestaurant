@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TheRestaurant.Application\TheRestaurant.Application.csproj" />
     <ProjectReference Include="..\TheRestaurant.Authentication\TheRestaurant.Authentication.csproj" />
   </ItemGroup>
 
