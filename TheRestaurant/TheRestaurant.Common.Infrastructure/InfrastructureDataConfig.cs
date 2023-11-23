@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TheRestaurant.Authentication.Interfaces;
+using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Common.Infrastructure.Repositories.Authentication;
 using TheRestaurant.Domain.Entities.Authentication;
 
@@ -37,6 +39,10 @@ namespace Common.Infrastructure
             //Repositories
             services.AddTransient<IRegistrationRepository, RegistrationRepository>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
+
+
+            // Seeds
+            services.AddTransient<UserSeeds>();
 
             return services;
         }
