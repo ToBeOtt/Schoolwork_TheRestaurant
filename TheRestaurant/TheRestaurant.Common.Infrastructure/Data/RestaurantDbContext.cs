@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Domain.Entities.Authentication;
 using TheRestaurant.Domain.Entities.Menu;
 using TheRestaurant.Domain.Entities.OrderEntities;
@@ -28,5 +29,14 @@ namespace Common.Infrastructure.Data
 
         public DbSet<OrderStatus> OrderStatus { get; set; } = null!;
         public DbSet<EmployeeOrder> EmployeeOrders { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.AllergySeed();
+            builder.CategorySeed();
+
+            base.OnModelCreating(builder);
+        }
     }
+
 }
