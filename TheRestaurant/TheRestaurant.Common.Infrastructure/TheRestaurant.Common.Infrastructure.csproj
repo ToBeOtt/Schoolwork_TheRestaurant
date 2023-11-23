@@ -32,4 +32,8 @@
     <ProjectReference Include="..\TheRestaurant.Authentication\TheRestaurant.Authentication.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+  </ItemGroup>
+
 </Project>
