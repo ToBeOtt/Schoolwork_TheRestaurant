@@ -32,11 +32,46 @@ namespace TheRestaurant.Application.Services
             return menuItem;
         }
 
+        public async Task DeleteMenuItemAsync(int id)
+        {
+            var menuItem = await _menuItemRepository.GetByIdAsync(id);
+
+            if (menuItem != null)
+            {
+                await _menuItemRepository.DeleteAsync(menuItem.Id);
+            }
+            else
+            {
+                // Error handling
+            }
+           
+        }
+
+        public async Task<List<MenuItem>> GetAllMenuItems()
+        {
+            var menuItems = await _menuItemRepository.GetAllAsync();
+
+            return menuItems;
+        }
+
         public async Task<MenuItem> GetMenuItemById(int id)
         {
             var menuItem = await _menuItemRepository.GetByIdAsync(id);
 
             return menuItem;
+        }
+
+        public async Task<MenuItem> UpdateMenuItemAsync(int id, EditMenuItemRequest request)
+        {
+            var menuItemToUpdate = await _menuItemRepository.GetByIdAsync(id);
+
+            menuItemToUpdate.Name = request.Name;
+            menuItemToUpdate.Description = request.Description;
+            menuItemToUpdate.MenuPhoto = request.MenuPhoto;
+
+            await _menuItemRepository.UpdateAsync(menuItemToUpdate);
+
+            return menuItemToUpdate;
         }
     }
 }

@@ -1,6 +1,10 @@
 using Authentication;
 using Common.Infrastructure;
 using Microsoft.AspNetCore.ResponseCompression;
+using TheRestaurant.Application.Interfaces;
+using TheRestaurant.Application.Services;
+using TheRestaurant.Common.Infrastructure.Repositories.MenuItem;
+using TheRestaurant.Presentation.Client.Components.Admin.MenuItemCrud;
 
 namespace TheRestaurant.Presentation
 {
@@ -14,6 +18,10 @@ namespace TheRestaurant.Presentation
             // Persistence and DA
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthServices(builder.Configuration);
+
+            builder.Services.AddScoped<IMenuItemService, MenuItemService>();
+            builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+            builder.Services.AddScoped<DeleteItemConfirmation>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();

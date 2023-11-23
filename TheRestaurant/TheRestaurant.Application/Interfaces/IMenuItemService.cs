@@ -13,5 +13,9 @@ namespace TheRestaurant.Application.Interfaces
         Task<MenuItem> CreateMenuItemAsync(CreateMenuItemRequest request);
 
         Task<MenuItem> GetMenuItemById(int id);
+        Task<List<MenuItem>> GetAllMenuItems();
+        Task DeleteMenuItemAsync(int id);
+
+        Task<MenuItem> UpdateMenuItemAsync(int id, EditMenuItemRequest menuItem);
     }
 }

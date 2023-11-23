@@ -17,21 +17,21 @@ namespace TheRestaurant.Presentation.Client.Components.Admin.MenuItemCrud.Valida
         public byte[] MenuPhoto { get; set; }
 
         // Implement Validation classes for Category & Allergy
-        [Required(ErrorMessage ="Behöver ha en kategori")]
-        public ICollection<MenuItemCategoryValidation> MenuItemCategories { get; set; }
-        public ICollection<MenuItemAllergyValidation>? MenuItemAllergies { get; set; }
+        //[Required(ErrorMessage ="Behöver ha en kategori")]
+        //public ICollection<MenuItemCategoryValidation> MenuItemCategories { get; set; }
+        //public ICollection<MenuItemAllergyValidation>? MenuItemAllergies { get; set; }
     }
 
     // TODO: Remove these 2 mock classes below when actual implementation once available, just wanted to get rid of build erros in the meanwhile.
-    public class MenuItemCategoryValidation
-    {
-        public int Id { get;set; }
-        public string Name { get; set; }
-    }
+    //public class MenuItemCategoryValidation
+    //{
+    //    public int Id { get;set; }
+    //    public string Name { get; set; }
+    //}
 
-    public class MenuItemAllergyValidation
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    //public class MenuItemAllergyValidation
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //}
 }

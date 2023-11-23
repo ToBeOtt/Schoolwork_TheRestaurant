@@ -2,6 +2,8 @@
 using System.ComponentModel.Design;
 using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Contracts.Requests.MenuItem;
+using TheRestaurant.Domain.Entities.Menu;
+
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
     [ApiController]
@@ -39,6 +41,51 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             }
 
             return Ok(menuItem);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllMenuItems()
+        {
+            try
+            {
+                var menuItems = await _menuItemService.GetAllMenuItems();
+                return Ok(menuItems);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ett fel uppstod när menyalternativen hämtades");
+            }
+        }
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteMenuItem(int id)
+        {
+            try
+            {
+                await _menuItemService.DeleteMenuItemAsync(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ett fel uppstod närmenyalternativet skulle raderas");
+            }
+        }
+
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> UpdateMenuItem(int id, EditMenuItemRequest request)
+        {
+            try
+            {
+                var menuItem = await _menuItemService.UpdateMenuItemAsync(id, request);
+                if (menuItem == null)
+                {
+                    return NotFound();
+                }
+                return Ok(menuItem);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Ett fel uppstod när menyalternativet skulle uppdateras");
+            }
         }
     }
 }

@@ -38,13 +38,7 @@
         </div>
 
 
-        <div class="form-group row">
-            <div class="col-md-offset-2 col-md-3 text-right">
-                <button type="submit" class="btn btn-primary">
-                    Create
-                </button>
-            </div>
-        </div>
+
 
         <div class="form-group-row">
             <div class="col-md-4">
@@ -71,7 +65,13 @@
                     }
                 </div>*@
             @*</div>*@
-        
+        <div class="form-group row">
+            <div class="col-md-offset-2 col-md-3 text-right">
+                <button type="submit" class="btn btn-primary">
+                    Create
+                </button>
+            </div>
+        </div>
     </EditForm>
 </div>
 
@@ -88,14 +88,13 @@
         // Include Category & Allergy when implemented
         );
 
-        var apiUrl = "api/admin/menuitems/create";
+        var apiUrl = "/admin/menuitems/create";
 
         var response = await HttpClient.PostAsJsonAsync(apiUrl, request);
 
         if (response.IsSuccessStatusCode)
         {
-            // Change navigation link?
-            NavigationManager.NavigateTo("/menuitems");
+            NavigationManager.NavigateTo("admin/menuitem/view");
         }
         else
         {

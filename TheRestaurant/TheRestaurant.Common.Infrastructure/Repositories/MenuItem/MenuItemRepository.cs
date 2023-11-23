@@ -23,14 +23,16 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.MenuItem
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var itemToDelete = await _context.MenuItems.FindAsync(id);
+            _context.Remove(itemToDelete);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<List<Domain.Entities.Menu.MenuItem>> GetAllAsync()
+        public async Task<List<Domain.Entities.Menu.MenuItem>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.MenuItems.ToListAsync();
         }
 
         public async Task<Domain.Entities.Menu.MenuItem> GetByIdAsync(int id)
@@ -38,9 +40,10 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.MenuItem
             return await _context.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public Task UpdateAsync(Domain.Entities.Menu.MenuItem menuItem)
+        public async Task UpdateAsync(Domain.Entities.Menu.MenuItem menuItem)
         {
-            throw new NotImplementedException();
+            _context.Update(menuItem);
+            await _context.SaveChangesAsync();
         }
     }
 }
