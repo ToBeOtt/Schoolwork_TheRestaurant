@@ -1,16 +1,36 @@
 ﻿@using MudBlazor
+@using TheRestaurant.Presentation.Client.ClientServices
+@inject RoleService RoleService
 
-<MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">
-    <MudMenuItem>
-        <MudNavLink 
-            href="/Admin/Index">
-            Admin
-        </MudNavLink>
-    </MudMenuItem>
-    <MudMenuItem>
-        <MudNavLink 
-            href="/">
-            Logga ut
-        </MudNavLink>
-    </MudMenuItem>
-</MudMenu>
+@if (HasPermission)
+{
+    <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">
+        <MudMenuItem>
+            <MudNavLink href="/Admin/Index">
+                Admin
+            </MudNavLink>
+        </MudMenuItem>
+    </MudMenu>
+}
+
+@code {
+    private bool HasPermission => IsAdmin || IsManager;
+    private bool IsAdmin;
+    private bool IsManager;
+
+    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await UpdateSuccessState();
+    }
+
+    private async Task UpdateSuccessState()
+    {
+        // Ensure authenticationStateTask is set before calling GetRolesAsync
+        if (authenticationStateTask != null)
+        {
+            (IsAdmin, IsManager) = await RoleService.GetRolesAsync();
+        }
+    }
+}
