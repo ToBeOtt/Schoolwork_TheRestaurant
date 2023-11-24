@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+<MudGrid>
+
+    <MudItem xs="3">
+        <MudPaper 
+            Elevation="0"
+            Class="d-flex align-center justify-left mud-width-full py-4">
+            <AdminNav/>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="9">
+        <MudPaper 
+            Elevation="0"
+            Class="d-flex align-center justify-center mud-width-full py-8 px-4 m-4">
+            @AdminContent
+        </MudPaper>
+    </MudItem>
+
+</MudGrid>
+
+@code {
+    [Parameter] public RenderFragment AdminContent { get; set; }
+}

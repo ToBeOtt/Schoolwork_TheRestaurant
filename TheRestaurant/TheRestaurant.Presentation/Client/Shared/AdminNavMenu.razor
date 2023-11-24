@@ -25,23 +25,26 @@
     private bool IsAdmin;
     private bool IsManager;
 
-    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
+        // Subscribe to the authentication state changed event
+        AuthState.AuthenticationStateChanged += HandleAuthenticationStateChanged;
+
         await UpdateSuccessState();
     }
 
     private async Task UpdateSuccessState()
     {
-        if (authenticationStateTask != null)
-        {
-            var user = await AuthState.GetAuthenticationStateAsync();
+        var user = await AuthState.GetAuthenticationStateAsync();
 
-            IsAdmin = user.User.IsInRole("admin");
-            IsManager = user.User.IsInRole("manager");
-            // Trigger a re-render
-            StateHasChanged();
-        }
+        IsAdmin = user.User.IsInRole("admin");
+        IsManager = user.User.IsInRole("manager");
+        // Trigger a re-render
+        StateHasChanged();
+    }
+
+    private async void HandleAuthenticationStateChanged(Task<AuthenticationState> authenticationStateTask)
+    {
+        await UpdateSuccessState();
     }
 }
