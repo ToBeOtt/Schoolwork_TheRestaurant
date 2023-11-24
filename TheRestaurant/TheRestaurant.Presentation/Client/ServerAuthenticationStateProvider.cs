@@ -8,10 +8,20 @@ namespace TheRestaurant.Presentation.Client
     {
         private readonly ILocalStorageService _localStorage;
 
+        public ServerAuthenticationStateProvider()
+        {
+            
+        }
         public ServerAuthenticationStateProvider(ILocalStorageService localStorage)
         {
             _localStorage = localStorage;
         }
+
+        public void StateChanged()
+        {
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+
 
         public void NotifyAuthenticationStateChanged()
         {
@@ -41,6 +51,24 @@ namespace TheRestaurant.Presentation.Client
                             new Claim("UserId", userId),
                         };
 
+
+                // Check if the expiration time is already in local storage
+                var expirationTime = await _localStorage.GetItemAsync<DateTimeOffset?>("TokenExpiration");
+
+                // Extract expiration time if not available in local storage or if the token is refreshed
+                if (!expirationTime.HasValue || expirationTime < DateTimeOffset.UtcNow)
+                {
+                    if (jsonToken.Payload.TryGetValue("exp", out var exp) &&
+                        exp is long expirationUnix)
+                    {
+                        expirationTime = DateTimeOffset.FromUnixTimeSeconds(expirationUnix).UtcDateTime;
+                        claims.Add(new Claim("TokenExpiration", expirationTime.ToString()));
+
+                        // Store expiration time in local storage
+                        await _localStorage.SetItemAsync("TokenExpiration", expirationTime);
+                    }
+                }
+
                         // Add roles to claims
                         var userRoles = jsonToken.Claims
                                         .Where(claim => claim.Type.Equals("role", StringComparison.OrdinalIgnoreCase))
@@ -49,7 +77,7 @@ namespace TheRestaurant.Presentation.Client
                         {
                             claims.Add(new Claim(ClaimTypes.Role, role));
                         }
-
+                        
                         var identity = new ClaimsIdentity(claims, "jwt");
                         var user = new ClaimsPrincipal(identity);
                         return new AuthenticationState(user);

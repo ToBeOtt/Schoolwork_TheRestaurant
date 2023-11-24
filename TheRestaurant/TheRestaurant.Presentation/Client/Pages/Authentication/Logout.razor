@@ -4,11 +4,12 @@
 @inject ILocalStorageService LocalStorage
 
 @code {
+    private bool AuthStateChanged;
 
     protected override async Task OnInitializedAsync()
     {
         await LocalStorage.RemoveItemAsync("authToken");
-
+        await LocalStorage.RemoveItemAsync("TokenExpiration");
         NavigationManager.NavigateTo("/");
     }
 }

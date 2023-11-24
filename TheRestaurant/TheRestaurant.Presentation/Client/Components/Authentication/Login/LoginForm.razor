@@ -1,15 +1,10 @@
-﻿@using System.Text.RegularExpressions
-@using System.ComponentModel.DataAnnotations
+﻿@using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components.Forms
-@using System.Net.Http
-@using Blazored.LocalStorage;
-@using System.Text.Json
-@using System.Text
+@using System.IdentityModel.Tokens.Jwt
 @using TheRestaurant.Contracts.Requests.Authentication
+@using TheRestaurant.Presentation.Client.ClientServices
 @using TheRestaurant.Presentation.Client.Components.Authentication.Login.DTO
-@inject HttpClient HttpClient
-@inject NavigationManager NavigationManager
-@inject ILocalStorageService LocalStorage
+@inject AuthService AuthService
 
 <style>
     .form {
@@ -19,7 +14,7 @@
 
 @if (Error)
 {
-    <p>ErrorMessage</p>
+    <p>@ErrorMessage</p>
 }
 
 <div class="form">
@@ -47,12 +42,13 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
-                <button 
-                    type="submit"
-                    class="btn esh-button esh-button-primary">
-                    [ Login ]
-                </button>
+            <div class="col-md-offset-2 py-3 col-md-3 text-right esh-button-actions">
+                <MudButton 
+                    OnClick = "@Login_User"
+                    Variant="Variant.Filled" 
+                    Color="Color.Primary">
+                    Logga in
+                </MudButton>
             </div>
         </div>
     </EditForm>
@@ -65,38 +61,13 @@
     private string ErrorMessage;
 
     private async Task Login_User()
-    {
-        var request = new LoginRequest(
-            Email: _login.Email,
-            Password: _login.Password);
+    {   
+       
+       var request = new LoginRequest(
+                    Email: _login.Email,
+                    Password: _login.Password);
 
-        var json = JsonSerializer.Serialize(request);
-
-        var apiUrl = "/auth/login";
-
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var response = await HttpClient.PostAsync(apiUrl, content);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var token = await response.Content.ReadAsStringAsync();
-
-            await LocalStorage.SetItemAsync("authToken", token);
-
-
-            if (NavigationManager.Uri.Contains("login"))
-            {
-                NavigationManager.NavigateTo("/");
-            }
-        }
-        else
-        {
-            Error = true;
-            ErrorMessage = "Det gick inte att logga in.";
-        }
+        await AuthService.Login(request);
     }
-
-
-
 }
+

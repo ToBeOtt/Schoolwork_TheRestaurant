@@ -18,7 +18,7 @@
 
 @if(Error)
 {
-    <p>ErrorMessage</p>
+    <p>@ErrorMessage</p>
 }
 
 <div class="form">
@@ -57,12 +57,15 @@
                 <ValidationMessage For="(() => _register.RepeatPassword)" />
             </div>
         </div>
-
+       
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-3 text-right esh-button-actions">
-                <button type="submit" class="btn esh-button esh-button-primary">
-                    [ Registrera ]
-                </button>
+            <div class="col-md-offset-2 py-3 col-md-3 text-right esh-button-actions">
+                <MudButton 
+                    OnClick="@Register_User"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary">
+                    Registrera
+                </MudButton>
             </div>
         </div>
     </EditForm>
