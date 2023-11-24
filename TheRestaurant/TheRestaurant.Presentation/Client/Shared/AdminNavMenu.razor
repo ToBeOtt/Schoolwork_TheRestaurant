@@ -1,6 +1,7 @@
 ﻿@using MudBlazor
 @using TheRestaurant.Presentation.Client.ClientServices
 @inject RoleService RoleService
+@inject ServerAuthenticationStateProvider AuthState
 
 @if (HasPermission)
 {
@@ -8,6 +9,12 @@
         <MudMenuItem>
             <MudNavLink href="/Admin/Index">
                 Admin
+            </MudNavLink>
+        </MudMenuItem>
+
+        <MudMenuItem>
+            <MudNavLink href="/register">
+                Registrering
             </MudNavLink>
         </MudMenuItem>
     </MudMenu>
@@ -20,17 +27,21 @@
 
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         await UpdateSuccessState();
     }
 
     private async Task UpdateSuccessState()
     {
-        // Ensure authenticationStateTask is set before calling GetRolesAsync
         if (authenticationStateTask != null)
         {
-            (IsAdmin, IsManager) = await RoleService.GetRolesAsync();
+            var user = await AuthState.GetAuthenticationStateAsync();
+
+            IsAdmin = user.User.IsInRole("admin");
+            IsManager = user.User.IsInRole("manager");
+            // Trigger a re-render
+            StateHasChanged();
         }
     }
 }

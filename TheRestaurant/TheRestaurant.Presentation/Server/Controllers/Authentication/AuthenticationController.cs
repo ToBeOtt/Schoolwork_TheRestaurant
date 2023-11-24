@@ -43,7 +43,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Authentication
         {
             var result = await _authenticationService.Login
                 (request.Email, request.Password);
-            if (result == null)
+            if (!result.IsSuccess)
             {
                 return Unauthorized();
             }

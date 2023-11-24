@@ -19,11 +19,10 @@ namespace TheRestaurant.Presentation.Client.ClientServices
         public async Task<(bool IsAdmin, bool IsManager)> GetRolesAsync()
         {
             var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var authToken = await _localStorage.GetItemAsync<string>("authToken");
 
             // Check user roles
             var isAdmin = authState.User.IsInRole("admin");
-            var isManager = authState.User.IsInRole("Manager");
+            var isManager = authState.User.IsInRole("manager");
 
             return (isAdmin, isManager);
         }
