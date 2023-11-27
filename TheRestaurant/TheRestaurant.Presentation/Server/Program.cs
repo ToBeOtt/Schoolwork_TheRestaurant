@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Application.Services;
 using TheRestaurant.Common.Infrastructure.Repositories.MenuItem;
-using TheRestaurant.Presentation.Client.Components.Admin.MenuItemCrud;
+using TheRestaurant.Presentation.Client.Components.Admin.ItemCrud;
 using Microsoft.Extensions.DependencyInjection;
 using TheRestaurant.Common.Infrastructure.Data;
 

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheRestaurant.Contracts.Requests.MenuItem
+namespace TheRestaurant.Contracts.Requests.Item
 {
-    public record EditMenuItemRequest(
+    public record EditItemRequest(
         string Name,
+        double Price,
         string Description,
-        byte[] MenuPhoto
+        byte[] MenuPhoto,
+        bool IsFoodItem,
+        bool IsDeleted
         );
 
 }

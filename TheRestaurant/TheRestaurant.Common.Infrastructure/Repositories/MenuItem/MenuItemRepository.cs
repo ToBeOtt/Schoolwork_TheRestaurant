@@ -23,11 +23,19 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.MenuItem
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task SoftDeleteAsync(int id)
         {
             var itemToDelete = await _context.MenuItems.FindAsync(id);
-            _context.Remove(itemToDelete);
-            await _context.SaveChangesAsync();
+            if (itemToDelete != null)
+            {
+                itemToDelete.IsDeleted = true;
+                _context.MenuItems.Update(itemToDelete);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // Error handling
+            }
         }
 
         public async Task<List<Domain.Entities.Menu.Item>> GetAllAsync()

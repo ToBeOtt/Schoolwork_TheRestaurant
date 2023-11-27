@@ -12,7 +12,7 @@ namespace TheRestaurant.Application.Interfaces
         Task<Item> GetByIdAsync(int id);
         Task AddAsync(Item menuItem);
         Task UpdateAsync(Item menuItem);
-        Task DeleteAsync(int id);
+        Task SoftDeleteAsync(int id);
         Task<List<Item>> GetAllAsync();
     }
 }
