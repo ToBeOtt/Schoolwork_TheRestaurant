@@ -7,6 +7,8 @@ using TheRestaurant.Common.Infrastructure.Repositories.MenuItem;
 using TheRestaurant.Presentation.Client.Components.Admin.MenuItemCrud;
 using Microsoft.Extensions.DependencyInjection;
 using TheRestaurant.Common.Infrastructure.Data;
+using TheRestaurant.Application.Interfaces.IAllergy;
+using TheRestaurant.Application.Services.AllergyServices;
 
 namespace TheRestaurant.Presentation
 {
@@ -23,6 +25,8 @@ namespace TheRestaurant.Presentation
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthServices(builder.Configuration);
 
+
+            builder.Services.AddTransient<IAllergyService, AllergyService>();
             builder.Services.AddScoped<IMenuItemService, MenuItemService>();
             builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
             builder.Services.AddScoped<DeleteItemConfirmation>();

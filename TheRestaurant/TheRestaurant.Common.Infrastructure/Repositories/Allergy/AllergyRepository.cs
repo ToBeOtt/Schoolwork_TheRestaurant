@@ -20,9 +20,19 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Allergy
         }
 
 
-        public Task AddAsync(Domain.Entities.Menu.Allergy allergy)
+        public async Task AddAsync(Domain.Entities.Menu.Allergy allergy)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Add(allergy);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
 
@@ -34,11 +44,15 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Allergy
 
 
 
-        public Task<List<Domain.Entities.Menu.Allergy>> GetAllAsync()
+        public async Task<List<Domain.Entities.Menu.Allergy>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Allergies.ToListAsync();
         }
 
+        public async Task<Domain.Entities.Menu.Allergy> GetByIdAsync(int id)
+        {
+            return await _context.Allergies.FirstOrDefaultAsync(a => a.Id == id);
+        }
 
         public Task UpdateAsync(Domain.Entities.Menu.Allergy allergy)
         {

@@ -37,9 +37,16 @@ namespace TheRestaurant.Application.Services.AllergyServices
             throw new NotImplementedException();
         }
 
-        public Task<List<Allergy>> GetAllAllergies()
+        public async Task<List<Allergy>> GetAllAllergies()
         {
-            throw new NotImplementedException();
+            return await _allergyRepository.GetAllAsync();
+        }
+
+        public Task<Allergy> GetAllergyById(int id)
+        {
+            var allergy = _allergyRepository.GetByIdAsync(id);
+
+            return allergy;
         }
 
         public Task<Allergy> UpdateAllergyAsync(int id, AllergyRequest request)

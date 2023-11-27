@@ -13,6 +13,7 @@ namespace TheRestaurant.Application.Interfaces.IAllergy
     {
         Task<Allergy> CreateAllergyAsync(AllergyRequest request);
         Task<List<Allergy>> GetAllAllergies();
+        Task<Allergy> GetAllergyById(int id);
         Task DeleteAllergyAsync(int id);
         Task<Allergy> UpdateAllergyAsync(int id, AllergyRequest request);
     }
