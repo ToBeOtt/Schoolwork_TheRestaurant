@@ -8,7 +8,7 @@ using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Application.Interfaces
 {
-    public interface IMenuItemService
+    public interface IItemService
     {
         Task<Item> CreateMenuItemAsync(CreateItemRequest request);
 
