@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheRestaurant.Contracts.Requests.Allergy;
-using TheRestaurant.Contracts.Requests.MenuItem;
 using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Application.Interfaces.IAllergy
