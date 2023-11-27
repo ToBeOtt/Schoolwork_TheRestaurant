@@ -9,7 +9,7 @@ public class RestaurantDbContextFactory : IDesignTimeDbContextFactory<Restaurant
     public RestaurantDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<RestaurantDbContext>();
-        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TheRestaurantDB;User Id=DESKTOP-TR1U524\\BlasterBen;");
+            optionsBuilder.UseSqlServer("Server=(local);Database=TheRestaurantDB;Integrated Security=True;TrustServerCertificate=True;");
 
         return new RestaurantDbContext(optionsBuilder.Options);
     }
