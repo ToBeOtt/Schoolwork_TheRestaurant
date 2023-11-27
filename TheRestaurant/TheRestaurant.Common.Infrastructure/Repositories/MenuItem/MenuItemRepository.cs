@@ -40,7 +40,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.MenuItem
 
         public async Task<List<Domain.Entities.Menu.Item>> GetAllAsync()
         {
-            return await _context.MenuItems.ToListAsync();
+            return await _context.MenuItems.Where(item => !item.IsDeleted).ToListAsync();
         }
 
         public async Task<Domain.Entities.Menu.Item> GetByIdAsync(int id)
