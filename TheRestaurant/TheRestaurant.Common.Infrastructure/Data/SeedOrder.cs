@@ -8,14 +8,25 @@ using TheRestaurant.Domain.Entities.OrderEntities;
 
 namespace TheRestaurant.Common.Infrastructure.Data
 {
-    public static class SeedOrder
+    public class OrderSeed
     {
-        public static void OrderSeed(this ModelBuilder modelBuilder)
+      
+        public static void SeedOrder(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, OrderDate = DateTime.Now, OrderStatusId = 1 },
-                new Order { Id = 2, OrderDate = DateTime.Now, OrderStatusId = 2 }
-            );
+            var orderStatus = new OrderStatus { Id = 1, Status = "Processing" };
+            modelBuilder.Entity<OrderStatus>().HasData(orderStatus);
+
+            var order = new Order
+            {
+                Id = 1,
+                OrderDate = DateTime.Now,
+                OrderStatus = orderStatus
+            };
+            modelBuilder.Entity<Order>().HasData(order);
         }
+
+
+
+        // Add similar methods for EmployeeOrder, OrderRow, Item, MenuItemAllergy, and MenuItemCategory
     }
 }

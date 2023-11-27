@@ -33,13 +33,16 @@ namespace Common.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new OrderConfiguration());
             builder.AllergySeed();
             builder.CategorySeed();
-            builder.OrderSeed();
+            //builder.SeedOrder();
             builder.OrderStatusSeed();
-            builder.OrderRowSeed();
+            //builder.OrderRowSeed();
+
 
             base.OnModelCreating(builder);
+
         }
 
     }
