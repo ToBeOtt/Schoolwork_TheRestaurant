@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TheRestaurant.Contracts.Requests.Allergy
 {
-    internal class CreateAllergyRequest
-    {
-    }
+    public record AllergyRequest (
+        string Name
+        );
+    
 }
