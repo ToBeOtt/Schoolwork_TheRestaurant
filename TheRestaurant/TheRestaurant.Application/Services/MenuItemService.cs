@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheRestaurant.Application.Interfaces;
-using TheRestaurant.Contracts.Requests.MenuItem;
+using TheRestaurant.Contracts.Requests.Item;
 using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Application.Services
@@ -17,13 +17,16 @@ namespace TheRestaurant.Application.Services
             _menuItemRepository = menuItemRepository;
         }
 
-        public async Task<Item> CreateMenuItemAsync(CreateMenuItemRequest request)
+        public async Task<Item> CreateMenuItemAsync(CreateItemRequest request)
         {
             var menuItem = new Item
             {
                 Name = request.Name,
+                Price = request.Price,
                 Description = request.Description,
-                MenuPhoto = request.MenuPhoto
+                MenuPhoto = request.MenuPhoto,
+                IsFoodItem = request.IsFoodItem,
+                IsDeleted = request.IsDeleted,
                 // Category & Allergy
             };
 
@@ -32,19 +35,9 @@ namespace TheRestaurant.Application.Services
             return menuItem;
         }
 
-        public async Task DeleteMenuItemAsync(int id)
+        public async Task SoftDeleteMenuItemAsync(int id)
         {
-            var menuItem = await _menuItemRepository.GetByIdAsync(id);
-
-            if (menuItem != null)
-            {
-                await _menuItemRepository.DeleteAsync(menuItem.Id);
-            }
-            else
-            {
-                // Error handling
-            }
-           
+                await _menuItemRepository.SoftDeleteAsync(id);
         }
 
         public async Task<List<Item>> GetAllMenuItems()
@@ -61,13 +54,16 @@ namespace TheRestaurant.Application.Services
             return menuItem;
         }
 
-        public async Task<Item> UpdateMenuItemAsync(int id, EditMenuItemRequest request)
+        public async Task<Item> UpdateMenuItemAsync(int id, EditItemRequest request)
         {
             var menuItemToUpdate = await _menuItemRepository.GetByIdAsync(id);
 
             menuItemToUpdate.Name = request.Name;
             menuItemToUpdate.Description = request.Description;
             menuItemToUpdate.MenuPhoto = request.MenuPhoto;
+            menuItemToUpdate.Price = request.Price;
+            menuItemToUpdate.IsFoodItem = request.IsFoodItem;
+            menuItemToUpdate.IsDeleted = request.IsDeleted;
 
             await _menuItemRepository.UpdateAsync(menuItemToUpdate);
 

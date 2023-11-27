@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.Design;
 using TheRestaurant.Application.Interfaces;
-using TheRestaurant.Contracts.Requests.MenuItem;
+using TheRestaurant.Contracts.Requests.Item;
 using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
     [ApiController]
     [Route("admin/[controller]")]
-    public class MenuItemsController : ControllerBase
+    public class ItemsController : ControllerBase
     {
         private readonly IMenuItemService _menuItemService;
 
-        public MenuItemsController(IMenuItemService menuItemService)
+        public ItemsController(IMenuItemService menuItemService)
         {
             _menuItemService = menuItemService;
         }
         [HttpPost("create")]
-        public async Task<IActionResult> Create(CreateMenuItemRequest request)
+        public async Task<IActionResult> Create(CreateItemRequest request)
         {
             try
             {
@@ -56,22 +56,30 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
                 return StatusCode(500, "Ett fel uppstod när menyalternativen hämtades");
             }
         }
-        [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> DeleteMenuItem(int id)
+        [HttpPut("delete/{id}")]
+        public async Task<IActionResult> SoftDeleteMenuItem(int id)
         {
             try
             {
-                await _menuItemService.DeleteMenuItemAsync(id);
+                var menuItem = await _menuItemService.GetMenuItemById(id);
+                if (menuItem == null)
+                {
+                    return NotFound();
+                }
+
+                menuItem.IsDeleted = true;
+                await _menuItemService.SoftDeleteMenuItemAsync(menuItem.Id);
+
                 return Ok();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Ett fel uppstod närmenyalternativet skulle raderas");
+                return StatusCode(500, "Ett fel uppstod när menyalternativet skulle raderas");
             }
         }
 
         [HttpPut("edit/{id}")]
-        public async Task<IActionResult> UpdateMenuItem(int id, EditMenuItemRequest request)
+        public async Task<IActionResult> UpdateMenuItem(int id, EditItemRequest request)
         {
             try
             {
