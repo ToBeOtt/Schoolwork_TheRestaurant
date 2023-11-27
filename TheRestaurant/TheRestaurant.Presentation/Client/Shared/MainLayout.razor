@@ -1,41 +1,80 @@
 ﻿@inherits LayoutComponentBase
 @using MudBlazor
+@using TheRestaurant.Presentation.Client.Components.Index.Carousel
 @using TheRestaurant.Presentation.Client.Components.Themes
 
-<TheRestaurantColorTheme/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+<TheRestaurantColorTheme />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
 <MudLayout>
-     
-<MudGrid>
-        <MudItem xs="12" >
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@DrawerToggle" />
+        <MudNavLink href="/" OnClick="@DrawerToggle">
+            <MudText Typo="Typo.h5">The Resturant</MudText>
+        </MudNavLink>
+
+        <MudSpacer />
+        <AdminNavMenu />
+        <UserNavMenu />
+    </MudAppBar>
+
+
+    <MudDrawer @bind-Open="@_drawerOpen" Variant="DrawerVariant.Temporary">
+        <MainNavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+        <MudContainer style="">
+        @Body
+        </MudContainer>
+    </MudMainContent>
+    @* <ThemeReference/> *@
+    <MainFooterComponent/>
+
+</MudLayout>
+
+@code {
+    bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}
+
+
+@* <MudLayout>
+
+    <MudGrid>
+        <MudItem xs="12">
             <MudPaper Width="100%" Style="border-radius:0;">
                 <HeaderNavBar />
-            </MudPaper>  
-    </MudItem>
+            </MudPaper>
+        </MudItem>
 
         <MudItem xs="12" Style="rounded-0">
             <MudPaper Height="60vh" Width="100%" Style="border-radius:0;">
-            @Body
+                @Body
             </MudPaper>
-    </MudItem>
 
-    <MudItem xs="12">
-            <MudPaper Class="mud-primary"
-                Height="30vh" 
-                Width="100"
-                Style="border-radius:0;">
+        </MudItem>
+        <ThemeReference />
+        <MudItem xs="12">
+            Lab Area, should be replaced with a proper footer component
 
-                <MudText 
-                    Class="mud-secondary"
-                    Typo="Typo.h6"
-                >
-                    FOOTER
+            <MudPaper Class="mud-primary">
+                <MudText Class="mud-text-primary" Align="Align.Center"
+                         Typo="Typo.h1">
+                    FOOTER Placeholder
                 </MudText>
             </MudPaper>
-    </MudItem>
 
-</MudGrid>
+            Lab Area, should be replaced with a proper footer component
 
-</MudLayout>
+        </MudItem>
+
+    </MudGrid>
+
+</MudLayout> *@
+

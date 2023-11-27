@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231123121056_AllergySeed")]
+    partial class AllergySeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,93 +315,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Appetizers"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Salads"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Soups"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Pasta"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Steak"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Lamb"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Seafood"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Vegetarian"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Burgers"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Sandwiches"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Pizza"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Rice"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Sushi"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Non Alcoholic Beverages"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "Alcoholic Beverages"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Name = "Desserts"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Name = "Poultry"
-                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItem", b =>
@@ -554,28 +470,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Status = "Pending"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Status = "Processing"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Status = "Delivered"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Status = "Cancelled"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

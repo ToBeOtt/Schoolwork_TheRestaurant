@@ -5,6 +5,8 @@ using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Application.Services;
 using TheRestaurant.Common.Infrastructure.Repositories.MenuItem;
 using TheRestaurant.Presentation.Client.Components.Admin.MenuItemCrud;
+using Microsoft.Extensions.DependencyInjection;
+using TheRestaurant.Common.Infrastructure.Data;
 
 namespace TheRestaurant.Presentation
 {
@@ -15,6 +17,8 @@ namespace TheRestaurant.Presentation
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddHttpClient();
+
             // Persistence and DA
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthServices(builder.Configuration);
@@ -47,12 +51,27 @@ namespace TheRestaurant.Presentation
 
             app.UseRouting();
 
+            app.UseAuthorization();
 
             app.MapRazorPages();
             app.MapControllers();
             app.MapFallbackToFile("index.html");
 
+            SeedDataAsync(app).GetAwaiter().GetResult();
+
             app.Run();
+        }
+
+
+        private static async Task SeedDataAsync(WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+                var userSeeds = serviceProvider.GetRequiredService<UserSeeds>();
+                await userSeeds.SeedManager();
+                await userSeeds.SeedEmployee();
+            }
         }
     }
 }

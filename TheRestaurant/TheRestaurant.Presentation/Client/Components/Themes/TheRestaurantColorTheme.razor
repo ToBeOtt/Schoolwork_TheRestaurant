@@ -2,35 +2,186 @@
 
 <MudThemeProvider Theme="MyCustomTheme" />
 
-@code{
+@code {
     MudTheme MyCustomTheme = new MudTheme()
-    {
-        Palette = new PaletteLight()
         {
-                Primary = "#4E3D58",
-                Secondary = "#57637C",
-                Success = "#57637C",
-                Warning = "#57637C",
-                Tertiary = "#57637C",
-                AppbarBackground = "#A1A1A2",
-        },
-
-        Typography = new Typography()
-        {
-            H6 = new H6()
+            Palette = new PaletteLight()
             {
-                FontFamily = new[] { "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "1.25rem",
-                FontWeight = 500,
-                LineHeight = 1.6,
-                LetterSpacing = ".0075em"
-            }
-        },
+                //Set
+                Primary = "#ECEBED",
+                PrimaryContrastText = "#46415A",
 
-        LayoutProperties = new LayoutProperties()
-        {
-            DrawerWidthLeft = "260px",
-            DrawerWidthRight = "300px"
-        }
-    };
+                Secondary = "#46415A",
+                SecondaryContrastText = "#ECEBED",
+
+                Success = Colors.Green.Darken1,
+
+                Warning = Colors.Red.Darken1,
+                Tertiary = "#57637C",
+
+                Info = "#625A80",
+
+                AppbarBackground = "#46415A",
+
+                /*
+                    TextPrimary: Typically, TextPrimary is used for main or primary text elements in the UI, such as:
+                    Body text
+                    Headings
+                    Primary content
+                    Primary buttons and labels
+                */
+                TextPrimary = "#0E0A1A",
+                
+
+                /*
+                    TextSecondary: TextSecondary is used for supporting or secondary
+                    text elements that are less emphasized or have a lower visual priority.This might include:
+                    Subtitles
+                    Captions
+                    Less important labels or information
+                    Descriptions or helper text
+                 */
+                TextSecondary = Colors.Orange.Accent4,
+
+                //To be determined
+
+
+
+            },
+
+            //Darkmode Palette - not used
+            PaletteDark = new PaletteDark()
+            {
+
+            },
+
+            //Fonts sizes and familys
+            Typography = new Typography()
+            {
+                H1 = new H1()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+
+                },
+
+                H2 = new H2()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+
+                },
+
+                H3 = new H3()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+
+                },
+
+                H4 = new H4()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+
+                },
+
+                H5 = new H5()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+
+                },
+
+                H6 = new H6()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+
+                },
+
+                Subtitle1 = new Subtitle1()
+                {
+                    FontFamily = new[] { "Open Sans", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+
+                },
+
+                Subtitle2 = new Subtitle2()
+                {
+                    FontFamily = new[] { "Open Sans", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+
+                },
+
+                Body1 = new Body1()
+                {
+                    FontFamily = new[] { "Open Sans", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+                },
+
+                Body2 = new Body2()
+                {
+                    FontFamily = new[] { "Open Sans", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+                },
+
+                Caption = new Caption()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+                },
+
+                Overline = new Overline()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontWeight = 500,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+                },
+
+
+                Button = new Button()
+                {
+                    FontFamily = new[] { "Alegreya", "Helvetica", "Arial", "sans-serif" },
+                    FontSize = "1rem",
+                    FontWeight = 100,
+                    LineHeight = 1.6,
+                    LetterSpacing = ".0075em",
+                    TextTransform = "capitalize",
+
+                }
+
+            },
+
+            LayoutProperties = new LayoutProperties()
+            {
+                DrawerWidthLeft = "260px",
+                DrawerWidthRight = "300px",
+
+            }
+
+        };
 }
