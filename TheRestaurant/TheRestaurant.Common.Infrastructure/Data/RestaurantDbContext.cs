@@ -16,7 +16,7 @@ namespace Common.Infrastructure.Data
 
         public DbSet<Employee> Employees { get; set; } = null!;
 
-        public DbSet<Item> MenuItems { get; set; } = null!;
+        public DbSet<Item> Items { get; set; } = null!;
 
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<MenuItemCategory> MenuCategories { get; set; } = null!;

@@ -3,7 +3,7 @@ using Common.Infrastructure;
 using Microsoft.AspNetCore.ResponseCompression;
 using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Application.Services;
-using TheRestaurant.Common.Infrastructure.Repositories.MenuItem;
+using TheRestaurant.Common.Infrastructure.Repositories.Item;
 using TheRestaurant.Presentation.Client.Components.Admin.ItemCrud;
 using Microsoft.Extensions.DependencyInjection;
 using TheRestaurant.Common.Infrastructure.Data;
@@ -23,8 +23,8 @@ namespace TheRestaurant.Presentation
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthServices(builder.Configuration);
 
-            builder.Services.AddScoped<IMenuItemService, MenuItemService>();
-            builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+            builder.Services.AddScoped<IItemService, ItemService>();
+            builder.Services.AddScoped<IItemRepository, ItemRepository>();
             builder.Services.AddScoped<DeleteItemConfirmation>();
 
             builder.Services.AddControllersWithViews();

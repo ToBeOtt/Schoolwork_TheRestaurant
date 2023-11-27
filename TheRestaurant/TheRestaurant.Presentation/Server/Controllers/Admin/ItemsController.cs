@@ -10,9 +10,9 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
     [Route("admin/[controller]")]
     public class ItemsController : ControllerBase
     {
-        private readonly IMenuItemService _menuItemService;
+        private readonly IItemService _menuItemService;
 
-        public ItemsController(IMenuItemService menuItemService)
+        public ItemsController(IItemService menuItemService)
         {
             _menuItemService = menuItemService;
         }

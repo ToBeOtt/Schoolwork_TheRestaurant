@@ -9,10 +9,10 @@ using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Application.Services
 {
-    public class MenuItemService : IMenuItemService
+    public class ItemService : IItemService
     {
-        private readonly IMenuItemRepository _menuItemRepository;
-        public MenuItemService(IMenuItemRepository menuItemRepository)
+        private readonly IItemRepository _menuItemRepository;
+        public ItemService(IItemRepository menuItemRepository)
         {
             _menuItemRepository = menuItemRepository;
         }
