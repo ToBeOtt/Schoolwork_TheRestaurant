@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheRestaurant.Domain.Entities.OrderEntities;
 
-namespace TheRestaurant.Common.Infrastructure.Interfaces
+namespace TheRestaurant.Application.Interfaces
 {
     public interface IOrderService
     {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Domain.Entities.Authentication;
 using TheRestaurant.Domain.Entities.Menu;
@@ -38,6 +39,7 @@ namespace Common.Infrastructure.Data
 
             base.OnModelCreating(builder);
         }
+
     }
 
 }

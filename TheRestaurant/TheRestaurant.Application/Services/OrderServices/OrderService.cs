@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheRestaurant.Common.Infrastructure.Interfaces;
-using TheRestaurant.Common.Infrastructure.Repositories.OrderRepository;
+﻿using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Domain.Entities.OrderEntities;
 
 namespace TheRestaurant.Application.Services.OrderServices
