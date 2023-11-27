@@ -9,10 +9,10 @@ namespace TheRestaurant.Application.Interfaces
 {
     public interface IMenuItemRepository
     {
-        Task<MenuItem> GetByIdAsync(int id);
-        Task AddAsync(MenuItem menuItem);
-        Task UpdateAsync(MenuItem menuItem);
+        Task<Item> GetByIdAsync(int id);
+        Task AddAsync(Item menuItem);
+        Task UpdateAsync(Item menuItem);
         Task DeleteAsync(int id);
-        Task<List<MenuItem>> GetAllAsync();
+        Task<List<Item>> GetAllAsync();
     }
 }

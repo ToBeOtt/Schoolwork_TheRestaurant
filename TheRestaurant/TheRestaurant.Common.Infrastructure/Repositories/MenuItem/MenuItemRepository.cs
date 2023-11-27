@@ -17,7 +17,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.MenuItem
         {
             _context = context;
         }
-        public async Task AddAsync(Domain.Entities.Menu.MenuItem menuItem)
+        public async Task AddAsync(Domain.Entities.Menu.Item menuItem)
         {
             _context.MenuItems.Add(menuItem);
             await _context.SaveChangesAsync();
@@ -30,17 +30,17 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.MenuItem
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Domain.Entities.Menu.MenuItem>> GetAllAsync()
+        public async Task<List<Domain.Entities.Menu.Item>> GetAllAsync()
         {
             return await _context.MenuItems.ToListAsync();
         }
 
-        public async Task<Domain.Entities.Menu.MenuItem> GetByIdAsync(int id)
+        public async Task<Domain.Entities.Menu.Item> GetByIdAsync(int id)
         {
             return await _context.MenuItems.FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task UpdateAsync(Domain.Entities.Menu.MenuItem menuItem)
+        public async Task UpdateAsync(Domain.Entities.Menu.Item menuItem)
         {
             _context.Update(menuItem);
             await _context.SaveChangesAsync();

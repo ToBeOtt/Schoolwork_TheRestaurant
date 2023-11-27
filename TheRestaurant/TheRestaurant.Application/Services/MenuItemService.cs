@@ -17,9 +17,9 @@ namespace TheRestaurant.Application.Services
             _menuItemRepository = menuItemRepository;
         }
 
-        public async Task<MenuItem> CreateMenuItemAsync(CreateMenuItemRequest request)
+        public async Task<Item> CreateMenuItemAsync(CreateMenuItemRequest request)
         {
-            var menuItem = new MenuItem
+            var menuItem = new Item
             {
                 Name = request.Name,
                 Description = request.Description,
@@ -47,21 +47,21 @@ namespace TheRestaurant.Application.Services
            
         }
 
-        public async Task<List<MenuItem>> GetAllMenuItems()
+        public async Task<List<Item>> GetAllMenuItems()
         {
             var menuItems = await _menuItemRepository.GetAllAsync();
 
             return menuItems;
         }
 
-        public async Task<MenuItem> GetMenuItemById(int id)
+        public async Task<Item> GetMenuItemById(int id)
         {
             var menuItem = await _menuItemRepository.GetByIdAsync(id);
 
             return menuItem;
         }
 
-        public async Task<MenuItem> UpdateMenuItemAsync(int id, EditMenuItemRequest request)
+        public async Task<Item> UpdateMenuItemAsync(int id, EditMenuItemRequest request)
         {
             var menuItemToUpdate = await _menuItemRepository.GetByIdAsync(id);
 

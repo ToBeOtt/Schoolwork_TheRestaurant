@@ -10,12 +10,12 @@ namespace TheRestaurant.Application.Interfaces
 {
     public interface IMenuItemService
     {
-        Task<MenuItem> CreateMenuItemAsync(CreateMenuItemRequest request);
+        Task<Item> CreateMenuItemAsync(CreateMenuItemRequest request);
 
-        Task<MenuItem> GetMenuItemById(int id);
-        Task<List<MenuItem>> GetAllMenuItems();
+        Task<Item> GetMenuItemById(int id);
+        Task<List<Item>> GetAllMenuItems();
         Task DeleteMenuItemAsync(int id);
 
-        Task<MenuItem> UpdateMenuItemAsync(int id, EditMenuItemRequest menuItem);
+        Task<Item> UpdateMenuItemAsync(int id, EditMenuItemRequest menuItem);
     }
 }
