@@ -22,6 +22,7 @@ else
                         <img src="data:image/jpeg;base64,@Convert.ToBase64String(menuItem.MenuPhoto)" class="card-img-top" alt="Menu Item Photo" style="height: 350px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title">@menuItem.Name</h5>
+                            <p class="card-text">Pris: @menuItem.Price kr</p>
                             <p class="card-text">@menuItem.Description</p>
                         </div>
                         <div class="card-footer">
@@ -33,13 +34,12 @@ else
             }
         </div>
     </div>
-
-    <button class="btn btn-primary" @onclick="NavigateToCreatePage">Create New Menu Item</button>
-    <DeleteItemConfirmation @ref="deleteItemConfirmation" OnConfirmDelete="DeleteMenuItem" />
 }
+<button class="btn btn-primary" @onclick="NavigateToCreatePage">Create New Menu Item</button>
+<DeleteItemConfirmation @ref="deleteItemConfirmation" OnConfirmDelete="DeleteMenuItem" />
 
 @code {
-    private List<MenuItem> menuItems;
+    private List<Item> menuItems;
     private DeleteItemConfirmation deleteItemConfirmation;
 
     private bool Error;
@@ -47,26 +47,29 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        menuItems = await HttpClient.GetFromJsonAsync<List<MenuItem>>("/admin/menuitems");
+        menuItems = await HttpClient.GetFromJsonAsync<List<Item>>("/admin/items");
     }
 
-    private class MenuItem
+    private class Item
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public double Price { get; set; }
         public string Description { get; set; }
+        public bool IsFoodItem { get; set; }
+        public bool IsDeleted { get; set; }
         public byte[] MenuPhoto { get; set; }
         // Other properties...
     }
 
     private void NavigateToCreatePage()
     {
-        NavigationManager.NavigateTo("/admin/menuitem/create");
+        NavigationManager.NavigateTo("/admin/item/create");
     }
 
     private void NavigateToEditMenuItem(int id)
     {
-        NavigationManager.NavigateTo($"/admin/menuitem/edit/{id}");
+        NavigationManager.NavigateTo($"/admin/item/edit/{id}");
     }
 
     private int itemToDeleteId;
@@ -79,13 +82,14 @@ else
     private async Task DeleteMenuItem(int id)
     {
         id = itemToDeleteId;
-        var apiUrl = $"/admin/menuitems/delete/{id}";
+        var apiUrl = $"/admin/items/delete/{id}";
 
-        var response = await HttpClient.DeleteAsync(apiUrl);
+        var request = new HttpRequestMessage(HttpMethod.Put, apiUrl);
+        var response = await HttpClient.SendAsync(request);
 
         if (response.IsSuccessStatusCode)
         {
-            menuItems = await HttpClient.GetFromJsonAsync<List<MenuItem>>("admin/menuitems");
+            menuItems = await HttpClient.GetFromJsonAsync<List<Item>>("admin/items");
         }
 
         else

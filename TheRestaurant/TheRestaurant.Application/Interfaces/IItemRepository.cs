@@ -7,12 +7,12 @@ using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Application.Interfaces
 {
-    public interface IMenuItemRepository
+    public interface IItemRepository
     {
         Task<Item> GetByIdAsync(int id);
         Task AddAsync(Item menuItem);
         Task UpdateAsync(Item menuItem);
-        Task DeleteAsync(int id);
+        Task SoftDeleteAsync(int id);
         Task<List<Item>> GetAllAsync();
     }
 }

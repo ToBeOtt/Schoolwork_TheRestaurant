@@ -1,6 +1,6 @@
 ﻿@using System.Text.Json;
-@using TheRestaurant.Contracts.Requests.MenuItem;
-@using TheRestaurant.Presentation.Client.Components.Admin.MenuItemCrud.Validation;
+@using TheRestaurant.Contracts.Requests.Item;
+@using TheRestaurant.Presentation.Client.Components.Admin.ItemCrud.Validation;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
@@ -16,28 +16,42 @@
 }
 
 <div class="form">
-    <EditForm Model="_createMenuItem" OnValidSubmit="HandleValidSubmit">
+    <EditForm Model="_createItem" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
 
         <div class="form-group row">
             
             <div class="col-md-3">
                 <label for="name" class="control-label col-md-2">Name</label>
-                <InputText id="name" class="form-control" @bind-Value="_createMenuItem.Name" />
-                <ValidationMessage For="@(() => _createMenuItem.Name)" />
+                <InputText id="name" class="form-control" @bind-Value="_createItem.Name" />
+                <ValidationMessage For="@(() => _createItem.Name)" />
             </div>
         </div>
 
         <div class="form-group row">
-            
             <div class="col-md-3">
-                <label for="description" class="control-label col-md-2">Description</label>
-                <InputTextArea id="description" class="form-control" @bind-Value="_createMenuItem.Description" />
-                <ValidationMessage For="@(() => _createMenuItem.Description)" />
+                <label for="price" class="control-label col-md-2">Price</label>
+                <InputNumber id="price" class="form-control" @bind-Value="_createItem.Price" />
+                <ValidationMessage For ="@(() => _createItem.Price)"/>
             </div>
         </div>
 
+        <div class="form-group row">
 
+            <div class="col-md-3">
+                <label for="description" class="control-label col-md-2">Description</label>
+                <InputTextArea id="description" class="form-control" @bind-Value="_createItem.Description" />
+                <ValidationMessage For="@(() => _createItem.Description)" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="isFoodItem" class="control-label">Is Food Item?</label>
+                <InputCheckbox id="isFoodItem" @bind-Value="_createItem.IsFoodItem" />
+                <ValidationMessage For="@(() => _createItem.IsFoodItem)" />
+            </div>
+        </div>
 
 
         <div class="form-group-row">
@@ -76,25 +90,28 @@
 </div>
 
 @code {
-    private readonly MenuItemValidation _createMenuItem = new MenuItemValidation();
+    private readonly ItemValidation _createItem = new ItemValidation();
     private bool Error;
     private string ErrorMessage;
     private async Task HandleValidSubmit()
     {
-        var request = new CreateMenuItemRequest(
-            Name: _createMenuItem.Name,
-            Description: _createMenuItem.Description,
-            MenuPhoto: _createMenuItem.MenuPhoto
+        var request = new CreateItemRequest(
+            Name: _createItem.Name,
+            Price: _createItem.Price,
+            Description: _createItem.Description,
+            MenuPhoto: _createItem.MenuPhoto,
+            IsFoodItem: _createItem.IsFoodItem,
+            IsDeleted: _createItem.IsDeleted
         // Include Category & Allergy when implemented
         );
 
-        var apiUrl = "/admin/menuitems/create";
+        var apiUrl = "/admin/items/create";
 
         var response = await HttpClient.PostAsJsonAsync(apiUrl, request);
 
         if (response.IsSuccessStatusCode)
         {
-            NavigationManager.NavigateTo("admin/menuitem/view");
+            NavigationManager.NavigateTo("admin/item/view");
         }
         else
         {
@@ -111,7 +128,7 @@
             using var stream = file.OpenReadStream();
             MemoryStream ms = new MemoryStream();
             await stream.CopyToAsync(ms);
-            _createMenuItem.MenuPhoto = ms.ToArray();
+            _createItem.MenuPhoto = ms.ToArray();
         }
     }
 }
