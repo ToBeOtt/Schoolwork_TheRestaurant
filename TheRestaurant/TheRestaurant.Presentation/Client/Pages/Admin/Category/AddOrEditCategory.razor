@@ -1,33 +1,46 @@
 ﻿@page "/Admin/AddCategory"
 @page "/Admin/EditCategory/{categoryId:int}"
 @using TheRestaurant.Contracts.DTOs
+@using MudBlazor
+@using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Shared.Admin
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
+<AdminLayout>
+    <AdminContent>
+        <MudGrid Spacing="2" Justify="Justify.Center">
 
-<div class="mx-5">
-    <a  href="CategoryList">Back To List</a>
-    <h3 class="mt-3">@title</h3>
+            <MudItem xs="12">
+
+                <div class="mx-5">
+                    
+                    <h3 class="mt-3">@title</h3>
 
 
-    <EditForm Model="@categoryDto" OnValidSubmit="Save">
-        <DataAnnotationsValidator />
-        <div class="">
-            <label>Name</label>
-            <div class="col-md-4">
-                <InputText @bind-Value="categoryDto.Name" class="form-control" />
-                <ValidationMessage For="() => categoryDto.Name" />
-            </div>
-        </div>
-        <div class="mt-3">
-            <div class="col-md-4">
+                    <EditForm Model="@categoryDto" OnValidSubmit="Save">
+                        <DataAnnotationsValidator />
+                        <div class="">
+                            <label>Name</label>
+                            <div class="col-md-4">
+                                <InputText @bind-Value="categoryDto.Name" class="form-control" />
+                                <ValidationMessage For="() => categoryDto.Name" />
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="col-md-4">
+                                <a class="btn btn-danger" href="Admin/CategoryList">Cancel</a>
+                                <input type="submit" value="@title" class="btn btn-@btnColor" />
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
 
-                <input type="submit" value="@title" class="btn btn-@btnColor" />
-            </div>
-        </div>
-    </EditForm>
-</div>
+            </MudItem>
 
+        </MudGrid>
+    </AdminContent>
+</AdminLayout>
 
 
 @code {

@@ -1,53 +1,69 @@
 ﻿@page "/Admin/CategoryList"
 @using TheRestaurant.Contracts.DTOs
+@using MudBlazor
+@using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Shared.Admin
 @inject HttpClient HttpClient
 
+<AdminLayout>
+    <AdminContent>
+        <MudGrid Spacing="2" Justify="Justify.Center">
 
-<div class="px-3 col-6">
+            <MudItem xs="12">
 
-    <div class=" d-flex justify-content-between mb-3">
-        <h3>Category List</h3>
+                <div class="px-3 mb-5">
 
-        <a class="btn btn-outline-success" href="/Admin/AddCategory">Create New</a>
-    </div>
+                    <div class=" d-flex justify-content-between mb-3">
+                        <h3>Category List</h3>
+
+                        <a class="btn btn-outline-success" href="/Admin/AddCategory">Create New</a>
+                    </div>
 
 
-    @if (categories != null)
-    {
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Settings</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in categories)
-                {
-                    <tr>
-                        <td>@item.Id</td>
-                        <td>@item.Name</td>
+                    @if (categories != null)
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Settings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in categories)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.Name</td>
 
-                        <td>
-                            <a class="btn btn-outline-warning"
-                               href="/Admin/EditCategory/@item.Id">Edit</a>
-                            <a class="btn btn-outline-danger"
-                               href="/Admin/DeleteCategory/@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <div class="alert alert-warning">
-            No Data
-        </div>
-    }
+                                        <td>
+                                            <a class="btn btn-outline-warning"
+                                               href="/Admin/EditCategory/@item.Id">Edit</a>
+                                            <a class="btn btn-outline-danger"
+                                               href="/Admin/DeleteCategory/@item.Id">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            No Data
+                        </div>
+                    }
 
-</div>
+                </div>
+                <hr />
+                <hr />
+
+            </MudItem>
+
+        </MudGrid>
+    </AdminContent>
+</AdminLayout>
 
 @code {
     private CategoryDto[] categories;

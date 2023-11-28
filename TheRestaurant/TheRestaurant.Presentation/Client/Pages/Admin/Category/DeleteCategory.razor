@@ -1,18 +1,35 @@
-﻿@using TheRestaurant.Contracts.DTOs;
+﻿@page "/Admin/DeleteCategory/{CategoryId:int}"
+
+@using TheRestaurant.Contracts.DTOs;
+@using MudBlazor
+@using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Shared.Admin
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager;
 
-@page "/Admin/DeleteCategory/{CategoryId:int}"
+<AdminLayout>
+    <AdminContent>
+        <MudGrid Spacing="2" Justify="Justify.Center">
 
-<div class="px-3 col-6">
-    <h4>Do you want to remove Category "@categoryDto.Name?" </h4>
+            <MudItem xs="12">
 
-    <div class="w-100 ">
-        <a class="btn btn-success" href="CategoryList">Cancel</a>
-        <a class="btn btn-danger" onclick="@Delete">Delete</a>
-    </div>
+                <div class="px-3">
+                    <h3 class="mb-5">Delete Category</h3>
 
-</div>
+                    <h5>Do you want to remove Category "@categoryDto.Name" ?</h5>
+
+                    <div class="w-100 ">
+                        <a class="btn btn-success" href="Admin/CategoryList">Cancel</a>
+                        <a class="btn btn-danger" onclick="@Delete">Delete</a>
+                    </div>
+
+                </div>
+
+            </MudItem>
+
+        </MudGrid>
+    </AdminContent>
+</AdminLayout>
 
 
 @code {
