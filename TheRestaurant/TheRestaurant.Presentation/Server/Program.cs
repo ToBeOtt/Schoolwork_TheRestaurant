@@ -11,6 +11,7 @@ using TheRestaurant.Application.Employees;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Application.Interfaces.IAllergy;
 using TheRestaurant.Application.Services.AllergyServices;
+using TheRestaurant.Presentation.Server.Config.Swagger;
 
 namespace TheRestaurant.Presentation
 {
@@ -22,6 +23,9 @@ namespace TheRestaurant.Presentation
 
             // Add services to the container.
             builder.Services.AddHttpClient();
+
+            //Swagger
+            builder.Services.AddSwaggerServices();
 
             // Persistence and DA
             builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -44,7 +48,10 @@ namespace TheRestaurant.Presentation
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI();
                 app.UseWebAssemblyDebugging();
+                
             }
             else
             {
