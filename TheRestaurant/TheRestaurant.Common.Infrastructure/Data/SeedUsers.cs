@@ -30,7 +30,8 @@ namespace TheRestaurant.Common.Infrastructure.Data
                 {
                     UserName = "TheBoss",
                     Alias = "TheBoss",
-                    Email = "manager@mail.com"
+                    Email = "manager@mail.com",
+                    EmploymentStarted = DateTime.Now,
                 };
 
                 await _userManager.CreateAsync(manager, "Manager11!");

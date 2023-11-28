@@ -36,10 +36,14 @@
                         <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => EditEmployee(context.Item.Id))" />
                     </CellTemplate>
                 </TemplateColumn>
-
+                
+                
                 <TemplateColumn Title="Delete">
                     <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteEmployee(context.Item.Id))" />
+                        @if (!context.Item.IsDeleted)
+                        {
+                            <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteEmployee(context.Item.Id))" />
+                        }
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>
@@ -66,7 +70,6 @@
     {
         FilterValue = Convert.ToInt32(value);
         FilteredEmployees = await EmployeeService.FilterEmployees(FilterValue, Employees);
-
     }
 
     // Fetch all employees
@@ -83,9 +86,7 @@
 
 
     // Edit and delete
-
-    string Affirmation = null;
-
+    private string Affirmation = null;
     private void EditEmployee(string employeeId)
     {
         navManager.NavigateTo($"/admin/employees/EditEmployee/{employeeId}");

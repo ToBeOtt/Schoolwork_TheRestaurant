@@ -11,12 +11,12 @@ namespace TheRestaurant.Domain.Entities.Authentication
         
         public bool IsDeleted { get; set; } = false;
         public DateTime EmploymentStarted { get; set; }
-        public DateTime? EmploymentEnded { get; private set; }
+        public DateTime EmploymentEnded { get; set; } 
 
 
-        public bool ParentalLeave {  get; set; } = false;
-        public DateTime? ParentalLeaveStarted { get; set; }
-        public DateTime? ParentalLeaveEnded { get; private set; }
+        public bool ParentalLeave { get; set; } = false;
+        public DateTime ParentalLeaveStarted { get; set; }
+        public DateTime ParentalLeaveEnded { get; set; }
 
         public Employee() { }
 
