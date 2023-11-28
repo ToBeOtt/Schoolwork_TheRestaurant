@@ -5,6 +5,10 @@
         string Id,
         string Alias,
         string Email,
-        DateTime HireDate
+        DateTime HireDate,
+        DateTime? FireDate,
+        bool IsDeleted,
+        bool IsOnParentalLeave,
+        DateTime? ParentalLeaveStartDate
         );
 }

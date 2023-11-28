@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Domain.Entities.Authentication;
 using TheRestaurant.Domain.Entities.Menu;
@@ -9,7 +11,8 @@ namespace Common.Infrastructure.Data
 {
     public class RestaurantDbContext : IdentityDbContext<Employee>
     {
-        public RestaurantDbContext(DbContextOptions<RestaurantDbContext> options)
+        public RestaurantDbContext
+            (DbContextOptions<RestaurantDbContext> options)
             : base(options)
         {
         }

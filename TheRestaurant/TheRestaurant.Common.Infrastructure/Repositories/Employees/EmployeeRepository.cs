@@ -25,7 +25,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Employees
         }
         public async Task<List<Employee>> GetAllEmployees()
         {
-            return await _context.Employees.Where(e => e.IsDeleted != true).ToListAsync();
+            return await _context.Employees.ToListAsync();
         }
 
         public async Task<bool> Inactivate(Employee employee)

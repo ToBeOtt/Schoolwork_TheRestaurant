@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231128105700_Emp-model-Added-parental-Leave")]
+    partial class EmpmodelAddedparentalLeave
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -419,7 +422,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Product", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -455,10 +458,10 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("OrderRowId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductAllergy", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItemAllergy", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -469,19 +472,19 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Property<int>("AllergyId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("MenuItemId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AllergyId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("MenuItemId");
 
-                    b.ToTable("ProductAllergies");
+                    b.ToTable("MenuItemAllergies");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductCategory", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItemCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -492,16 +495,16 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Property<int>("CategoriesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("MenuItemId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoriesId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("MenuItemId");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("MenuCategories");
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.EmployeeOrder", b =>
@@ -656,14 +659,14 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Product", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Item", b =>
                 {
                     b.HasOne("TheRestaurant.Domain.Entities.OrderEntities.OrderRow", null)
                         .WithMany("MenuItem")
                         .HasForeignKey("OrderRowId");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductAllergy", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItemAllergy", b =>
                 {
                     b.HasOne("TheRestaurant.Domain.Entities.Menu.Allergy", "Allergy")
                         .WithMany()
@@ -671,18 +674,18 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheRestaurant.Domain.Entities.Menu.Product", "Product")
-                        .WithMany("ProductAllergies")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("TheRestaurant.Domain.Entities.Menu.Item", "MenuItem")
+                        .WithMany("MenuItemAllergies")
+                        .HasForeignKey("MenuItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Allergy");
 
-                    b.Navigation("Product");
+                    b.Navigation("MenuItem");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductCategory", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItemCategory", b =>
                 {
                     b.HasOne("TheRestaurant.Domain.Entities.Menu.Category", "Categories")
                         .WithMany("MenuItemCategories")
@@ -690,15 +693,15 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheRestaurant.Domain.Entities.Menu.Product", "Product")
-                        .WithMany("ProductCategories")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("TheRestaurant.Domain.Entities.Menu.Item", "MenuItem")
+                        .WithMany("MenuItemCategories")
+                        .HasForeignKey("MenuItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Categories");
 
-                    b.Navigation("Product");
+                    b.Navigation("MenuItem");
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.EmployeeOrder", b =>
@@ -750,11 +753,11 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Navigation("MenuItemCategories");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Product", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Item", b =>
                 {
-                    b.Navigation("ProductAllergies");
+                    b.Navigation("MenuItemAllergies");
 
-                    b.Navigation("ProductCategories");
+                    b.Navigation("MenuItemCategories");
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.Order", b =>
