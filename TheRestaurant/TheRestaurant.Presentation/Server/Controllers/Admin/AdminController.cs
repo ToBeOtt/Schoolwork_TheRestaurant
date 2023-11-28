@@ -8,9 +8,11 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
     [Route("adminHome")]
     public class AdminController : ControllerBase
     {
-        public AdminController()
-        {
+        private readonly ILogger<AdminController> _logger;
 
+        public AdminController(ILogger<AdminController> logger)
+        {
+            _logger = logger;
         }
 
         [HttpGet("Example")]
