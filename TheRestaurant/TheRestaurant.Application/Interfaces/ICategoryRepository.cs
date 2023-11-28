@@ -13,6 +13,8 @@ namespace TheRestaurant.Application.Interfaces
         Task<IReadOnlyList<Category>> GetAllAsync();
         Task AddAsync(Category category);
         Task UpdateAsync(Category category);
-        Task DeleteAsync(Category category);
+        Task DeleteAsync(int id);
+        Task SaveChangesAsync();
+        bool Exists(int id);
     }
 }

@@ -1,0 +1,61 @@
+﻿@page "/CategoryList"
+@using TheRestaurant.Contracts.DTOs
+@inject HttpClient HttpClient
+
+
+<div class="px-3 col-6">
+
+    <div class=" d-flex justify-content-between mb-3">
+        <h3>Category List</h3>
+
+        <a class="btn btn-outline-success" href="/AddCategory">Create New</a>
+    </div>
+
+
+    @if (categories != null)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in categories)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+
+                        <td>
+                            <a class="btn btn-outline-warning"
+                               href="/EditCategory/@item.Id">Edit</a>
+                            <a class="btn btn-outline-danger"
+                               href="/DeleteCategory/@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            No Data
+        </div>
+    }
+
+</div>
+
+@code {
+    private CategoryDto[] categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await HttpClient.GetFromJsonAsync<CategoryDto[]>("api/Category");
+    }
+
+}
+

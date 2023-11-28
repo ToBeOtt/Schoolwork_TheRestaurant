@@ -1,0 +1,72 @@
+﻿@page "/AddCategory"
+@page "/EditCategory/{categoryId:int}"
+@using TheRestaurant.Contracts.DTOs
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+
+<div class="mx-5">
+    <a  href="CategoryList">Back To List</a>
+    <h3 class="mt-3">@title</h3>
+
+
+    <EditForm Model="@categoryDto" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <div class="">
+            <label>Name</label>
+            <div class="col-md-4">
+                <InputText @bind-Value="categoryDto.Name" class="form-control" />
+                <ValidationMessage For="() => categoryDto.Name" />
+            </div>
+        </div>
+        <div class="mt-3">
+            <div class="col-md-4">
+
+                <input type="submit" value="@title" class="btn btn-@btnColor" />
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+
+
+@code {
+
+    private string title = "Add Category";
+    private string btnColor = "success";
+
+    [Parameter]
+    public int categoryId { get; set; }
+
+    public CategoryDto? categoryDto = new();
+}
+
+@functions {
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (categoryId != 0)
+        {
+            title = "Edit Category";
+            btnColor = "warning";
+            categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto>($"api/Category/{categoryId}");
+        }
+
+    }
+
+
+    protected async Task Save()
+    {
+        if (categoryId == 0)
+        {
+            await HttpClient.PostAsJsonAsync("/api/Category", categoryDto);
+        }
+        else
+        {
+            categoryDto.Id = categoryId;
+            await HttpClient.PutAsJsonAsync($"/api/Category/{categoryId}", categoryDto);
+        }
+
+        NavigationManager.NavigateTo("/CategoryList");
+    }
+}

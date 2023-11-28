@@ -46,10 +46,28 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Category
         //Delete the Category
         public async Task DeleteAsync(Domain.Entities.Menu.Category category)
         {
-            _context.Remove(category);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
         }
 
-       
+        public async Task DeleteAsync(int id)
+        {
+            var category = await GetAsync(id);
+
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+        }
+
+        //Save Change
+        public async Task SaveChangesAsync()
+        {
+           await _context.SaveChangesAsync();
+        }
+
+        // Category Exists
+        public bool Exists(int id)
+        {
+            return (_context.Categories?.Any(c => c.Id == id)).GetValueOrDefault();
+        }
     }
 }

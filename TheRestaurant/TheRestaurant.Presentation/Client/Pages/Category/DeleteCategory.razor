@@ -1,0 +1,39 @@
+﻿@using TheRestaurant.Contracts.DTOs;
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager;
+
+@page "/DeleteCategory/{CategoryId:int}"
+
+<div class="px-3 col-6">
+    <h4>Do you want to remove Category "@categoryDto.Name?" </h4>
+
+    <div class="w-100 ">
+        <a class="btn btn-success" href="CategoryList">Cancel</a>
+        <a class="btn btn-danger" onclick="@Delete">Delete</a>
+    </div>
+
+</div>
+
+
+@code {
+    [Parameter]
+    public int categoryId { get; set; }
+
+    public CategoryDto categoryDto = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto>
+                ($"/api/Category/{categoryId}");
+    }
+
+    protected async Task Delete()
+    {
+        await HttpClient.DeleteAsync($"/api/Category/{categoryId}");
+        NavigationManager.NavigateTo("/CategoryList");
+    }
+
+
+
+}
