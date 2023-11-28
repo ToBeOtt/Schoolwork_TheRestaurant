@@ -1,6 +1,6 @@
 ﻿namespace TheRestaurant.Domain.Entities.Menu
 {
-    public class Item
+    public class Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -9,9 +9,9 @@
         public string Description { get; set; }
         public byte[] MenuPhoto { get; set; }
         public bool IsDeleted { get; set; }
-        public ICollection<MenuItemCategory> MenuItemCategories { get; set; }
-        public ICollection<MenuItemAllergy> MenuItemAllergies { get; set; }
-        public Item()
+        public ICollection<ProductCategory> ProductCategories { get; set; }
+        public ICollection<ProductAllergy> ProductAllergies { get; set; }
+        public Product()
         {
             
         }

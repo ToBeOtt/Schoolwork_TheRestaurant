@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheRestaurant.Contracts.Requests.Item
+namespace TheRestaurant.Contracts.Requests.Product
 {
-    public record EditItemRequest(
+    public record EditProductRequest(
         string Name,
         double Price,
         string Description,
