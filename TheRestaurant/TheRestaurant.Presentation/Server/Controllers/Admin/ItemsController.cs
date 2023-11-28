@@ -10,10 +10,12 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
     [Route("admin/[controller]")]
     public class ItemsController : ControllerBase
     {
+        private readonly ILogger<ItemsController> _logger;
         private readonly IItemService _menuItemService;
 
-        public ItemsController(IItemService menuItemService)
+        public ItemsController(ILogger<ItemsController> logger,IItemService menuItemService)
         {
+            _logger = logger;
             _menuItemService = menuItemService;
         }
         [HttpPost("create")]

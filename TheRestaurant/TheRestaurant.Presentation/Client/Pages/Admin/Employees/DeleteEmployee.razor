@@ -1,0 +1,14 @@
+﻿@page "/admin/employees/DeleteEmployee/{employeeId}"
+
+<h3>Delete Employee</h3>
+
+@code {
+    [Parameter]
+    public string employeeId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Access the Id parameter here
+        Console.WriteLine($"Employee Id: {employeeId}");
+    }
+}
