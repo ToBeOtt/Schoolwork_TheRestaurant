@@ -1,0 +1,87 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@inject NavigationManager navManager
+@inject ClientEmployeeServices EmployeeService
+
+<MudDataGrid Items="@Employees">
+    <Columns>
+        <TemplateColumn Title="AnställningsNr">
+            <CellTemplate>
+                @($"{context.Item.Id.Substring(0, Math.Min(10, context.Item.Id.Length))} ...")
+            </CellTemplate>
+        </TemplateColumn>
+
+        <PropertyColumn Property="x => x.Alias" Title="Namn" />
+        <PropertyColumn Property="x => x.Email" Title="Epost" />
+        <PropertyColumn Property="x => x.HireDate" Title="Anställningsdatum" Format="yyyy-MM-dd" />
+
+        <TemplateColumn Title="Edit">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => EditEmployee(context.Item.Id))" />
+            </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn Title="Delete">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteEmployee(context.Item.Id))" />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
+
+
+@code {
+    public record EmployeeDto
+       (
+       string Id,
+       string Alias,
+       string Email,
+       DateTime HireDate
+       );
+
+    // Fetch all employees
+
+    private List<EmployeeDto> Employees = new List<EmployeeDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = await EmployeeService.GetAllEmployees(Employees);
+    }
+
+
+    // Edit and delete
+
+    string Affirmation = null;
+
+    private void EditEmployee(string employeeId)
+    {
+        navManager.NavigateTo($"/admin/employees/EditEmployee/{employeeId}");
+    }
+
+
+    [Inject] private IDialogService DialogService { get; set; }
+    bool ConfirmDelete = false;
+
+    private async void DeleteEmployee(string employeeId)
+    {
+        bool? result = await DialogService.ShowMessageBox(
+           "Warning",
+           "Deleting can not be undone!",
+           yesText: "Delete!", cancelText: "Cancel");
+        ConfirmDelete = result == null ? false : true;
+        StateHasChanged();
+
+        if (ConfirmDelete == true)
+        {
+            if(await EmployeeService.DeleteEmployee(employeeId))
+            {
+                Affirmation = "Anställd borttagen";
+                Employees.RemoveAll(e => e.Id == employeeId);
+                StateHasChanged();
+            }
+           
+            else 
+                Affirmation = "Något gick fel. Kontakta IT-support.";
+        }
+    }
+
+}

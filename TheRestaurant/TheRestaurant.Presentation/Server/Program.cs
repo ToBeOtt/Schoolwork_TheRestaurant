@@ -1,6 +1,8 @@
 using Authentication;
 using Common.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using TheRestaurant.Application;
+using TheRestaurant.Application.Employees;
 using TheRestaurant.Common.Infrastructure.Data;
 
 namespace TheRestaurant.Presentation
@@ -17,6 +19,8 @@ namespace TheRestaurant.Presentation
             // Persistence and DA
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
+
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
