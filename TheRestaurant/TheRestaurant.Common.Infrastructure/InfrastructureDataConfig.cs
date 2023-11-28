@@ -8,11 +8,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TheRestaurant.Application.Employees.Interfaces;
 using TheRestaurant.Application.Interfaces.IAllergy;
 using TheRestaurant.Authentication.Interfaces;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Common.Infrastructure.Repositories.Allergy;
 using TheRestaurant.Common.Infrastructure.Repositories.Authentication;
+using TheRestaurant.Common.Infrastructure.Repositories.Employees;
 using TheRestaurant.Domain.Entities.Authentication;
 
 namespace Common.Infrastructure
@@ -41,6 +43,7 @@ namespace Common.Infrastructure
             //Repositories
             services.AddTransient<IRegistrationRepository, RegistrationRepository>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IAllergyRepository, AllergyRepository>();
 
             // Seeds
