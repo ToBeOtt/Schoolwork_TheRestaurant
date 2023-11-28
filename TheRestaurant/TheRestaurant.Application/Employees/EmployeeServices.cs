@@ -53,7 +53,11 @@ namespace TheRestaurant.Application.Employees
                        Id: emp.Id,
                        Alias: emp.Alias,
                        Email: emp.Email,
-                       HireDate: emp.EmploymentStarted
+                       HireDate: emp.EmploymentStarted,
+                       FireDate: emp.EmploymentEnded,
+                       IsDeleted: emp.IsDeleted,
+                       IsOnParentalLeave: emp.ParentalLeave,
+                       ParentalLeaveStartDate: emp.ParentalLeaveStarted
                    ));
             }
 

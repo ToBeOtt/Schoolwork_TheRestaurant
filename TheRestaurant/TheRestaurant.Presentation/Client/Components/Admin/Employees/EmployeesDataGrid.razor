@@ -1,50 +1,84 @@
 ﻿@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Client.Components.Admin.Employees.Dto
 @inject NavigationManager navManager
 @inject ClientEmployeeServices EmployeeService
 
-<MudDataGrid Items="@Employees">
-    <Columns>
-        <TemplateColumn Title="AnställningsNr">
-            <CellTemplate>
-                @($"{context.Item.Id.Substring(0, Math.Min(10, context.Item.Id.Length))} ...")
-            </CellTemplate>
-        </TemplateColumn>
+<MudGrid>
+    <MudItem>
+        <MudDataGrid Items="@FilteredEmployees">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Anställda</MudText>
+                <MudSpacer/>
+                <MudSelect 
+                    T="string" 
+                    Label="Filtrera" 
+                    AnchorOrigin="Origin.BottomCenter"
+                           ValueChanged="@FilterData">
 
-        <PropertyColumn Property="x => x.Alias" Title="Namn" />
-        <PropertyColumn Property="x => x.Email" Title="Epost" />
-        <PropertyColumn Property="x => x.HireDate" Title="Anställningsdatum" Format="yyyy-MM-dd" />
+                    <MudSelectItem Value="@("0")"> Anställda </MudSelectItem>
+                    <MudSelectItem Value="@("1")"> Tidigare anställda </MudSelectItem>
+                    <MudSelectItem Value="@("2")"> Föräldralediga </MudSelectItem>
+                </MudSelect>
+            </ToolBarContent>
+            <Columns>
+                <TemplateColumn Title="AnställningsNr">
+                    <CellTemplate>
+                        @($"{context.Item.Id.Substring(0, Math.Min(10, context.Item.Id.Length))} ...")
+                    </CellTemplate>
+                </TemplateColumn>
 
-        <TemplateColumn Title="Edit">
-            <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => EditEmployee(context.Item.Id))" />
-            </CellTemplate>
-        </TemplateColumn>
+                <PropertyColumn Property="x => x.Alias" Title="Namn" />
+                <PropertyColumn Property="x => x.Email" Title="Epost" />
+                <PropertyColumn Property="x => x.HireDate" Title="Anställningsdatum" Format="yyyy-MM-dd" />
 
-        <TemplateColumn Title="Delete">
-            <CellTemplate>
-                <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteEmployee(context.Item.Id))" />
-            </CellTemplate>
-        </TemplateColumn>
-    </Columns>
-</MudDataGrid>
+                <TemplateColumn Title="Edit">
+                    <CellTemplate>
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => EditEmployee(context.Item.Id))" />
+                    </CellTemplate>
+                </TemplateColumn>
+
+                <TemplateColumn Title="Delete">
+                    <CellTemplate>
+                        <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteEmployee(context.Item.Id))" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+    </MudItem>
+
+
+    <MudItem>
+        @if (Affirmation != null)
+        {
+            <MudAlert Severity="Severity.Success">
+                @Affirmation
+            </MudAlert>
+        }
+    </MudItem>
+</MudGrid>
+
 
 
 @code {
-    public record EmployeeDto
-       (
-       string Id,
-       string Alias,
-       string Email,
-       DateTime HireDate
-       );
+    private int FilterValue;
+
+    private async Task FilterData(string value)
+    {
+        FilterValue = Convert.ToInt32(value);
+        FilteredEmployees = await EmployeeService.FilterEmployees(FilterValue, Employees);
+
+    }
 
     // Fetch all employees
-
     private List<EmployeeDto> Employees = new List<EmployeeDto>();
+    private List<EmployeeDto> FilteredEmployees = new List<EmployeeDto>();
+    private List<EmployeeDto> originalEmployees = new List<EmployeeDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        Employees = await EmployeeService.GetAllEmployees(Employees);
+        Employees = await EmployeeService.GetAllEmployees(new List<EmployeeDto>());
+        originalEmployees.AddRange(Employees);
+        FilteredEmployees.AddRange(Employees);
     }
 
 
@@ -78,10 +112,9 @@
                 Employees.RemoveAll(e => e.Id == employeeId);
                 StateHasChanged();
             }
-           
+
             else 
                 Affirmation = "Något gick fel. Kontakta IT-support.";
         }
     }
-
 }

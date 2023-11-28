@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using TheRestaurant.Presentation.Client.Components.Admin.Employees.Dto;
+using static MudBlazor.Colors;
 using static System.Net.WebRequestMethods;
 using static TheRestaurant.Presentation.Client.Components.Admin.Employees.EmployeesDataGrid;
 using static TheRestaurant.Presentation.Shared.Requests.EmployeeRequests;
@@ -33,7 +37,11 @@ namespace TheRestaurant.Presentation.Client.ClientServices
                     Id: emp.Id,
                     Alias: emp.Alias,
                     Email: emp.Email,
-                    HireDate: emp.HireDate
+                    HireDate: emp.HireDate,
+                    FireDate: emp.FireDate,
+                    IsDeleted: emp.IsDeleted,
+                    IsOnParentalLeave: emp.IsOnParentalLeave,
+                    ParentalLeaveStartDate: emp.ParentalLeaveStartDate
                     );
                 Employees.Add(empDto);
             }
@@ -60,6 +68,23 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
         }
 
+        public async Task<List<EmployeeDto>> FilterEmployees
+            (int value, List<EmployeeDto> listToFilter)
+        {
+            switch (value)
+            {
+                case 0: // All employees
+                    return listToFilter.Where(x => x.IsDeleted == false).ToList();
 
+                case 1: // Employees no longer employed
+                    return listToFilter.Where(x => x.IsDeleted == true).ToList();
+
+                case 2: // Employees on parental leave
+                    return listToFilter.Where(x => x.IsOnParentalLeave == true).ToList();
+
+                default:
+                    return listToFilter;
+            }
+        }
     }
 }
