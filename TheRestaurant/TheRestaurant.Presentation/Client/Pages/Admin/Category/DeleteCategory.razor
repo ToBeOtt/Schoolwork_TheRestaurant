@@ -2,7 +2,7 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager;
 
-@page "/DeleteCategory/{CategoryId:int}"
+@page "/Admin/DeleteCategory/{CategoryId:int}"
 
 <div class="px-3 col-6">
     <h4>Do you want to remove Category "@categoryDto.Name?" </h4>
@@ -31,7 +31,7 @@
     protected async Task Delete()
     {
         await HttpClient.DeleteAsync($"/api/Category/{categoryId}");
-        NavigationManager.NavigateTo("/CategoryList");
+        NavigationManager.NavigateTo("/Admin/CategoryList");
     }
 
 

@@ -1,4 +1,4 @@
-﻿@page "/CategoryList"
+﻿@page "/Admin/CategoryList"
 @using TheRestaurant.Contracts.DTOs
 @inject HttpClient HttpClient
 
@@ -8,7 +8,7 @@
     <div class=" d-flex justify-content-between mb-3">
         <h3>Category List</h3>
 
-        <a class="btn btn-outline-success" href="/AddCategory">Create New</a>
+        <a class="btn btn-outline-success" href="/Admin/AddCategory">Create New</a>
     </div>
 
 
@@ -31,9 +31,9 @@
 
                         <td>
                             <a class="btn btn-outline-warning"
-                               href="/EditCategory/@item.Id">Edit</a>
+                               href="/Admin/EditCategory/@item.Id">Edit</a>
                             <a class="btn btn-outline-danger"
-                               href="/DeleteCategory/@item.Id">Delete</a>
+                               href="/Admin/DeleteCategory/@item.Id">Delete</a>
                         </td>
                     </tr>
                 }

@@ -1,5 +1,5 @@
-﻿@page "/AddCategory"
-@page "/EditCategory/{categoryId:int}"
+﻿@page "/Admin/AddCategory"
+@page "/Admin/EditCategory/{categoryId:int}"
 @using TheRestaurant.Contracts.DTOs
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
@@ -67,6 +67,6 @@
             await HttpClient.PutAsJsonAsync($"/api/Category/{categoryId}", categoryDto);
         }
 
-        NavigationManager.NavigateTo("/CategoryList");
+        NavigationManager.NavigateTo("/Admin/CategoryList");
     }
 }
