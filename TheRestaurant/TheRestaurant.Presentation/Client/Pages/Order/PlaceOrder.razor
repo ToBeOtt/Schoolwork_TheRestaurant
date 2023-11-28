@@ -1,0 +1,47 @@
+﻿@using System.Text.Json;
+@using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
+@using TheRestaurant.Presentation.Shared.OrderDTO;
+@using MudBlazor;
+@inject ISnackbar Snackbar
+
+@page "/Order"
+@inject HttpClient HttpClient
+
+<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="AddOrderItem">Lägg till i beställning (@orderItemDto.Quantity)</MudButton>
+<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="CreateOrder">Färdigställ beställning(@orderItemDto.Quantity)</MudButton>
+@code {
+    private OrderDto orderDto = new OrderDto { OrderItems = new List<OrderItemDto>() };
+
+    private OrderItemDto orderItemDto = new OrderItemDto { Id = 1, Quantity = 0 };
+
+    private async Task CreateOrder()
+    {
+        orderDto.OrderDate = DateTime.Now;
+        orderDto.OrderItems.Add(orderItemDto);
+
+        var response = await HttpClient.PostAsJsonAsync("Order", orderDto);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // Parse the response data
+            var responseData = await response.Content.ReadAsStringAsync();
+
+            // Deserialize the response data into an OrderDto object
+            var order = JsonSerializer.Deserialize<OrderDto>(responseData);
+
+            // Response to user
+            Snackbar.Add("Order " + order.Id + " was successfully created.");
+        }
+
+        else
+        {
+            // TODO code to handle an unsuccessful order
+        }
+    }
+
+
+    private void AddOrderItem()
+    {
+        orderItemDto.Quantity++;
+    }
+}
