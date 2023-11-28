@@ -11,10 +11,12 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
     [ApiController]
     public class AllergyController : ControllerBase
     {
+        private readonly ILogger<AllergyController> _logger;
         private readonly IAllergyService _allergyService;
 
-        public AllergyController(IAllergyService allergyService)
+        public AllergyController(ILogger<AllergyController> logger,IAllergyService allergyService)
         {
+            _logger = logger;
             _allergyService = allergyService;
         }
 
@@ -24,6 +26,8 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             try
             {
                 var allergies = await _allergyService.GetAllAllergies();
+                _logger.LogError(@"TEST allAllergies log TEST");
+                   
                 return Ok(allergies);
             }
             catch (Exception ex)
