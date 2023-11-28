@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Application.Interfaces.IAllergy;
 using TheRestaurant.Application.Services.AllergyServices;
+using TheRestaurant.Application.Services.OrderServices;
+using TheRestaurant.Common.Infrastructure.Repositories.OrderRepository;
+using MudBlazor.Services;
 
 namespace TheRestaurant.Presentation
 {
@@ -29,6 +32,10 @@ namespace TheRestaurant.Presentation
             builder.Services.AddTransient<IAllergyService, AllergyService>();
             builder.Services.AddScoped<IItemService, ItemService>();
             builder.Services.AddScoped<IItemRepository, ItemRepository>();
+
+            // Add OrderService
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
             builder.Services.AddScoped<DeleteItemConfirmation>();
 
