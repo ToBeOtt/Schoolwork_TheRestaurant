@@ -6,6 +6,11 @@ namespace TheRestaurant.Application.Services.OrderServices
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        public void SetOrderStatus(Order order, string status)
+        {
+            var orderStatus = new OrderStatus { Status = status };
+            order.OrderStatus = orderStatus;
+        }
 
         public OrderService(IOrderRepository orderRepository)
         {

@@ -14,6 +14,7 @@ namespace TheRestaurant.Application.Interfaces
         Task<List<Order>> GetAllOrdersAsync();
         Task UpdateOrderAsync(Order order);
         Task DeleteOrderAsync(int orderId);
+        void SetOrderStatus(Order order, string status);
     }
 
 }
