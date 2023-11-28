@@ -1,0 +1,152 @@
+﻿@using TheRestaurant.Contracts.Requests.Item;
+@using TheRestaurant.Presentation.Client.Components.Admin.ItemCrud.Validation;
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<style>
+    .form {
+        padding-left: 25px;
+    }
+</style>
+@if (Error)
+{
+    <p>@ErrorMessage</p>
+}
+<div class="form">
+    <EditForm Model="_editItem" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="name" class="control-label col-md-2">Namn</label>
+                <InputText id="name" class="form-control" @bind-Value="_editItem.Name" />
+                <ValidationMessage For="@(() => _editItem.Name)" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="price" class="control-label col-md-2">Pris</label>
+                <InputNumber id="price" class="form-control" @bind-Value="_editItem.Price" />
+                <ValidationMessage For="@(() => _editItem.Price)" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="description" class="control-label col-md-2">Beskrivning</label>
+                <InputTextArea id="description" class="form-control" @bind-Value="_editItem.Description" />
+                <ValidationMessage For="@(() => _editItem.Description)" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="isFoodItem" class="control-label">Food item?</label>
+                <InputCheckbox id="isFoodItem" @bind-Value="_editItem.IsFoodItem" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label for="menuPhoto" class="control-label col-md-2">Meny bild</label>
+                <InputFile id="menuPhoto" class="form-control" OnChange="HandlePhotoUpload" />
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <p>Nuvarande bild:</p>
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(_editItem.MenuPhoto)" alt="Menu Item Photo" style="height: 300px;">
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-offset-2 col-md-3 text-right">
+                <button type="submit" class="btn btn-primary">Uppdatera</button>
+            </div>
+        </div>
+    </EditForm>
+    <button type="submit" class="btn btn-danger" @onclick="NavigateBackToView">Avbryt</button>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private bool Error;
+    private string ErrorMessage;
+    private ItemValidation _editItem = new ItemValidation();
+
+    private class MenuItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public string Description { get; set; }
+        public bool IsFoodItem { get; set; }
+        public bool IsDeleted { get; set; }
+        public byte[] MenuPhoto { get; set; }
+        // Add other properties as necessary
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var menuItem = await HttpClient.GetFromJsonAsync<MenuItem>($"admin/items/{Id}");
+        if (menuItem != null)
+        {
+            _editItem.Name = menuItem.Name;
+            _editItem.Price = menuItem.Price;
+            _editItem.Description = menuItem.Description;
+            _editItem.IsFoodItem = menuItem.IsFoodItem;
+            _editItem.MenuPhoto = menuItem.MenuPhoto;
+        }
+        else
+        {
+            Error = true;
+            ErrorMessage = "Ett fel uppstod när menu item laddes in";
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var request = new EditItemRequest(
+            Name: _editItem.Name,
+            Price: _editItem.Price,
+            Description: _editItem.Description,
+            MenuPhoto: _editItem.MenuPhoto,
+            IsFoodItem: _editItem.IsFoodItem,
+            IsDeleted: _editItem.IsDeleted
+        // Include other fields
+        );
+
+        var apiUrl = $"/admin/items/edit/{Id}";
+
+        var response = await HttpClient.PutAsJsonAsync(apiUrl, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("admin/item/view");
+        }
+        else
+        {
+            Error = true;
+            ErrorMessage = "Det gick inte att uppdatera informationen";
+        }
+    }
+
+    private async Task HandlePhotoUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            using var stream = file.OpenReadStream();
+            MemoryStream ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            _editItem.MenuPhoto = ms.ToArray();
+        }
+    }
+
+    private void NavigateBackToView()
+    {
+        NavigationManager.NavigateTo("/admin/item/view");
+    }
+}

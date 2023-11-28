@@ -7,7 +7,7 @@
         public Category Categories { get; set; }
         public int CategoriesId { get; set; }
 
-        public MenuItem MenuItem { get; set; }
+        public Item MenuItem { get; set; }
         public int MenuItemId { get; set; }
 
         public MenuItemCategory()
