@@ -26,6 +26,6 @@ namespace TheRestaurant.Presentation.Client.Components.Admin.ItemCrud.Validation
         //[Required(ErrorMessage ="Åtminstone en kategori krävs")]
         //public List<int> SelectedCategoryIds { get; set; }
 
-        //public List<int> SelectedAllergyIds { get; set; }
+        public List<int> SelectedAllergyIds { get; set; }
     }
 }

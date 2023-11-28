@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace TheRestaurant.Contracts.Requests.Item
 {
-    // Need to add Category and Allergy once those are implemented
+    // Need to add Category once implemented
     public record CreateItemRequest(
         string Name,
         double Price,
         string Description,
         byte[] MenuPhoto,
         bool IsFoodItem,
-        bool IsDeleted
+        bool IsDeleted,
+        List<int> SelectedAllergyIds
+
 
         );
 

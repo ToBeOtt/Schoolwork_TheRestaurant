@@ -61,24 +61,26 @@
             </div>
         </div>
 
-       @* <div class="form-group-row">
+@*        <div class="form-group-row">
             <div class="col-md-4">
                 <label for="categories" class="col-md-2 control-label">Categories: </label>
                 @foreach (var category in menuItemValidation.MenuItemCategories)
                 {
 
                 }
-            </div>
+            </div>*@
 
-            <div class="form-group-row">
-                <div class="col-md-4">
-                    <label for="allergies" class="col-md-2 control-label">Allegies: </label>
-                    @foreach (var allergy in menuItemValidation.MenuItemAllergies)
-                    {
-                        
-                    }
-                </div>*@
-            @*</div>*@
+        <div class="form-group">
+            <label for="allergies">Allergies</label>
+            <select id="allergies" class="form-control" multiple @onchange="HandleAllergiesSelection">
+                @foreach (var allergy in allergies)
+                {
+                    <option value="@allergy.Id">@allergy.Name</option>
+                }
+            </select>
+        </div>
+
+
         <div class="form-group row">
             <div class="col-md-offset-2 col-md-3 text-right">
                 <button type="submit" class="btn btn-primary">
@@ -91,8 +93,15 @@
 
 @code {
     private readonly ItemValidation _createItem = new ItemValidation();
+    private List<Allergy> allergies = new List<Allergy>();
     private bool Error;
     private string ErrorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allergies = await HttpClient.GetFromJsonAsync<List<Allergy>>("api/allergy");
+    }
+
     private async Task HandleValidSubmit()
     {
         var request = new CreateItemRequest(
@@ -101,7 +110,9 @@
             Description: _createItem.Description,
             MenuPhoto: _createItem.MenuPhoto,
             IsFoodItem: _createItem.IsFoodItem,
-            IsDeleted: _createItem.IsDeleted
+            IsDeleted: _createItem.IsDeleted,
+            SelectedAllergyIds: _createItem.SelectedAllergyIds
+
         // Include Category & Allergy when implemented
         );
 
@@ -120,6 +131,7 @@
         }
     }
 
+
     private async Task HandlePhotoUpload(InputFileChangeEventArgs e)
     {
         var file = e.File;
@@ -129,6 +141,21 @@
             MemoryStream ms = new MemoryStream();
             await stream.CopyToAsync(ms);
             _createItem.MenuPhoto = ms.ToArray();
+        }
+    }
+
+    private class Allergy
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    private void HandleAllergiesSelection(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+        if (selectedOptions != null)
+        {
+            _createItem.SelectedAllergyIds = selectedOptions.Select(int.Parse).ToList();
         }
     }
 }
