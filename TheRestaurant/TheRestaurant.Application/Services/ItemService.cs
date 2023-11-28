@@ -27,8 +27,14 @@ namespace TheRestaurant.Application.Services
                 MenuPhoto = request.MenuPhoto,
                 IsFoodItem = request.IsFoodItem,
                 IsDeleted = request.IsDeleted,
+                MenuItemAllergies = new List<MenuItemAllergy>()
                 // Category & Allergy
             };
+
+            foreach (var allergyId in request.SelectedAllergyIds)
+            {
+                menuItem.MenuItemAllergies.Add(new MenuItemAllergy { AllergyId = allergyId });
+            }
 
             await _menuItemRepository.AddAsync(menuItem);
 

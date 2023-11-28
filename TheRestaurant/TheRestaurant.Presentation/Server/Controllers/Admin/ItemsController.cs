@@ -24,7 +24,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             try
             {
                 var menuItem = await _menuItemService.CreateMenuItemAsync(request);
-                return CreatedAtAction(nameof(GetMenuItem), new { id = menuItem.Id }, menuItem);
+                return CreatedAtAction(nameof(GetMenuItem), new { id = menuItem.Id }, new { menuItem.Id });
             }
             catch (Exception ex)
             {
