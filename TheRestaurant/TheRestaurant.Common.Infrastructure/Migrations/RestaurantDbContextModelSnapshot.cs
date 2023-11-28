@@ -243,6 +243,58 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Allergies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Peanuts"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Shellfish"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Milk"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Eggs"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Fish"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Tree nuts"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Wheat"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Soy"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Sesame"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Sulfites"
+                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Category", b =>
@@ -260,9 +312,96 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Appetizers"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Salads"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Soups"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Pasta"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Steak"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Lamb"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Seafood"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Vegetarian"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Burgers"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Sandwiches"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Pizza"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Rice"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Sushi"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Non Alcoholic Beverages"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Alcoholic Beverages"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Desserts"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Poultry"
+                        });
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItem", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,6 +412,12 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFoodItem")
+                        .HasColumnType("bit");
 
                     b.Property<byte[]>("MenuPhoto")
                         .IsRequired()
@@ -285,11 +430,14 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Property<int?>("OrderRowId")
                         .HasColumnType("int");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderRowId");
 
-                    b.ToTable("MenuItems");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItemAllergy", b =>
@@ -415,6 +563,28 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Status = "Pending"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = "Processing"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Status = "Delivered"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Status = "Cancelled"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -468,7 +638,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItem", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Item", b =>
                 {
                     b.HasOne("TheRestaurant.Domain.Entities.OrderEntities.OrderRow", null)
                         .WithMany("MenuItem")
@@ -483,7 +653,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheRestaurant.Domain.Entities.Menu.MenuItem", "MenuItem")
+                    b.HasOne("TheRestaurant.Domain.Entities.Menu.Item", "MenuItem")
                         .WithMany("MenuItemAllergies")
                         .HasForeignKey("MenuItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -502,7 +672,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheRestaurant.Domain.Entities.Menu.MenuItem", "MenuItem")
+                    b.HasOne("TheRestaurant.Domain.Entities.Menu.Item", "MenuItem")
                         .WithMany("MenuItemCategories")
                         .HasForeignKey("MenuItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -562,7 +732,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Navigation("MenuItemCategories");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.MenuItem", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Item", b =>
                 {
                     b.Navigation("MenuItemAllergies");
 

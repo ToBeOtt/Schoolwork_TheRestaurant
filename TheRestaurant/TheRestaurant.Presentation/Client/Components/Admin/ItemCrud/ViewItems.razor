@@ -1,0 +1,102 @@
+﻿@using MudBlazor
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+
+@if (Error == true)
+{
+    <p>@ErrorMessage</p>
+}
+
+else if(items != null)
+{
+    <MudGrid Justify="Justify.FlexStart">
+        @foreach (var item in items)
+        {
+        <MudItem xs="3">
+            <MudCard Class="mud-secondary">
+                    <MudCardMedia Image="@GetImageSource(item.MenuPhoto)" Height="200" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h5" Color="Color.Primary">@item.Name</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Primary">Pris: @item.Price</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Primary">@item.Description</MudText>
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-space-between">
+                        <MudButton Class="ml-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowConfirmation(item.Id))">Delete</MudButton>
+                        <MudButton Class="mr-2" Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => NavigateToEditItem(item.Id))">Edit</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        }
+    </MudGrid>
+}
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mt-5" OnClick="NavigateToCreatePage">Skapa nytt item</MudButton>
+@*<button class="btn btn-primary" @onclick="NavigateToCreatePage">Create New Menu Item</button>*@
+<DeleteItemConfirmation @ref="deleteItemConfirmation" OnConfirmDelete="DeleteItem" />
+
+@code {
+    private List<Item> items;
+    private DeleteItemConfirmation deleteItemConfirmation;
+
+    private bool Error;
+    private string ErrorMessage;
+
+    private string GetImageSource(byte[] photo)
+    {
+        return $"data:image/jpeg;base64,{Convert.ToBase64String(photo)}";
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        items = await HttpClient.GetFromJsonAsync<List<Item>>("/admin/items");
+    }
+
+    private class Item
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public string Description { get; set; }
+        public bool IsFoodItem { get; set; }
+        public bool IsDeleted { get; set; }
+        public byte[] MenuPhoto { get; set; }
+        // Other properties...
+    }
+
+    private void NavigateToCreatePage()
+    {
+        NavigationManager.NavigateTo("/admin/item/create");
+    }
+
+    private void NavigateToEditItem(int id)
+    {
+        NavigationManager.NavigateTo($"/admin/item/edit/{id}");
+    }
+
+    private int itemToDeleteId;
+    private void ShowConfirmation(int id)
+    {
+        itemToDeleteId = id;
+        deleteItemConfirmation.Show("Are you sure you want to delete this item?", () => DeleteItem(id));
+    }
+
+    private async Task DeleteItem(int id)
+    {
+        id = itemToDeleteId;
+        var apiUrl = $"/admin/items/delete/{id}";
+
+        var request = new HttpRequestMessage(HttpMethod.Put, apiUrl);
+        var response = await HttpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            items = await HttpClient.GetFromJsonAsync<List<Item>>("admin/items");
+        }
+
+        else
+        {
+            Error = true;
+            ErrorMessage = "Det gick inte att registrera informationen";
+        }
+    }
+}
+

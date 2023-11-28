@@ -1,0 +1,45 @@
+﻿<MudPaper Width="250px" Class="d-inline-flex py-3" Elevation="0">
+    <MudNavMenu Class="mud-width-full">
+        <MudText Typo="Typo.h6" Class="px-4">Admin</MudText>
+        <MudDivider Class="my-2" />
+        
+        @*  Dashboard *@
+        <MudNavLink Href="/dashboard" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+
+       @*  Order *@
+        <MudNavGroup Title="Ordrar" Icon="@Icons.Material.Filled.Receipt" Expanded="false">
+            <MudNavGroup Title="Ej påbörjade" Icon="@Icons.Material.Filled.AdminPanelSettings" Expanded="false">
+                <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit">Ändra order</MudNavLink>
+                <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
+            </MudNavGroup>
+
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add">Pågående</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit">Avslutade</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
+        </MudNavGroup>
+
+        @* Allergies *@
+        <MudNavGroup Title="Allergier" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add">Lägg till</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit">Ändra</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
+        </MudNavGroup>
+
+        @* Emloyees *@
+        <MudNavGroup Title="Anställda" Icon="@Icons.Material.Filled.People" Expanded="false">
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add">Lägg till</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit">Ändra</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
+        </MudNavGroup>
+
+        @* Receipts *@
+        <MudNavLink Href="/billing" Icon="@Icons.Material.Filled.Receipt">Kvitton</MudNavLink>
+
+       
+
+    </MudNavMenu>
+</MudPaper>
+
+@code {
+
+}

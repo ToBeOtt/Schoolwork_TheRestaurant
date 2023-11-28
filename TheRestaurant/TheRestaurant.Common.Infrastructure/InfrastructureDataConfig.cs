@@ -4,12 +4,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
 using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Application.Services;
+
+using TheRestaurant.Application.Interfaces.IAllergy;
+
 using TheRestaurant.Authentication.Interfaces;
+using TheRestaurant.Common.Infrastructure.Data;
+using TheRestaurant.Common.Infrastructure.Repositories.Allergy;
 using TheRestaurant.Common.Infrastructure.Repositories.Authentication;
 using TheRestaurant.Common.Infrastructure.Repositories.Category;
 using TheRestaurant.Domain.Entities.Authentication;
@@ -24,8 +31,7 @@ namespace Common.Infrastructure
                throw new InvalidOperationException("Connection string not found.");
 
             services.AddDbContext<RestaurantDbContext>(options => options.UseSqlServer
-                (connectionString, x => x.MigrationsHistoryTable
-                    ("__DwellerAuthenticationMigrationsHistory", "DwellerAuthenticationSchema")));
+                (connectionString));
 
             services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddRoles<IdentityRole>()
@@ -41,8 +47,15 @@ namespace Common.Infrastructure
             //Repositories
             services.AddTransient<IRegistrationRepository, RegistrationRepository>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
+
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICategoryService, CategoryService>();
+
+            services.AddTransient<IAllergyRepository, AllergyRepository>();
+
+            // Seeds
+            services.AddTransient<UserSeeds>();
+
 
             return services;
         }

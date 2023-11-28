@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using SharedKernel.Application.ServiceResponse;
 using TheRestaurant.Authentication.Interfaces;
 using TheRestaurant.Authentication.Services.RegistrationServices.DTO;
+using TheRestaurant.Authentication.Services.RoleServices;
 using TheRestaurant.Domain.Entities.Authentication;
 
 namespace TheRestaurant.Authentication.Services.RegistrationServices
@@ -9,13 +11,16 @@ namespace TheRestaurant.Authentication.Services.RegistrationServices
     public class RegistrationService
     {
         private readonly IRegistrationRepository _registrationRepository;
+        private readonly RoleService _roleServices;
         private readonly ILogger<RegistrationService> _logger;
 
         public RegistrationService(
             IRegistrationRepository registrationRepository,
+            RoleService roleServices,
             ILogger<RegistrationService> logger)
         {
             _registrationRepository = registrationRepository;
+            _roleServices = roleServices;
             _logger = logger;
         }
 
@@ -35,6 +40,13 @@ namespace TheRestaurant.Authentication.Services.RegistrationServices
             if (!result.Succeeded)
                 return await response.ErrorResponse
                     (response, "User could not be added.", _logger, "Invalid credentials.");
+
+            var roleAssignment = await _roleServices.AssignRoleToUserAsync(user.Id, "admin");
+            if(!roleAssignment.IsSuccess)
+            {
+                return await response.ErrorResponse
+                   (response, "User could not be added.", _logger, "Invalid credentials.");
+            }
 
             RegistrationDto data = new(
               AppUser: user);

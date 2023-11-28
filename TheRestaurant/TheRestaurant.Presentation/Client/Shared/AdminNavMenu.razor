@@ -1,10 +1,50 @@
 ﻿@using MudBlazor
+@using TheRestaurant.Presentation.Client.ClientServices
+@inject RoleService RoleService
+@inject ServerAuthenticationStateProvider AuthState
 
-<MudMenu Icon="@Icons.Material.Filled.Settings">
-    <MudMenuItem>
-        <MudNavLink 
-            href="/Admin/Index">Admin
-        </MudNavLink>
-    </MudMenuItem>
-    <MudMenuItem>Logga ut</MudMenuItem>
-</MudMenu>
+@if (HasPermission)
+{
+    <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">
+        <MudMenuItem>
+            <MudNavLink href="/Admin/Index">
+                Admin
+            </MudNavLink>
+        </MudMenuItem>
+
+        <MudMenuItem>
+            <MudNavLink href="/register">
+                Registrering
+            </MudNavLink>
+        </MudMenuItem>
+    </MudMenu>
+}
+
+@code {
+    private bool HasPermission => IsAdmin || IsManager;
+    private bool IsAdmin;
+    private bool IsManager;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Subscribe to the authentication state changed event
+        AuthState.AuthenticationStateChanged += HandleAuthenticationStateChanged;
+
+        await UpdateSuccessState();
+    }
+
+    private async Task UpdateSuccessState()
+    {
+        var user = await AuthState.GetAuthenticationStateAsync();
+
+        IsAdmin = user.User.IsInRole("admin");
+        IsManager = user.User.IsInRole("manager");
+        // Trigger a re-render
+        StateHasChanged();
+    }
+
+    private async void HandleAuthenticationStateChanged(Task<AuthenticationState> authenticationStateTask)
+    {
+        await UpdateSuccessState();
+    }
+}

@@ -6,7 +6,7 @@ namespace TheRestaurant.Domain.Entities.OrderEntities
     {
         public int Id { get; set; }
         public Order Order { get; set; }
-        public ICollection<MenuItem> MenuItem { get; set; }
+        public ICollection<Item> MenuItem { get; set; }
 
         public OrderRow()
         {
