@@ -16,12 +16,12 @@ namespace Common.Infrastructure.Data
 
         public DbSet<Employee> Employees { get; set; } = null!;
 
-        public DbSet<Item> Items { get; set; } = null!;
+        public DbSet<Product> Products { get; set; } = null!;
 
         public DbSet<Category> Categories { get; set; } = null!;
-        public DbSet<MenuItemCategory> MenuCategories { get; set; } = null!;
+        public DbSet<ProductCategory> ProductCategories { get; set; } = null!;
 
-        public DbSet<MenuItemAllergy> MenuItemAllergies { get; set; } = null!;
+        public DbSet<ProductAllergy> ProductAllergies { get; set; } = null!;
         public DbSet<Allergy> Allergies { get; set; } = null!;
 
         public DbSet<Order> Orders { get; set; } = null!;

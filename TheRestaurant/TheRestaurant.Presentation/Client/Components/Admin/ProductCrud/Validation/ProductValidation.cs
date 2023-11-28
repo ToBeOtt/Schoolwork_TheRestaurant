@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TheRestaurant.Presentation.Client.Components.Admin.ItemCrud.Validation
+namespace TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation
 {
-    public class ItemValidation
+    public class ProductValidation
     {
         public int Id { get; set; }
 

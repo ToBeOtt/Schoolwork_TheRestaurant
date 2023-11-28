@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231128135725_Changed-Item-Entitiy-Name-To-Product")]
+    partial class ChangedItemEntitiyNameToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -446,7 +449,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("OrderRowId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductAllergy", b =>
@@ -469,7 +472,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductAllergies");
+                    b.ToTable("MenuItemAllergies");
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductCategory", b =>
@@ -492,7 +495,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("MenuCategories");
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.EmployeeOrder", b =>
