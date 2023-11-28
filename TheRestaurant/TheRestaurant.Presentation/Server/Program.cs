@@ -67,6 +67,7 @@ namespace TheRestaurant.Presentation
 
             app.UseRouting();
 
+
             app.UseAuthorization();
 
             app.MapRazorPages();
