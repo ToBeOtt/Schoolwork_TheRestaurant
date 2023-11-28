@@ -1,0 +1,56 @@
+﻿@page "/Admin/DeleteCategory/{CategoryId:int}"
+
+@using TheRestaurant.Contracts.DTOs;
+@using MudBlazor
+@using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Shared.Admin
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager;
+
+<AdminLayout>
+    <AdminContent>
+        <MudGrid Spacing="2" Justify="Justify.Center">
+
+            <MudItem xs="12">
+
+                <div class="px-3">
+                    <h3 class="mb-5">Delete Category</h3>
+
+                    <h5>Do you want to remove Category "@categoryDto.Name" ?</h5>
+
+                    <div class="w-100 ">
+                        <a class="btn btn-success" href="Admin/CategoryList">Cancel</a>
+                        <a class="btn btn-danger" onclick="@Delete">Delete</a>
+                    </div>
+
+                </div>
+
+            </MudItem>
+
+        </MudGrid>
+    </AdminContent>
+</AdminLayout>
+
+
+@code {
+    [Parameter]
+    public int categoryId { get; set; }
+
+    public CategoryDto categoryDto = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto>
+                ($"/api/Category/{categoryId}");
+    }
+
+    protected async Task Delete()
+    {
+        await HttpClient.DeleteAsync($"/api/Category/{categoryId}");
+        NavigationManager.NavigateTo("/Admin/CategoryList");
+    }
+
+
+
+}

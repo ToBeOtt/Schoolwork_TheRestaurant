@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Net.Http;
 using System.Security.Claims;
 
 namespace TheRestaurant.Presentation.Client
@@ -7,14 +8,16 @@ namespace TheRestaurant.Presentation.Client
     public class ServerAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ILocalStorageService _localStorage;
+        private readonly HttpClient _httpClient;
 
         public ServerAuthenticationStateProvider()
         {
             
         }
-        public ServerAuthenticationStateProvider(ILocalStorageService localStorage)
+        public ServerAuthenticationStateProvider(ILocalStorageService localStorage, HttpClient httpClient)
         {
             _localStorage = localStorage;
+            _httpClient = httpClient;
         }
 
         public void StateChanged()
@@ -51,23 +54,25 @@ namespace TheRestaurant.Presentation.Client
                             new Claim("UserId", userId),
                         };
 
+                        // Set authorization header for API requests
+                        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authToken);
 
-                // Check if the expiration time is already in local storage
-                var expirationTime = await _localStorage.GetItemAsync<DateTimeOffset?>("TokenExpiration");
+                        // Check if the expiration time is already in local storage
+                        var expirationTime = await _localStorage.GetItemAsync<DateTimeOffset?>("TokenExpiration");
 
-                // Extract expiration time if not available in local storage or if the token is refreshed
-                if (!expirationTime.HasValue || expirationTime < DateTimeOffset.UtcNow)
-                {
-                    if (jsonToken.Payload.TryGetValue("exp", out var exp) &&
-                        exp is long expirationUnix)
-                    {
-                        expirationTime = DateTimeOffset.FromUnixTimeSeconds(expirationUnix).UtcDateTime;
-                        claims.Add(new Claim("TokenExpiration", expirationTime.ToString()));
+                        // Extract expiration time if not available in local storage or if the token is refreshed
+                        if (!expirationTime.HasValue || expirationTime < DateTimeOffset.UtcNow)
+                        {
+                            if (jsonToken.Payload.TryGetValue("exp", out var exp) &&
+                                exp is long expirationUnix)
+                            {
+                                expirationTime = DateTimeOffset.FromUnixTimeSeconds(expirationUnix).UtcDateTime;
+                                claims.Add(new Claim("TokenExpiration", expirationTime.ToString()));
 
-                        // Store expiration time in local storage
-                        await _localStorage.SetItemAsync("TokenExpiration", expirationTime);
-                    }
-                }
+                                // Store expiration time in local storage
+                                await _localStorage.SetItemAsync("TokenExpiration", expirationTime);
+                            }
+                        }
 
                         // Add roles to claims
                         var userRoles = jsonToken.Claims

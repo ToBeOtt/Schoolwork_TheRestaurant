@@ -10,6 +10,7 @@ namespace Common.Infrastructure
             services.AddScoped<RoleService>();
             services.AddScoped<AuthService>();
             services.AddScoped<TokenExpirationChecker>();
+            services.AddScoped<ClientEmployeeServices>();
             return services;
         }
       

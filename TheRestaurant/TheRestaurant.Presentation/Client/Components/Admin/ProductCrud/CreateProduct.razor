@@ -1,0 +1,161 @@
+﻿@using System.Text.Json;
+@using TheRestaurant.Contracts.Requests.Product;
+@using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation;
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<style>
+    .form {
+        padding-left: 25px;
+    }
+</style>
+
+@if(Error == true)
+{
+    <p>@ErrorMessage</p>
+}
+
+<div class="form">
+    <EditForm Model="_createProduct" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="form-group row">
+            
+            <div class="col-md-3">
+                <label for="name" class="control-label col-md-2">Name</label>
+                <InputText id="name" class="form-control" @bind-Value="_createProduct.Name" />
+                <ValidationMessage For="@(() => _createProduct.Name)" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="price" class="control-label col-md-2">Price</label>
+                <InputNumber id="price" class="form-control" @bind-Value="_createProduct.Price" />
+                <ValidationMessage For ="@(() => _createProduct.Price)"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+
+            <div class="col-md-3">
+                <label for="description" class="control-label col-md-2">Description</label>
+                <InputTextArea id="description" class="form-control" @bind-Value="_createProduct.Description" />
+                <ValidationMessage For="@(() => _createProduct.Description)" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="isFoodItem" class="control-label">Is Food Item?</label>
+                <InputCheckbox id="isFoodItem" @bind-Value="_createProduct.IsFoodItem" />
+                <ValidationMessage For="@(() => _createProduct.IsFoodItem)" />
+            </div>
+        </div>
+
+
+        <div class="form-group-row">
+            <div class="col-md-4">
+                <label for="menuPhoto" class="col-md-2 control-label">Menu Photo: </label>
+                <InputFile id="menuPhoto" class="form-control" OnChange="HandlePhotoUpload"/>
+            </div>
+        </div>
+
+@*        <div class="form-group-row">
+            <div class="col-md-4">
+                <label for="categories" class="col-md-2 control-label">Categories: </label>
+                @foreach (var category in menuItemValidation.MenuItemCategories)
+                {
+
+                }
+            </div>*@
+
+        <div class="form-group">
+            <label for="allergies">Allergies</label>
+            <select id="allergies" class="form-control" multiple @onchange="HandleAllergiesSelection">
+                @foreach (var allergy in allergies)
+                {
+                    <option value="@allergy.Id">@allergy.Name</option>
+                }
+            </select>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-md-offset-2 col-md-3 text-right">
+                <button type="submit" class="btn btn-primary">
+                    Create
+                </button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private readonly ProductValidation _createProduct = new ProductValidation();
+    private List<Allergy> allergies = new List<Allergy>();
+    private bool Error;
+    private string ErrorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allergies = await HttpClient.GetFromJsonAsync<List<Allergy>>("api/allergy");
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var request = new CreateProductRequest(
+            Name: _createProduct.Name,
+            Price: _createProduct.Price,
+            Description: _createProduct.Description,
+            MenuPhoto: _createProduct.MenuPhoto,
+            IsFoodItem: _createProduct.IsFoodItem,
+            IsDeleted: _createProduct.IsDeleted,
+            SelectedAllergyIds: _createProduct.SelectedAllergyIds
+
+        // Include Category & Allergy when implemented
+        );
+
+        var apiUrl = "/admin/products/create";
+
+        var response = await HttpClient.PostAsJsonAsync(apiUrl, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("admin/product/view");
+        }
+        else
+        {
+            Error = true;
+            ErrorMessage = "Det gick inte att registrera informationen";
+        }
+    }
+
+
+    private async Task HandlePhotoUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            using var stream = file.OpenReadStream();
+            MemoryStream ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            _createProduct.MenuPhoto = ms.ToArray();
+        }
+    }
+
+    private class Allergy
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    private void HandleAllergiesSelection(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+        if (selectedOptions != null)
+        {
+            _createProduct.SelectedAllergyIds = selectedOptions.Select(int.Parse).ToList();
+        }
+    }
+}

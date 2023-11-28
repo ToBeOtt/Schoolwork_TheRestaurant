@@ -18,6 +18,12 @@
             <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
         </MudNavGroup>
 
+        @* Categories *@
+        <MudNavGroup Title="Categories" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
+            <MudNavLink Href="/Admin/CategoryList" Icon="@Icons.Material.Filled.List">List</MudNavLink>
+            <MudNavLink Href="/Admin/AddCategory" Icon="@Icons.Material.Filled.Add">Create new</MudNavLink>
+        </MudNavGroup>
+
         @* Allergies *@
         <MudNavGroup Title="Allergier" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
             <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add">Lägg till</MudNavLink>
@@ -26,12 +32,8 @@
         </MudNavGroup>
 
         @* Emloyees *@
-        <MudNavGroup Title="Anställda" Icon="@Icons.Material.Filled.People" Expanded="false">
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add">Lägg till</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit">Ändra</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
-        </MudNavGroup>
-
+        <MudNavLink Href="/admin/employees/Index" Icon="@Icons.Material.Filled.People">Anställda</MudNavLink>
+        
         @* Receipts *@
         <MudNavLink Href="/billing" Icon="@Icons.Material.Filled.Receipt">Kvitton</MudNavLink>
 

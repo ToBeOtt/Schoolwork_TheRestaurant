@@ -1,17 +1,21 @@
 using Authentication;
 using Common.Infrastructure;
 using Microsoft.AspNetCore.ResponseCompression;
-using TheRestaurant.Application.Interfaces;
-using TheRestaurant.Application.Services;
-using TheRestaurant.Common.Infrastructure.Repositories.Item;
-using TheRestaurant.Presentation.Client.Components.Admin.ItemCrud;
+using TheRestaurant.Common.Infrastructure.Repositories.Product;
 using Microsoft.Extensions.DependencyInjection;
+using TheRestaurant.Application;
+using TheRestaurant.Application.Employees;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Application.Interfaces.IAllergy;
 using TheRestaurant.Application.Services.AllergyServices;
 using TheRestaurant.Application.Services.OrderServices;
 using TheRestaurant.Common.Infrastructure.Repositories.OrderRepository;
 using MudBlazor.Services;
+using TheRestaurant.Application.Services.ProductServices;
+using TheRestaurant.Application.Interfaces.IProduct;
+using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud;
+using TheRestaurant.Presentation.Server.Config.Swagger;
+
 
 namespace TheRestaurant.Presentation
 {
@@ -24,20 +28,27 @@ namespace TheRestaurant.Presentation
             // Add services to the container.
             builder.Services.AddHttpClient();
 
+            //Swagger
+            builder.Services.AddSwaggerServices();
+
             // Persistence and DA
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddAuthServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
+
 
 
             builder.Services.AddTransient<IAllergyService, AllergyService>();
-            builder.Services.AddScoped<IItemService, ItemService>();
-            builder.Services.AddScoped<IItemRepository, ItemRepository>();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
             // Add OrderService
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
             builder.Services.AddScoped<DeleteItemConfirmation>();
+            builder.Services.AddScoped<DeleteProductConfirmation>();
+
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
@@ -47,7 +58,10 @@ namespace TheRestaurant.Presentation
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI();
                 app.UseWebAssemblyDebugging();
+                
             }
             else
             {

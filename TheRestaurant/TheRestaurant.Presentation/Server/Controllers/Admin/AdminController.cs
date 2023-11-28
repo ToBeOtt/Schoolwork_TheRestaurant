@@ -6,13 +6,14 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
     [Authorize(Roles = "admin")]
     [ApiController]
     [Route("adminHome")]
-
     public class AdminController : ControllerBase
     {
-        public AdminController()
-        {
-        }
+        private readonly ILogger<AdminController> _logger;
 
+        public AdminController(ILogger<AdminController> logger)
+        {
+            _logger = logger;
+        }
 
         [HttpGet("Example")]
         public async Task<bool> Example()
