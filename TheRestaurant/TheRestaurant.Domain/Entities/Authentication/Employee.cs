@@ -7,6 +7,9 @@ namespace TheRestaurant.Domain.Entities.Authentication
     {
         public string Alias { get; set; }
         public ICollection<EmployeeOrder> Orders {  get; set; } 
+        public bool IsDeleted { get; set; }
+        public DateTime EmploymentStarted { get; set; }
+        public DateTime EmploymentEnded { get; private set; }
 
         public Employee() { }
 
@@ -14,8 +17,16 @@ namespace TheRestaurant.Domain.Entities.Authentication
         {
             Email = email;
             Alias = alias;
-        }
+            EmploymentStarted = DateTime.Now;
+            IsDeleted = false;
+    }
 
+        public Employee LayoffEmployee(Employee employee)
+        {
+            employee.IsDeleted = true;
+            employee.EmploymentEnded = DateTime.Now;
+            return employee;
+        }
 
         private void UpdateRole(Employee user)
         {
