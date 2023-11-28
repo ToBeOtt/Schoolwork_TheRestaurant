@@ -1,6 +1,6 @@
 ﻿@using System.Text.Json;
-@using TheRestaurant.Contracts.Requests.Item;
-@using TheRestaurant.Presentation.Client.Components.Admin.ItemCrud.Validation;
+@using TheRestaurant.Contracts.Requests.Product;
+@using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
@@ -16,23 +16,23 @@
 }
 
 <div class="form">
-    <EditForm Model="_createItem" OnValidSubmit="HandleValidSubmit">
+    <EditForm Model="_createProduct" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
 
         <div class="form-group row">
             
             <div class="col-md-3">
                 <label for="name" class="control-label col-md-2">Name</label>
-                <InputText id="name" class="form-control" @bind-Value="_createItem.Name" />
-                <ValidationMessage For="@(() => _createItem.Name)" />
+                <InputText id="name" class="form-control" @bind-Value="_createProduct.Name" />
+                <ValidationMessage For="@(() => _createProduct.Name)" />
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-md-3">
                 <label for="price" class="control-label col-md-2">Price</label>
-                <InputNumber id="price" class="form-control" @bind-Value="_createItem.Price" />
-                <ValidationMessage For ="@(() => _createItem.Price)"/>
+                <InputNumber id="price" class="form-control" @bind-Value="_createProduct.Price" />
+                <ValidationMessage For ="@(() => _createProduct.Price)"/>
             </div>
         </div>
 
@@ -40,16 +40,16 @@
 
             <div class="col-md-3">
                 <label for="description" class="control-label col-md-2">Description</label>
-                <InputTextArea id="description" class="form-control" @bind-Value="_createItem.Description" />
-                <ValidationMessage For="@(() => _createItem.Description)" />
+                <InputTextArea id="description" class="form-control" @bind-Value="_createProduct.Description" />
+                <ValidationMessage For="@(() => _createProduct.Description)" />
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-md-3">
                 <label for="isFoodItem" class="control-label">Is Food Item?</label>
-                <InputCheckbox id="isFoodItem" @bind-Value="_createItem.IsFoodItem" />
-                <ValidationMessage For="@(() => _createItem.IsFoodItem)" />
+                <InputCheckbox id="isFoodItem" @bind-Value="_createProduct.IsFoodItem" />
+                <ValidationMessage For="@(() => _createProduct.IsFoodItem)" />
             </div>
         </div>
 
@@ -92,7 +92,7 @@
 </div>
 
 @code {
-    private readonly ItemValidation _createItem = new ItemValidation();
+    private readonly ProductValidation _createProduct = new ProductValidation();
     private List<Allergy> allergies = new List<Allergy>();
     private bool Error;
     private string ErrorMessage;
@@ -104,25 +104,25 @@
 
     private async Task HandleValidSubmit()
     {
-        var request = new CreateItemRequest(
-            Name: _createItem.Name,
-            Price: _createItem.Price,
-            Description: _createItem.Description,
-            MenuPhoto: _createItem.MenuPhoto,
-            IsFoodItem: _createItem.IsFoodItem,
-            IsDeleted: _createItem.IsDeleted,
-            SelectedAllergyIds: _createItem.SelectedAllergyIds
+        var request = new CreateProductRequest(
+            Name: _createProduct.Name,
+            Price: _createProduct.Price,
+            Description: _createProduct.Description,
+            MenuPhoto: _createProduct.MenuPhoto,
+            IsFoodItem: _createProduct.IsFoodItem,
+            IsDeleted: _createProduct.IsDeleted,
+            SelectedAllergyIds: _createProduct.SelectedAllergyIds
 
         // Include Category & Allergy when implemented
         );
 
-        var apiUrl = "/admin/items/create";
+        var apiUrl = "/admin/products/create";
 
         var response = await HttpClient.PostAsJsonAsync(apiUrl, request);
 
         if (response.IsSuccessStatusCode)
         {
-            NavigationManager.NavigateTo("admin/item/view");
+            NavigationManager.NavigateTo("admin/product/view");
         }
         else
         {
@@ -140,7 +140,7 @@
             using var stream = file.OpenReadStream();
             MemoryStream ms = new MemoryStream();
             await stream.CopyToAsync(ms);
-            _createItem.MenuPhoto = ms.ToArray();
+            _createProduct.MenuPhoto = ms.ToArray();
         }
     }
 
@@ -155,7 +155,7 @@
         var selectedOptions = e.Value as IEnumerable<string>;
         if (selectedOptions != null)
         {
-            _createItem.SelectedAllergyIds = selectedOptions.Select(int.Parse).ToList();
+            _createProduct.SelectedAllergyIds = selectedOptions.Select(int.Parse).ToList();
         }
     }
 }

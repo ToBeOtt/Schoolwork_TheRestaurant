@@ -1,5 +1,5 @@
-﻿@using TheRestaurant.Contracts.Requests.Item;
-@using TheRestaurant.Presentation.Client.Components.Admin.ItemCrud.Validation;
+﻿@using TheRestaurant.Contracts.Requests.Product;
+@using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
@@ -13,37 +13,37 @@
     <p>@ErrorMessage</p>
 }
 <div class="form">
-    <EditForm Model="_editItem" OnValidSubmit="HandleValidSubmit">
+    <EditForm Model="_editProduct" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
 
         <div class="form-group row">
             <div class="col-md-3">
                 <label for="name" class="control-label col-md-2">Namn</label>
-                <InputText id="name" class="form-control" @bind-Value="_editItem.Name" />
-                <ValidationMessage For="@(() => _editItem.Name)" />
+                <InputText id="name" class="form-control" @bind-Value="_editProduct.Name" />
+                <ValidationMessage For="@(() => _editProduct.Name)" />
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-md-3">
                 <label for="price" class="control-label col-md-2">Pris</label>
-                <InputNumber id="price" class="form-control" @bind-Value="_editItem.Price" />
-                <ValidationMessage For="@(() => _editItem.Price)" />
+                <InputNumber id="price" class="form-control" @bind-Value="_editProduct.Price" />
+                <ValidationMessage For="@(() => _editProduct.Price)" />
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-md-3">
                 <label for="description" class="control-label col-md-2">Beskrivning</label>
-                <InputTextArea id="description" class="form-control" @bind-Value="_editItem.Description" />
-                <ValidationMessage For="@(() => _editItem.Description)" />
+                <InputTextArea id="description" class="form-control" @bind-Value="_editProduct.Description" />
+                <ValidationMessage For="@(() => _editProduct.Description)" />
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-md-3">
                 <label for="isFoodItem" class="control-label">Food item?</label>
-                <InputCheckbox id="isFoodItem" @bind-Value="_editItem.IsFoodItem" />
+                <InputCheckbox id="isFoodItem" @bind-Value="_editProduct.IsFoodItem" />
             </div>
         </div>
 
@@ -56,7 +56,7 @@
 
         <div class="col-md-4">
             <p>Nuvarande bild:</p>
-            <img src="data:image/jpeg;base64,@Convert.ToBase64String(_editItem.MenuPhoto)" alt="Menu Item Photo" style="height: 300px;">
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(_editProduct.MenuPhoto)" alt="Menu Item Photo" style="height: 300px;">
         </div>
 
         <div class="form-group row">
@@ -74,9 +74,9 @@
 
     private bool Error;
     private string ErrorMessage;
-    private ItemValidation _editItem = new ItemValidation();
+    private ProductValidation _editProduct = new ProductValidation();
 
-    private class MenuItem
+    private class Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -90,41 +90,41 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var menuItem = await HttpClient.GetFromJsonAsync<MenuItem>($"admin/items/{Id}");
-        if (menuItem != null)
+        var product = await HttpClient.GetFromJsonAsync<Product>($"admin/products/{Id}");
+        if (product != null)
         {
-            _editItem.Name = menuItem.Name;
-            _editItem.Price = menuItem.Price;
-            _editItem.Description = menuItem.Description;
-            _editItem.IsFoodItem = menuItem.IsFoodItem;
-            _editItem.MenuPhoto = menuItem.MenuPhoto;
+            _editProduct.Name = product.Name;
+            _editProduct.Price = product.Price;
+            _editProduct.Description = product.Description;
+            _editProduct.IsFoodItem = product.IsFoodItem;
+            _editProduct.MenuPhoto = product.MenuPhoto;
         }
         else
         {
             Error = true;
-            ErrorMessage = "Ett fel uppstod när menu item laddes in";
+            ErrorMessage = "Ett fel uppstod när produkten laddades in";
         }
     }
 
     private async Task HandleValidSubmit()
     {
-        var request = new EditItemRequest(
-            Name: _editItem.Name,
-            Price: _editItem.Price,
-            Description: _editItem.Description,
-            MenuPhoto: _editItem.MenuPhoto,
-            IsFoodItem: _editItem.IsFoodItem,
-            IsDeleted: _editItem.IsDeleted
+        var request = new EditProductRequest(
+            Name: _editProduct.Name,
+            Price: _editProduct.Price,
+            Description: _editProduct.Description,
+            MenuPhoto: _editProduct.MenuPhoto,
+            IsFoodItem: _editProduct.IsFoodItem,
+            IsDeleted: _editProduct.IsDeleted
         // Include other fields
         );
 
-        var apiUrl = $"/admin/items/edit/{Id}";
+        var apiUrl = $"/admin/products/edit/{Id}";
 
         var response = await HttpClient.PutAsJsonAsync(apiUrl, request);
 
         if (response.IsSuccessStatusCode)
         {
-            NavigationManager.NavigateTo("admin/item/view");
+            NavigationManager.NavigateTo("admin/product/view");
         }
         else
         {
@@ -141,12 +141,12 @@
             using var stream = file.OpenReadStream();
             MemoryStream ms = new MemoryStream();
             await stream.CopyToAsync(ms);
-            _editItem.MenuPhoto = ms.ToArray();
+            _editProduct.MenuPhoto = ms.ToArray();
         }
     }
 
     private void NavigateBackToView()
     {
-        NavigationManager.NavigateTo("/admin/item/view");
+        NavigationManager.NavigateTo("/admin/product/view");
     }
 }
