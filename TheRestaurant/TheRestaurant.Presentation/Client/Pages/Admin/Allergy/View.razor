@@ -1,0 +1,87 @@
+﻿@page "/admin/allergy/view"
+
+@using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Shared.Admin;
+@using TheRestaurant.Presentation.Client.Components.Admin.Allergies;
+@using TheRestaurant.Contracts.DTOs
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+
+
+
+<AdminLayout>
+    <AdminContent>
+
+
+
+        <MudItem xs="12">
+            <MudPaper Class="d-flex align-center justify-left mud-width-full py-4 px-3"
+                      Elevation="0">
+
+
+                <MudGrid>
+                    <MudGrid Justify="Justify.FlexStart">
+                        <MudTable Items="@allergies" Dense=true Hover=true Bordered=false Striped=false Elevation="0" Loading=@loading>
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Allergi Typer</MudText>
+                                <MudSpacer/>
+                                <MudButton Variant="Variant.Filled" Color="Color.Secondary">Ny Allergi</MudButton>
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Id</MudTh>
+                                <MudTh>Namn</MudTh>
+                                <MudTh></MudTh>
+                                <MudTh>Dölj</MudTh>
+                                <MudTh></MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Id">@context.Id</MudTd>
+                                <MudTd DataLabel="Namn">@context.Name</MudTd>
+                                <MudTd >
+                                    <MudSpacer />
+                                </MudTd>
+                                <MudTd>
+                                    <MudSwitch @bind-Checked="@placeholderSwitch" Label="temp" Color="Color.Primary" />
+                                </MudTd>
+                                <MudTd>
+                                    <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
+                                        <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
+                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
+
+                                    </MudButtonGroup>
+                                </MudTd>
+
+                            </RowTemplate>
+
+                        </MudTable>
+                    </MudGrid>
+                </MudGrid>
+
+            </MudPaper>
+        </MudItem>
+
+
+
+
+    </AdminContent>
+</AdminLayout>
+
+
+
+@code {
+    private List<AllergyDto> allergies;
+    private bool loading;
+    private bool placeholderSwitch;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
+    }
+}
+
+
+
+
+
+

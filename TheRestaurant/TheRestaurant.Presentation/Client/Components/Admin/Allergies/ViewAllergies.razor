@@ -1,0 +1,31 @@
+﻿@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+@using TheRestaurant.Contracts.DTOs
+
+<MudGrid>
+    <MudGrid Justify="Justify.FlexStart">
+        <MudTable Items="@allergies" Hover=true>
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Allergi Typer</MudText>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Namn</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Namn">@context.Name</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudGrid>
+</MudGrid>
+
+
+
+@code {
+    private List<AllergyDto> allergies;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/admin/allergies");
+    }
+}
