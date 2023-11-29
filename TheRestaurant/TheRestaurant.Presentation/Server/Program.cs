@@ -46,7 +46,6 @@ namespace TheRestaurant.Presentation
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
-            builder.Services.AddScoped<DeleteItemConfirmation>();
             builder.Services.AddScoped<DeleteProductConfirmation>();
 
 

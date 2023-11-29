@@ -12,6 +12,6 @@ namespace TheRestaurant.Presentation.Shared.OrderDTO
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
         public string OrderStatus { get; set; } // Add this line
-        public List<OrderItemDto> OrderItems { get; set; }
+        public List<OrderProductDto> OrderItems { get; set; }
     }
 }

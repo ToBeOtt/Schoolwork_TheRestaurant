@@ -7,17 +7,17 @@
 @page "/Order"
 @inject HttpClient HttpClient
 
-<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="AddOrderItem">Lägg till i beställning (@orderItemDto.Quantity)</MudButton>
-<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="CreateOrder">Färdigställ beställning(@orderItemDto.Quantity)</MudButton>
+<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="AddOrderItem">Lägg till i beställning (@orderProductDto.Quantity)</MudButton>
+<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="CreateOrder">Färdigställ beställning(@orderProductDto.Quantity)</MudButton>
 @code {
-    private OrderDto orderDto = new OrderDto { OrderItems = new List<OrderItemDto>() };
+    private OrderDto orderDto = new OrderDto { OrderItems = new List<OrderProductDto>() };
 
-    private OrderItemDto orderItemDto = new OrderItemDto { Id = 1, Quantity = 0 };
+    private OrderProductDto orderProductDto = new OrderProductDto { Id = 1, Quantity = 0 };
 
     private async Task CreateOrder()
     {
         orderDto.OrderDate = DateTime.Now;
-        orderDto.OrderItems.Add(orderItemDto);
+        orderDto.OrderItems.Add(orderProductDto);
 
         var response = await HttpClient.PostAsJsonAsync("Order", orderDto);
 
@@ -39,9 +39,26 @@
         }
     }
 
+    private async Task GetOrder(int id)
+    {
+        var response = await HttpClient.GetAsync($"api/order/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var responseData = await response.Content.ReadAsStringAsync();
+            var order = JsonSerializer.Deserialize<OrderDto>(responseData);
+            // Do something with the order...
+        }
+        else
+        {
+            // Handle the error...
+        }
+    }
+
+
 
     private void AddOrderItem()
     {
-        orderItemDto.Quantity++;
+        orderProductDto.Quantity++;
     }
 }
