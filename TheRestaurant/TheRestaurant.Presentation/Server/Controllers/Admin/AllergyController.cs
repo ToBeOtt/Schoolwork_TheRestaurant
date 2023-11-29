@@ -22,8 +22,8 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             _allergyService = allergyService;
         }
 
+        //api/Allergy
         [HttpGet]
-
         public async Task<ActionResult<List<Allergy>>> GetAllAllergies()
         {
             try
@@ -49,36 +49,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             }
         }
 
-        [HttpPost("create")]
-        [Authorize(Roles = "manager")]
-        public async Task<IActionResult> CreateAllergy(AllergyRequest request)
-        {
-
-            try
-            {
-
-                var allergy = await _allergyService.CreateAllergyAsync(request);
-                _logger.LogInformation(@"{0} was called by: {1} at: {2}",
-                  nameof(CreateAllergy),
-                  User.Identity.Name,
-                  DateTime.UtcNow.ToShortTimeString()
-                  );
-                return CreatedAtAction(nameof(GetAllergy), new { id = allergy.Id }, allergy);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(@"Error: {0}{1} -- Caused by user: {2} at:{3}",
-                    ex.Message,
-                    ex.InnerException,
-                    User.Identity.Name,
-                    DateTime.UtcNow.ToLongTimeString()
-                    );
-
-                return StatusCode(500, "Ett fel uppstod när allergiternativet skapades");
-            }
-        }
-
+        //api/Allergy/1
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAllergy(int id)
         {
@@ -119,7 +90,69 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
 
                 return StatusCode(500, "Ett fel uppstod när allergiternativet hämtades");
             }
-        } 
+        }
+
+        //api/Allergy/create
+        [HttpPost("create")]
+        [Authorize(Roles = "manager")]
+        public async Task<IActionResult> CreateAllergy(AllergyRequest request)
+        {
+
+            try
+            {
+
+                var allergy = await _allergyService.CreateAllergyAsync(request);
+                _logger.LogInformation(@"{0} was called by: {1} at: {2}",
+                  nameof(CreateAllergy),
+                  User.Identity.Name,
+                  DateTime.UtcNow.ToShortTimeString()
+                  );
+                return CreatedAtAction(nameof(GetAllergy), new { id = allergy.Id }, allergy);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(@"Error: {0}{1} -- Caused by user: {2} at:{3}",
+                    ex.Message,
+                    ex.InnerException,
+                    User.Identity.Name,
+                    DateTime.UtcNow.ToLongTimeString()
+                    );
+
+                return StatusCode(500, "Ett fel uppstod när allergiternativet skapades");
+            }
+        }
+
+        //api/Allergy/update/1
+        [HttpPut("edit/{id}")]
+        [Authorize(Roles = "manager")]
+        public async Task<IActionResult> UpdateAllergy(int id, AllergyRequest request) 
+        {
+            try
+            {
+                var update = await _allergyService.UpdateAllergyAsync(id, request);
+                _logger.LogInformation(@"{0} was called by: {1} at: {2}",
+                  nameof(UpdateAllergy),
+                  User.Identity.Name,
+                  DateTime.UtcNow.ToShortTimeString()
+                  );
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(@"Error: {0}{1} -- Using id:{2} Caused by user: {3} at:{4}",
+                                   ex.Message,                                   
+                                   ex.InnerException,
+                                   id,
+                                   User.Identity.Name,
+                                   DateTime.UtcNow.ToLongTimeString()
+                                   );
+
+                return StatusCode(500, "Ett fel uppstod när allergiternativet updaterades");
+            }
+
+        }
+
 
     }
 }

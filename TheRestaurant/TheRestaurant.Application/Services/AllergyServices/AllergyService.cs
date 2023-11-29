@@ -49,9 +49,14 @@ namespace TheRestaurant.Application.Services.AllergyServices
             return allergy;
         }
 
-        public Task<Allergy> UpdateAllergyAsync(int id, AllergyRequest request)
+        public async Task<Allergy> UpdateAllergyAsync(int id, AllergyRequest request)
         {
-            throw new NotImplementedException();
+            var allergyToUpdate = await GetAllergyById(id);
+
+            allergyToUpdate.Name = request.Name;
+
+            await _allergyRepository.UpdateAsync(allergyToUpdate);
+            return allergyToUpdate;
         }
     }
 }
