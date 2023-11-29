@@ -3,6 +3,7 @@ using System.ComponentModel.Design;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Contracts.Requests.Product;
 using TheRestaurant.Domain.Entities.Menu;
+using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
@@ -36,13 +37,30 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            var menuItem = await _productService.GetProductById(id);
-            if (menuItem == null)
+            var product = await _productService.GetProductById(id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return Ok(menuItem);
+            var productDto = new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                MenuPhoto = product.MenuPhoto,
+                IsDeleted = product.IsDeleted,
+                IsFoodItem = product.IsFoodItem,
+                Allergies = product.ProductAllergies
+                    .Select(pa => new AllergyDto { Id = pa.AllergyId, Name = pa.Allergy.Name })
+                    .ToList(),
+                Categories = product.ProductCategories
+                    .Select(pc => new CategoryDto { Id = pc.CategoryId, Name = pc.Category.Name })
+                    .ToList(),
+            };
+
+            return Ok(productDto);
         }
 
         [HttpGet]
@@ -50,8 +68,8 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         {
             try
             {
-                var menuItems = await _productService.GetAllProducts();
-                return Ok(menuItems);
+                var products = await _productService.GetAllProducts();
+                return Ok(products);
             }
             catch (Exception ex)
             {
@@ -63,14 +81,14 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         {
             try
             {
-                var menuItem = await _productService.GetProductById(id);
-                if (menuItem == null)
+                var product = await _productService.GetProductById(id);
+                if (product == null)
                 {
                     return NotFound();
                 }
 
-                menuItem.IsDeleted = true;
-                await _productService.SoftDeleteProductAsync(menuItem.Id);
+                product.IsDeleted = true;
+                await _productService.SoftDeleteProductAsync(product.Id);
 
                 return Ok();
             }
@@ -85,12 +103,12 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         {
             try
             {
-                var menuItem = await _productService.UpdateProductAsync(id, request);
-                if (menuItem == null)
+                var product = await _productService.UpdateProductAsync(id, request);
+                if (product == null)
                 {
                     return NotFound();
                 }
-                return Ok(menuItem);
+                return Ok();
             }
             catch(Exception ex)
             {

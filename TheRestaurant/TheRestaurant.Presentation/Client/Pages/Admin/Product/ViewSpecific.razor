@@ -1,0 +1,51 @@
+﻿@page "/admin/product/view/{id:int}"
+@using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
+@inject HttpClient HttpClient;
+@inject NavigationManager NavigationManager;
+<h3>View Specific</h3>
+
+@if (product == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <MudItem xs="5">
+        <MudCard Class="mud-secondary">
+            <MudCardMedia Image="@GetImageSource(product.MenuPhoto)" Height="400" />
+            <MudCardContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">@product.Name</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Primary">Pris: @product.Price</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Primary">@product.Description</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Primary" Style="margin-top: 15px"><b>Allergies:</b> @string.Join(", ", product.Allergies.Select(a => a.Name))</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Primary" Style="margin-top: 15px"><b>Categories:</b> @string.Join(", ", product.Categories.Select(c => c.Name))</MudText>
+            </MudCardContent>
+            <MudCardActions Class="d-flex justify-space-between">
+                <MudButton Class="ml-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="GoBackToView">Gå tilbaka</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ProductDto product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await HttpClient.GetFromJsonAsync<ProductDto>($"admin/products/{Id}");
+        StateHasChanged();
+    }
+
+    private string GetImageSource(byte[] photo)
+    {
+        return $"data:image/jpeg;base64,{Convert.ToBase64String(photo)}";
+    }
+
+    private void GoBackToView()
+    {
+        NavigationManager.NavigateTo("/admin/product/view");
+    }
+}

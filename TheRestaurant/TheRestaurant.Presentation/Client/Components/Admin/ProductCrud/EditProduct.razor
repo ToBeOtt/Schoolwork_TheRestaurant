@@ -1,4 +1,5 @@
 ﻿@using TheRestaurant.Contracts.Requests.Product;
+@using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
@@ -54,10 +55,32 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="categories">Categories</label>
+            <select id="categories" class="form-control" multiple @onchange="HandleCategoriesSelection">
+                @foreach (var category in categories)
+                {
+                    <option value="@category.Id" selected="@(_editProduct.SelectedCategoryIds.Contains(category.Id))">@category.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="allergies">Allergies</label>
+            <select id="allergies" class="form-control" multiple @onchange="HandleAllergiesSelection">
+                @foreach (var allergy in allergies)
+                {
+                    <option value="@allergy.Id" selected="@(_editProduct.SelectedAllergyIds.Contains(allergy.Id))">@allergy.Name</option>
+                }
+            </select>
+        </div>
+
         <div class="col-md-4">
             <p>Nuvarande bild:</p>
             <img src="data:image/jpeg;base64,@Convert.ToBase64String(_editProduct.MenuPhoto)" alt="Menu Item Photo" style="height: 300px;">
         </div>
+
+
 
         <div class="form-group row">
             <div class="col-md-offset-2 col-md-3 text-right">
@@ -75,22 +98,12 @@
     private bool Error;
     private string ErrorMessage;
     private ProductValidation _editProduct = new ProductValidation();
-
-    private class Product
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public double Price { get; set; }
-        public string Description { get; set; }
-        public bool IsFoodItem { get; set; }
-        public bool IsDeleted { get; set; }
-        public byte[] MenuPhoto { get; set; }
-        // Add other properties as necessary
-    }
+    private List<AllergyDto> allergies = new List<AllergyDto>();
+    private List<CategoryDto> categories = new List<CategoryDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        var product = await HttpClient.GetFromJsonAsync<Product>($"admin/products/{Id}");
+        var product = await HttpClient.GetFromJsonAsync<ProductDto>($"admin/products/{Id}");
         if (product != null)
         {
             _editProduct.Name = product.Name;
@@ -98,6 +111,12 @@
             _editProduct.Description = product.Description;
             _editProduct.IsFoodItem = product.IsFoodItem;
             _editProduct.MenuPhoto = product.MenuPhoto;
+
+            _editProduct.SelectedAllergyIds = product.Allergies.Select(a => a.Id).ToList();
+            _editProduct.SelectedCategoryIds = product.Categories.Select(c => c.Id).ToList();
+
+            categories = await HttpClient.GetFromJsonAsync<List<CategoryDto>>("api/category");
+            allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("api/allergy");
         }
         else
         {
@@ -144,6 +163,24 @@
             MemoryStream ms = new MemoryStream();
             await stream.CopyToAsync(ms);
             _editProduct.MenuPhoto = ms.ToArray();
+        }
+    }
+
+    private void HandleCategoriesSelection(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+        if (selectedOptions != null)
+        {
+            _editProduct.SelectedCategoryIds = selectedOptions.Select(int.Parse).ToList();
+        }
+    }
+
+    private void HandleAllergiesSelection(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+        if (selectedOptions != null)
+        {
+            _editProduct.SelectedAllergyIds = selectedOptions.Select(int.Parse).ToList();
         }
     }
 

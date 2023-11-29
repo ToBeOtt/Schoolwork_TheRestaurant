@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
 
 namespace TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation
 {
@@ -28,4 +29,5 @@ namespace TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validat
 
         public List<int> SelectedAllergyIds { get; set; }
     }
+
 }
