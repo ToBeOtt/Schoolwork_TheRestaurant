@@ -32,9 +32,10 @@ namespace TheRestaurant.Application.Services.AllergyServices
            
         }
 
-        public Task DeleteAllergyAsync(int id)
+        public async Task DeleteAllergyAsync(int id)
         {
-            throw new NotImplementedException();
+            var allergyToDelete =  await GetAllergyById(id);
+            await _allergyRepository.DeleteAsync(allergyToDelete);
         }
 
         public async Task<List<Allergy>> GetAllAllergies()

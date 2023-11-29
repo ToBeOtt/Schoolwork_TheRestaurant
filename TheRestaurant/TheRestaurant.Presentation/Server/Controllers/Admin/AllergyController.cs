@@ -147,10 +147,27 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
                                    User.Identity.Name,
                                    DateTime.UtcNow.ToLongTimeString()
                                    );
-
+                
                 return StatusCode(500, "Ett fel uppstod när allergiternativet updaterades");
             }
 
+        }
+
+        [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "manager")]
+
+        public async Task<IActionResult> DeleteAllergy(int id)
+        {
+            try
+            {
+                await _allergyService.DeleteAllergyAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
 
