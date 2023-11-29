@@ -1,7 +1,7 @@
 ﻿@using MudBlazor
+@using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
-
 
 @if (Error == true)
 {
@@ -14,7 +14,7 @@ else if(products != null)
         @foreach (var product in products)
         {
         <MudItem xs="3">
-            <MudCard Class="mud-secondary">
+                <MudCard Class="mud-secondary">
                     <MudCardMedia Image="@GetImageSource(product.MenuPhoto)" Height="200" />
                 <MudCardContent>
                     <MudText Typo="Typo.h5" Color="Color.Primary">@product.Name</MudText>
@@ -22,7 +22,8 @@ else if(products != null)
                     <MudText Typo="Typo.body2" Color="Color.Primary">@product.Description</MudText>
                 </MudCardContent>
                 <MudCardActions Class="d-flex justify-space-between">
-                        <MudButton Class="ml-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowConfirmation(product.Id))">Delete</MudButton>
+                        <MudButton Class="ml-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowConfirmation(product.Id))">Radera</MudButton>
+                        <MudButton Variant="Variant.Text" OnClick="@(() =>NavigateToViewSpecificProduct(product.Id))">Detaljer</MudButton>
                         <MudButton Class="mr-2" Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => NavigateToEditProduct(product.Id))">Edit</MudButton>
                 </MudCardActions>
             </MudCard>
@@ -35,7 +36,7 @@ else if(products != null)
 <DeleteProductConfirmation @ref="deleteProductConfirmation" OnConfirmDelete="DeleteProduct" />
 
 @code {
-    private List<Product> products;
+    private List<ProductDto> products;
     private DeleteProductConfirmation deleteProductConfirmation;
 
     private bool Error;
@@ -47,19 +48,7 @@ else if(products != null)
     }
     protected override async Task OnInitializedAsync()
     {
-        products = await HttpClient.GetFromJsonAsync<List<Product>>("/admin/products");
-    }
-
-    private class Product
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public double Price { get; set; }
-        public string Description { get; set; }
-        public bool IsFoodItem { get; set; }
-        public bool IsDeleted { get; set; }
-        public byte[] MenuPhoto { get; set; }
-        // Other properties...
+        products = await HttpClient.GetFromJsonAsync<List<ProductDto>>("/admin/products");
     }
 
     private void NavigateToCreatePage()
@@ -70,6 +59,11 @@ else if(products != null)
     private void NavigateToEditProduct(int id)
     {
         NavigationManager.NavigateTo($"/admin/product/edit/{id}");
+    }
+
+    private void NavigateToViewSpecificProduct(int id)
+    {
+        NavigationManager.NavigateTo($"/admin/product/view/{id}");
     }
 
     private int productToDeleteId;
@@ -89,7 +83,7 @@ else if(products != null)
 
         if (response.IsSuccessStatusCode)
         {
-            products = await HttpClient.GetFromJsonAsync<List<Product>>("admin/products");
+            products = await HttpClient.GetFromJsonAsync<List<ProductDto>>("admin/products");
         }
 
         else

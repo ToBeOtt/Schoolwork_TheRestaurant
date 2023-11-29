@@ -1,5 +1,6 @@
 ﻿@using System.Text.Json;
 @using TheRestaurant.Contracts.Requests.Product;
+@using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
@@ -95,15 +96,15 @@
 
 @code {
     private readonly ProductValidation _createProduct = new ProductValidation();
-    private List<Allergy> allergies = new List<Allergy>();
-    private List<Category> categories = new List<Category>();
+    private List<AllergyDto> allergies = new List<AllergyDto>();
+    private List<CategoryDto> categories = new List<CategoryDto>();
     private bool Error;
     private string ErrorMessage;
 
     protected override async Task OnInitializedAsync()
     {
-        allergies = await HttpClient.GetFromJsonAsync<List<Allergy>>("api/allergy");
-        categories = await HttpClient.GetFromJsonAsync<List<Category>>("api/category");
+        allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("api/allergy");
+        categories = await HttpClient.GetFromJsonAsync<List<CategoryDto>>("api/category");
     }
 
     private async Task HandleValidSubmit()
@@ -147,18 +148,6 @@
             await stream.CopyToAsync(ms);
             _createProduct.MenuPhoto = ms.ToArray();
         }
-    }
-
-    private class Allergy
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    private class Category
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 
     private void HandleAllergiesSelection(ChangeEventArgs e)
