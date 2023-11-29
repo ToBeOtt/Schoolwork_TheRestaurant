@@ -41,11 +41,19 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
         public async Task<List<Domain.Entities.Menu.Product>> GetAllAsync()
         {
             return await _context.Products.Where(item => !item.IsDeleted).ToListAsync();
+
+            //return await _context.Products
+            //    .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
+            //    .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
+            //    .ToListAsync();
         }
 
         public async Task<Domain.Entities.Menu.Product> GetByIdAsync(int id)
         {
-            return await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Products
+                .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
+                .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task UpdateAsync(Domain.Entities.Menu.Product menuItem)

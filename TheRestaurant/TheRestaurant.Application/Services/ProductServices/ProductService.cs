@@ -75,6 +75,18 @@ namespace TheRestaurant.Application.Services.ProductServices
             productToUpdate.Price = request.Price;
             productToUpdate.IsFoodItem = request.IsFoodItem;
             productToUpdate.IsDeleted = request.IsDeleted;
+            productToUpdate.ProductCategories = new List<ProductCategory>();
+            productToUpdate.ProductAllergies = new List<ProductAllergy>();
+
+            foreach (var allergyId in request.SelectedAllergyIds)
+            {
+                productToUpdate.ProductAllergies.Add(new ProductAllergy { AllergyId = allergyId });
+            }
+
+            foreach (var categoryId in request.SelectedCategoryIds)
+            {
+                productToUpdate.ProductCategories.Add(new ProductCategory { CategoryId = categoryId });
+            }
 
             await _productRepository.UpdateAsync(productToUpdate);
 
