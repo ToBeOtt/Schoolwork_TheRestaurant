@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231129100659_AddIsActivedToTblCategories")]
+    partial class AddIsActivedToTblCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -333,110 +336,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsDeleted = false,
-                            Name = "Appetizers"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsDeleted = false,
-                            Name = "Salads"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsDeleted = true,
-                            Name = "Soups"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsDeleted = false,
-                            Name = "Pasta"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsDeleted = false,
-                            Name = "Steak"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IsDeleted = true,
-                            Name = "Lamb"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            IsDeleted = false,
-                            Name = "Seafood"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            IsDeleted = false,
-                            Name = "Vegetarian"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            IsDeleted = false,
-                            Name = "Burgers"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            IsDeleted = false,
-                            Name = "Sandwiches"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            IsDeleted = false,
-                            Name = "Pizza"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            IsDeleted = false,
-                            Name = "Rice"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            IsDeleted = true,
-                            Name = "Sushi"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            IsDeleted = false,
-                            Name = "Non Alcoholic Beverages"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            IsDeleted = true,
-                            Name = "Alcoholic Beverages"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            IsDeleted = false,
-                            Name = "Desserts"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            IsDeleted = false,
-                            Name = "Poultry"
-                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.Product", b =>
@@ -594,9 +493,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -604,38 +500,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsDeleted = false,
-                            Status = "Pending"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsDeleted = false,
-                            Status = "Processing"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsDeleted = false,
-                            Status = "Delivered"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsDeleted = false,
-                            Status = "Cancelled"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsDeleted = true,
-                            Status = "Active"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

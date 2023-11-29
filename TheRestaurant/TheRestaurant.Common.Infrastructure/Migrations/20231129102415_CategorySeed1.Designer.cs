@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231129102415_CategorySeed1")]
+    partial class CategorySeed1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -604,38 +607,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsDeleted = false,
-                            Status = "Pending"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsDeleted = false,
-                            Status = "Processing"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsDeleted = false,
-                            Status = "Delivered"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsDeleted = false,
-                            Status = "Cancelled"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsDeleted = true,
-                            Status = "Active"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
