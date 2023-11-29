@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 using TheRestaurant.Application.Interfaces.IAllergy;
 using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace TheRestaurant.Common.Infrastructure.Repositories.Allergy
 {
     public class AllergyRepository : IAllergyRepository
     {
-
+        private readonly ILogger<AllergyRepository> _logger;
         private readonly RestaurantDbContext _context;
 
-        public AllergyRepository(RestaurantDbContext context)
+        public AllergyRepository(ILogger<AllergyRepository> logger, RestaurantDbContext context)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -37,9 +39,18 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Allergy
 
 
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(Domain.Entities.Menu.Allergy allergy)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Remove(allergy);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                
+                throw;
+            }
         }
 
 
