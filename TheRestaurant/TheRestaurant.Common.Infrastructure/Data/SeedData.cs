@@ -36,5 +36,18 @@ namespace TheRestaurant.Common.Infrastructure.Data
             );
         }
 
+        //OrderStatus Seed
+        public static void OrderStatusSeed(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderStatus>().HasData(
+                new OrderStatus { Id = 1, Status = "Pending", IsDeleted = false },
+                new OrderStatus { Id = 2, Status = "Processing", IsDeleted = false },
+                new OrderStatus { Id = 3, Status = "Delivered", IsDeleted = false },
+                new OrderStatus { Id = 4, Status = "Cancelled", IsDeleted = false },
+                new OrderStatus { Id = 5, Status = "Active", IsDeleted = true }
+
+            );
+        }
+
     }
 }

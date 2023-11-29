@@ -37,7 +37,7 @@ namespace Common.Infrastructure.Data
         {
             builder.AllergySeed();
             builder.CategorySeed();
-            
+            builder.OrderStatusSeed();
 
             base.OnModelCreating(builder);
         }
