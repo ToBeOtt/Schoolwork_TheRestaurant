@@ -123,7 +123,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             }
         }
 
-        //api/Allergy/update/1
+        //api/Allergy/edit/1
         [HttpPut("edit/{id}")]
         [Authorize(Roles = "manager")]
         public async Task<IActionResult> UpdateAllergy(int id, AllergyRequest request) 
