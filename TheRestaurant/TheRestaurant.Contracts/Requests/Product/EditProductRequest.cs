@@ -12,7 +12,9 @@ namespace TheRestaurant.Contracts.Requests.Product
         string Description,
         byte[] MenuPhoto,
         bool IsFoodItem,
-        bool IsDeleted
+        bool IsDeleted,
+        List<int> SelectedAllergyIds,
+        List<int> SelectedCategoryIds
         );
 
 }

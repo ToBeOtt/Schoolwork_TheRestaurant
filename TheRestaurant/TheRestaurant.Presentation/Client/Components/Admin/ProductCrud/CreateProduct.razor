@@ -61,14 +61,16 @@
             </div>
         </div>
 
-@*        <div class="form-group-row">
-            <div class="col-md-4">
-                <label for="categories" class="col-md-2 control-label">Categories: </label>
-                @foreach (var category in menuItemValidation.MenuItemCategories)
-                {
 
+        <div class="form-group">
+            <label for="categories">Categories</label>
+            <select id="categories" class="form-control" multiple @onchange="HandleCategoriesSelection">
+                @foreach (var category in categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
                 }
-            </div>*@
+            </select>
+        </div>
 
         <div class="form-group">
             <label for="allergies">Allergies</label>
@@ -94,12 +96,14 @@
 @code {
     private readonly ProductValidation _createProduct = new ProductValidation();
     private List<Allergy> allergies = new List<Allergy>();
+    private List<Category> categories = new List<Category>();
     private bool Error;
     private string ErrorMessage;
 
     protected override async Task OnInitializedAsync()
     {
         allergies = await HttpClient.GetFromJsonAsync<List<Allergy>>("api/allergy");
+        categories = await HttpClient.GetFromJsonAsync<List<Category>>("api/category");
     }
 
     private async Task HandleValidSubmit()
@@ -111,7 +115,8 @@
             MenuPhoto: _createProduct.MenuPhoto,
             IsFoodItem: _createProduct.IsFoodItem,
             IsDeleted: _createProduct.IsDeleted,
-            SelectedAllergyIds: _createProduct.SelectedAllergyIds
+            SelectedAllergyIds: _createProduct.SelectedAllergyIds,
+            SelectedCategoryIds: _createProduct.SelectedCategoryIds
 
         // Include Category & Allergy when implemented
         );
@@ -150,12 +155,27 @@
         public string Name { get; set; }
     }
 
+    private class Category
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     private void HandleAllergiesSelection(ChangeEventArgs e)
     {
         var selectedOptions = e.Value as IEnumerable<string>;
         if (selectedOptions != null)
         {
             _createProduct.SelectedAllergyIds = selectedOptions.Select(int.Parse).ToList();
+        }
+    }
+
+    private void HandleCategoriesSelection(ChangeEventArgs e)
+    {
+        var selectedOptions = e.Value as IEnumerable<string>;
+        if (selectedOptions != null)
+        {
+            _createProduct.SelectedCategoryIds = selectedOptions.Select(int.Parse).ToList();
         }
     }
 }
