@@ -27,10 +27,10 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Allergy
                 _context.Add(allergy);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (DbUpdateException ex)
             {
 
-                throw;
+                throw ex;
             }
             
         }
@@ -46,7 +46,16 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Allergy
 
         public async Task<List<Domain.Entities.Menu.Allergy>> GetAllAsync()
         {
-            return await _context.Allergies.ToListAsync();
+            try
+            {
+                return await _context.Allergies.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
 
         public async Task<Domain.Entities.Menu.Allergy> GetByIdAsync(int id)
@@ -54,9 +63,18 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Allergy
             return await _context.Allergies.FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public Task UpdateAsync(Domain.Entities.Menu.Allergy allergy)
+        public async Task UpdateAsync(Domain.Entities.Menu.Allergy allergy)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Update(allergy);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }
