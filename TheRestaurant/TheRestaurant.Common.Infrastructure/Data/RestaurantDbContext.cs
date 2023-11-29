@@ -36,8 +36,7 @@ namespace Common.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.AllergySeed();
-            builder.CategorySeed();
-            builder.OrderStatusSeed();
+
 
             base.OnModelCreating(builder);
         }
