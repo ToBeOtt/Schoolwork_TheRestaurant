@@ -19,7 +19,7 @@ namespace TheRestaurant.Application.Services.ProductServices
 
         public async Task<Product> CreateProductAsync(CreateProductRequest request)
         {
-            var menuItem = new Product
+            var product = new Product
             {
                 Name = request.Name,
                 Price = request.Price,
@@ -27,18 +27,23 @@ namespace TheRestaurant.Application.Services.ProductServices
                 MenuPhoto = request.MenuPhoto,
                 IsFoodItem = request.IsFoodItem,
                 IsDeleted = request.IsDeleted,
-                ProductAllergies = new List<ProductAllergy>()
-                // Category & Allergy
+                ProductAllergies = new List<ProductAllergy>(),
+                ProductCategories = new List<ProductCategory>()
             };
 
             foreach (var allergyId in request.SelectedAllergyIds)
             {
-                menuItem.ProductAllergies.Add(new ProductAllergy { AllergyId = allergyId });
+                product.ProductAllergies.Add(new ProductAllergy { AllergyId = allergyId });
             }
 
-            await _productRepository.AddAsync(menuItem);
+            foreach (var categoryId in request.SelectedCategoryIds)
+            {
+                product.ProductCategories.Add(new ProductCategory { CategoryId = categoryId });
+            }
 
-            return menuItem;
+            await _productRepository.AddAsync(product);
+
+            return product;
         }
 
         public async Task SoftDeleteProductAsync(int id)
@@ -48,32 +53,32 @@ namespace TheRestaurant.Application.Services.ProductServices
 
         public async Task<List<Product>> GetAllProducts()
         {
-            var menuItems = await _productRepository.GetAllAsync();
+            var products = await _productRepository.GetAllAsync();
 
-            return menuItems;
+            return products;
         }
 
         public async Task<Product> GetProductById(int id)
         {
-            var menuItem = await _productRepository.GetByIdAsync(id);
+            var product = await _productRepository.GetByIdAsync(id);
 
-            return menuItem;
+            return product;
         }
 
         public async Task<Product> UpdateProductAsync(int id, EditProductRequest request)
         {
-            var menuItemToUpdate = await _productRepository.GetByIdAsync(id);
+            var productToUpdate = await _productRepository.GetByIdAsync(id);
 
-            menuItemToUpdate.Name = request.Name;
-            menuItemToUpdate.Description = request.Description;
-            menuItemToUpdate.MenuPhoto = request.MenuPhoto;
-            menuItemToUpdate.Price = request.Price;
-            menuItemToUpdate.IsFoodItem = request.IsFoodItem;
-            menuItemToUpdate.IsDeleted = request.IsDeleted;
+            productToUpdate.Name = request.Name;
+            productToUpdate.Description = request.Description;
+            productToUpdate.MenuPhoto = request.MenuPhoto;
+            productToUpdate.Price = request.Price;
+            productToUpdate.IsFoodItem = request.IsFoodItem;
+            productToUpdate.IsDeleted = request.IsDeleted;
 
-            await _productRepository.UpdateAsync(menuItemToUpdate);
+            await _productRepository.UpdateAsync(productToUpdate);
 
-            return menuItemToUpdate;
+            return productToUpdate;
         }
     }
 }

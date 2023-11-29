@@ -23,8 +23,8 @@ namespace TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validat
         [Required]
         public byte[] MenuPhoto { get; set; }
 
-        //[Required(ErrorMessage ="Åtminstone en kategori krävs")]
-        //public List<int> SelectedCategoryIds { get; set; }
+        [Required(ErrorMessage = "Åtminstone en kategori krävs")]
+        public List<int> SelectedCategoryIds { get; set; }
 
         public List<int> SelectedAllergyIds { get; set; }
     }
