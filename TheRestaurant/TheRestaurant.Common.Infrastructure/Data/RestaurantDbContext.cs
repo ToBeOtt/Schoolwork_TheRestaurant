@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using System.Reflection.Emit;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Domain.Entities.Authentication;
@@ -35,12 +36,18 @@ namespace Common.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new OrderConfiguration());
             builder.AllergySeed();
             builder.CategorySeed();
+            //builder.SeedOrder();
             builder.OrderStatusSeed();
+            //builder.OrderRowSeed();
+
 
             base.OnModelCreating(builder);
+
         }
+
     }
 
 }

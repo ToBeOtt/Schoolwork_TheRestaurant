@@ -1,0 +1,85 @@
+﻿@using System.Text.Json;
+@using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
+@using TheRestaurant.Presentation.Shared.OrderDTO;
+@using MudBlazor;
+@inject ISnackbar Snackbar
+
+@page "/Order"
+@inject HttpClient HttpClient
+
+<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(1)">Add Item 1</MudButton>
+<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(2)">Add Item 2</MudButton>
+<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="CreateOrder">Färdigställ beställning</MudButton>
+@code {
+    private Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
+
+    private const string ServiceEndpoint = "/api/Order";
+
+    private OrderDto orderDto = new OrderDto { OrderItems = new List<OrderProductDto>() };
+
+    private OrderProductDto orderProductDto = new OrderProductDto { ProductId = 1, Quantity = 0 };
+
+    private async Task CreateOrder()
+    {
+        var createOrderRequest = new OrderDto
+            {
+                OrderDate = DateTime.Now,
+                OrderItems = new List<OrderProductDto>()
+            };
+
+        foreach (var item in itemQuantities)
+        {
+            var orderItem = new OrderProductDto { ProductId = item.Key, Quantity = item.Value };
+            createOrderRequest.OrderItems.Add(orderItem);
+        }
+
+        var response = await HttpClient.PostAsJsonAsync("/api/order/Create", createOrderRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // Parse the response data
+            var responseData = await response.Content.ReadAsStringAsync();
+
+            // Deserialize the response data into an OrderDto object
+            var order = JsonSerializer.Deserialize<OrderDto>(responseData);
+
+            // Response to user
+            Snackbar.Add("Order was successfully created.");
+        }
+        else
+        {
+            // Handle an unsuccessful order creation
+            Snackbar.Add("Failed to create the order.");
+        }
+    }
+
+
+
+    private async Task GetOrder(int id)
+    {
+        var response = await HttpClient.GetAsync("/order/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var responseData = await response.Content.ReadAsStringAsync();
+            var order = JsonSerializer.Deserialize<OrderDto>(responseData);
+            // Do something with the order...
+        }
+        else
+        {
+            // Handle the error...
+        }
+    }
+
+
+
+    private void AddOrderItem(int id)
+    {
+        if (!itemQuantities.ContainsKey(id))
+        {
+            itemQuantities[id] = 0;
+        }
+
+        itemQuantities[id]++;
+    }
+}

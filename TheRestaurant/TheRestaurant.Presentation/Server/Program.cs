@@ -8,11 +8,14 @@ using TheRestaurant.Application.Employees;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Application.Interfaces.IAllergy;
 using TheRestaurant.Application.Services.AllergyServices;
+using TheRestaurant.Application.Services.OrderServices;
+using TheRestaurant.Common.Infrastructure.Repositories.OrderRepository;
+using MudBlazor.Services;
 using TheRestaurant.Application.Services.ProductServices;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud;
 using TheRestaurant.Presentation.Server.Config.Swagger;
-
+using TheRestaurant.Application.Interfaces;
 
 namespace TheRestaurant.Presentation
 {
@@ -39,7 +42,12 @@ namespace TheRestaurant.Presentation
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+            // Add OrderService
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
             builder.Services.AddScoped<DeleteProductConfirmation>();
+
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
