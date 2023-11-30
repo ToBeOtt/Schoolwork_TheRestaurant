@@ -97,6 +97,10 @@ namespace TheRestaurant.Presentation
                 var userSeeds = serviceProvider.GetRequiredService<UserSeeds>();
                 await userSeeds.SeedManager();
                 await userSeeds.SeedEmployee();
+
+                var produtSeeds = serviceProvider.GetRequiredService<ProductSeeds>();
+
+                await produtSeeds.SeedProducts();
             }
         }
     }
