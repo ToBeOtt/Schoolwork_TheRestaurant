@@ -1,14 +1,54 @@
 ﻿<style>
     .footer-sticky {
-            position: fixed;
-            bottom: 0;
+        bottom: 0;
     }
 </style>
 
-<MudPaper Class="mud-width-full mud-appbar footer-sticky" Square Height="15vh">
+<MudPaper 
+    Class="mud-width-full mud-appbar footer-sticky" 
+    Square Height="25vh">
 
-    <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Primary">Footer</MudText>
+    <MudGrid>
+        <MudItem xs="6">
+            <MudPaper 
+                Elevation="0"
+                Class="d-flex align-center justify-center mud-width-full pt-10 bg-transparent">
+                     <MudText Typo="Typo.h5" Color="Color.Primary">
+                        <span>Hitta hit?</span>
+                         <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                             <span>Restauranggatan 1b,</span>
+                             <br />
+                             <span>Staden, 123 45</span>
+                         </MudText>
+                         <MudIconButton Icon="@Icons.Material.Filled.Map"
+                                    Color="@Color.Primary"
+                                    Href="https://www.google.se" />
+                     </MudText>
+            </MudPaper>
+        </MudItem>
 
+         <MudItem xs="6">
+             <MudPaper Elevation="0"
+                       Class="d-flex align-center justify-center mud-width-full pt-10 bg-transparent">
+                 <MudText Typo="Typo.h5" Color="Color.Primary">
+                     <span>Vad andra tycker?</span>
+                     <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                         <span>Se recensioner</span>
+                         <MudIconButton Icon="@Icons.Material.Filled.Reviews"
+                                        Color="@Color.Primary"
+                                        Href="https://www.google.se" />
+                     </MudText>
+                     <MudText Typo="Typo.subtitle1" Color="Color.Primary">
+                         Lämna en recension
+                         <MudIconButton Icon="@Icons.Material.Filled.RateReview"
+                                        Color="@Color.Primary"
+                                        Href="https://www.google.se" />
+                     </MudText>
+                 </MudText>
+             </MudPaper>
+         </MudItem>
+
+       </MudGrid>
 </MudPaper>
 
 

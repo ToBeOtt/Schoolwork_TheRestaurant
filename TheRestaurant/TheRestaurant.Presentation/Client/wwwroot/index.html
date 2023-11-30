@@ -40,6 +40,12 @@
     <script src="_content/TheRestaurant/blazor.webassembly.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script>
+        window.Blazor = window.Blazor || {};
+        window.Blazor.reload = function () {
+            location.reload();
+        };
+    </script>
 </body>
 
 </html>
