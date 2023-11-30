@@ -1,45 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Common.Infrastructure.Data;
+﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Domain.Entities.OrderEntities;
 
-namespace Common.Infrastructure.Services.OrderServices
+namespace TheRestaurant.Common.Infrastructure.Repositories.OrderRepository
 {
-    public class OrderService : IOrderService
+    public class OrderRepository : IOrderRepository
     {
         private readonly RestaurantDbContext _dbContext;
 
-        public OrderService(RestaurantDbContext dbContext)
+        public OrderRepository(RestaurantDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<Order> CreateOrderAsync(Order order)
+        public async Task<Order> CreateAsync(Order order)
         {
             _dbContext.Orders.Add(order);
             await _dbContext.SaveChangesAsync();
             return order;
         }
 
-        public async Task<Order> GetOrderByIdAsync(int orderId)
+        public async Task<Order> GetByIdAsync(int orderId)
         {
             return await _dbContext.Orders.FindAsync(orderId);
         }
 
-        public async Task<List<Order>> GetAllOrdersAsync()
+        public async Task<List<Order>> GetAllAsync()
         {
             return await _dbContext.Orders.ToListAsync();
         }
 
-        public async Task UpdateOrderAsync(Order order)
+        public async Task UpdateAsync(Order order)
         {
             _dbContext.Entry(order).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteOrderAsync(int orderId)
+        public async Task DeleteAsync(int orderId)
         {
             var order = await _dbContext.Orders.FindAsync(orderId);
             if (order != null)
@@ -50,4 +53,3 @@ namespace Common.Infrastructure.Services.OrderServices
         }
     }
 }
-
