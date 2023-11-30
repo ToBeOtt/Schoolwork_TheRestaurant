@@ -27,6 +27,8 @@ namespace TheRestaurant.Presentation.Client
             builder.Services.AddScoped<AuthenticationStateProvider>(
                 provider => provider.GetRequiredService<ServerAuthenticationStateProvider>());
 
+             
+
 
             // All services for client
             builder.Services.AddClientServices(builder.Configuration);
