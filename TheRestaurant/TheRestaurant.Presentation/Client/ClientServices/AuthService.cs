@@ -22,7 +22,7 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             _localStorage = localStorage;
             _navigationManager = navigationManager;
         }
-        public async Task Login(LoginRequest request)
+        public async Task<bool> Login(LoginRequest request)
         {
             var json = JsonSerializer.Serialize(request);
 
@@ -43,14 +43,14 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
                 if (_navigationManager.Uri.Contains("login"))
                 {
-                    _navigationManager.NavigateTo("/");
+                    return true;
                 }
             }
             else
             {
-                _navigationManager.NavigateTo("/register");
+                return false;
             }
-            
+            return false;
         } 
     }
 }

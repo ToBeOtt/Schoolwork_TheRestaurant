@@ -1,17 +1,57 @@
 ﻿@page "/aboutPage"
+@using TheRestaurant.Presentation.Client.Components.About
 
-<h3>The Restaurant</h3>
-<p>
-    Välkommen till The Restaurant, platsen där smaker blir till minnen och varje måltid blir en resa genom kulinariska äventyr. Belägen mitt i hjärtat av staden, omfamnar The Restaurant en atmosfär av sofistikerad elegans och samtidigt en avslappnad värme.
+<MudGrid>
+    <MudItem xs="12" sm="4">
+        <MudPaper 
+            Elevation="0"
+            Class="d-flex align-center justify-center mud-width-full py-8 my-4">
+            <AboutImage/>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="8">
+        <MudPaper 
+            Elevation="0"
+            Class="d-flex align-center justify-center mud-width-full py-4 px-6 m-4">
+           
+            <MudText 
+                Class="mb-3" 
+                Color="@Color.Tertiary"
+                Typo="Typo.h6"
+            >
+            <p>
+                    <MudText 
+                        Color="@Color.Info"
+                        Typo="Typo.h3">
+                        The Restaurant
+                    </MudText>
+            </p>
+                <p>Här möts du av en harmonisk mix av modern design och tidlös charm. Den stämningsfulla belysningen och det noggrant utvalda möblemanget skapar en atmosfär som är lika lämplig för en romantisk middag som för en festlig sammankomst med vänner och familj
+                </p>
+                <p>The Restaurant är stolt över att erbjuda en meny som komponerats med kärlek och passion för god mat. Våra kockar använder endast färska, lokala råvaror för att skapa rätter som balanserar innovation och tradition. Varje tugga är en explosion av smaker, och varje rätt är en konstnärlig presentation av kulinarisk expertis.</p>
+                <p>Vår uppmärksamma och vänliga personal strävar efter att göra varje besök till en minnesvärd upplevelse. Vi är dedikerade till att erbjuda förstklassig service och att göra varje gäst känna sig som en uppskattad del av The Restaurant-familjen.</p>
+                <p>Oavsett om du är här för en affärslunch, en romantisk middag eller en festlig fest, lovar vi att varje besök på The Restaurant kommer att överträffa dina förväntningar. Kom och upplev det bästa av gastronomi och gästfrihet – välkommen till The Restaurant, där varje måltid är en resa och varje gäst är en hedersgäst.</p>
+            </MudText>
 
-    Här möts du av en harmonisk mix av modern design och tidlös charm. Den stämningsfulla belysningen och det noggrant utvalda möblemanget skapar en atmosfär som är lika lämplig för en romantisk middag som för en festlig sammankomst med vänner och familj.
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="6" sm="3">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=6 sm=3</MudPaper>
+    </MudItem>
+    <MudItem xs="6" sm="3">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=6 sm=3</MudPaper>
+    </MudItem>
+    <MudItem xs="6" sm="3">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=6 sm=3</MudPaper>
+    </MudItem>
+    <MudItem xs="6" sm="3">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=6 sm=3</MudPaper>
+    </MudItem>
+</MudGrid>
 
-    The Restaurant är stolt över att erbjuda en meny som komponerats med kärlek och passion för god mat. Våra kockar använder endast färska, lokala råvaror för att skapa rätter som balanserar innovation och tradition. Varje tugga är en explosion av smaker, och varje rätt är en konstnärlig presentation av kulinarisk expertis.
 
-    Vår uppmärksamma och vänliga personal strävar efter att göra varje besök till en minnesvärd upplevelse. Vi är dedikerade till att erbjuda förstklassig service och att göra varje gäst känna sig som en uppskattad del av The Restaurant-familjen.
 
-    Oavsett om du är här för en affärslunch, en romantisk middag eller en festlig fest, lovar vi att varje besök på The Restaurant kommer att överträffa dina förväntningar. Kom och upplev det bästa av gastronomi och gästfrihet – välkommen till The Restaurant, där varje måltid är en resa och varje gäst är en hedersgäst.
-</p>
+
 
 @code {
 

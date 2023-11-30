@@ -1,0 +1,23 @@
+﻿
+<MudGrid Justify="Justify.Center">
+    <MudItem>
+        <div style="position: relative;">
+            <MudImage Src="/css/images/restaurantInterior.jpg"
+                      style="width: 100%; height: 100%;"
+                      ObjectFit="@ImageFit"
+                      Alt="Restaurant"
+                      Elevation="25" 
+                      Class="rounded-lg" />
+                     
+        </div>
+    </MudItem>
+</MudGrid>
+
+@code {
+    ObjectFit ImageFit = ObjectFit.Contain;
+
+    void SetImageFit(ObjectFit value)
+    {
+        ImageFit = value;
+    }
+}

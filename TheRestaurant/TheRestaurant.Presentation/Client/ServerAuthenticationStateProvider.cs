@@ -1,6 +1,5 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http;
 using System.Security.Claims;
 
 namespace TheRestaurant.Presentation.Client
@@ -10,11 +9,9 @@ namespace TheRestaurant.Presentation.Client
         private readonly ILocalStorageService _localStorage;
         private readonly HttpClient _httpClient;
 
-        public ServerAuthenticationStateProvider()
-        {
-            
-        }
-        public ServerAuthenticationStateProvider(ILocalStorageService localStorage, HttpClient httpClient)
+        public ServerAuthenticationStateProvider(
+            ILocalStorageService localStorage, 
+            HttpClient httpClient)
         {
             _localStorage = localStorage;
             _httpClient = httpClient;
@@ -24,7 +21,6 @@ namespace TheRestaurant.Presentation.Client
         {
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
-
 
         public void NotifyAuthenticationStateChanged()
         {
@@ -57,21 +53,19 @@ namespace TheRestaurant.Presentation.Client
                         // Set authorization header for API requests
                         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authToken);
 
-                        // Check if the expiration time is already in local storage
-                        var expirationTime = await _localStorage.GetItemAsync<DateTimeOffset?>("TokenExpiration");
+                        // Extract expiration time from the token
+                        var expirationTime = jsonToken.ValidTo;
 
-                        // Extract expiration time if not available in local storage or if the token is refreshed
-                        if (!expirationTime.HasValue || expirationTime < DateTimeOffset.UtcNow)
+                        // Check if the expiration time is still valid
+                        if (expirationTime < DateTimeOffset.UtcNow)
                         {
-                            if (jsonToken.Payload.TryGetValue("exp", out var exp) &&
-                                exp is long expirationUnix)
-                            {
-                                expirationTime = DateTimeOffset.FromUnixTimeSeconds(expirationUnix).UtcDateTime;
-                                claims.Add(new Claim("TokenExpiration", expirationTime.ToString()));
+                            // If the token is expired, remove it
+                            await _localStorage.RemoveItemAsync("authToken");
+                            await _localStorage.RemoveItemAsync("TokenExpiration");
 
-                                // Store expiration time in local storage
-                                await _localStorage.SetItemAsync("TokenExpiration", expirationTime);
-                            }
+                            // Notify authentication state changed
+                            NotifyAuthenticationStateChanged();
+                            return new AuthenticationState(new ClaimsPrincipal());
                         }
 
                         // Add roles to claims
@@ -82,7 +76,7 @@ namespace TheRestaurant.Presentation.Client
                         {
                             claims.Add(new Claim(ClaimTypes.Role, role));
                         }
-                        
+
                         var identity = new ClaimsIdentity(claims, "jwt");
                         var user = new ClaimsPrincipal(identity);
                         return new AuthenticationState(user);

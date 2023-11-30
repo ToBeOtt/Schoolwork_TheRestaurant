@@ -1,12 +1,11 @@
 using Blazored.LocalStorage;
-using Common.Infrastructure;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using System.Net.NetworkInformation;
-using TheRestaurant.Presentation.Client;
 using TheRestaurant.Presentation.Client.ClientServices;
+using TheRestaurant.Presentation.Client.Helpers;
 
 namespace TheRestaurant.Presentation.Client
 {
