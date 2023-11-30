@@ -5,6 +5,8 @@ using TheRestaurant.Presentation.Shared.OrderDTO;
 using TheRestaurant.Application.Services.OrderServices;
 using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
 using TheRestaurant.Domain.Entities.OrderEntities;
+using TheRestaurant.Application.Interfaces.IProduct;
+using TheRestaurant.Presentation.Server.Controllers.Admin;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Order
 {
@@ -12,6 +14,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
     [ApiController]
     public class OrderController : ControllerBase
     {
+       
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrder(int id)
         {
@@ -29,7 +32,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return orderDto;
         }
-        [HttpPost("Create")]
+        [HttpPost("create")]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] OrderDto orderDto)
         {
             var createOrderRequest = new CreateOrderRequest
@@ -95,7 +98,6 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return CreatedAtAction(nameof(GetOrder), new { id = createdOrder.Id }, createdOrderDto);
         }
-
 
         private readonly IOrderService _orderService;
 

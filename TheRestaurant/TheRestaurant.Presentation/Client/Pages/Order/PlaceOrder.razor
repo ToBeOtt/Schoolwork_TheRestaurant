@@ -2,22 +2,25 @@
 @using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
 @using TheRestaurant.Presentation.Shared.OrderDTO;
 @using MudBlazor;
+@using System.Net.Http.Json;
 @inject ISnackbar Snackbar
 
 @page "/Order"
 @inject HttpClient HttpClient
 
-<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(1)">Add Item 1</MudButton>
-<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(2)">Add Item 2</MudButton>
 <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="CreateOrder">Färdigställ beställning</MudButton>
 @code {
     private Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
 
     private const string ServiceEndpoint = "/api/Order";
 
-    private OrderDto orderDto = new OrderDto { OrderItems = new List<OrderProductDto>() };
+    private List<ProductDto> products;
 
-    private OrderProductDto orderProductDto = new OrderProductDto { ProductId = 1, Quantity = 0 };
+    protected override async Task OnInitializedAsync()
+    {
+        var products = await HttpClient.GetFromJsonAsync<List<ProductDto>>("admin/Products");
+        // Do something with the products...
+    }
 
     private async Task CreateOrder()
     {
@@ -57,7 +60,7 @@
 
     private async Task GetOrder(int id)
     {
-        var response = await HttpClient.GetAsync("/order/{id}");
+        var response = await HttpClient.GetAsync("/Order/{id}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -82,4 +85,14 @@
 
         itemQuantities[id]++;
     }
+}
+@foreach (var product in products)
+{
+    var productName = product?.Name ?? "Unknown";
+    <div>
+        <h2>@productName</h2>
+        <p>@product.Description</p>
+        <p>@product.Price</p>
+        <MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(product.Id)">Add to Order</MudButton>
+    </div>
 }
