@@ -25,51 +25,62 @@
                         <MudTable Items="@allergies" Dense=true Hover=true Bordered=false Striped=false Elevation="0" Loading=@loading>
                             <ToolBarContent>
                                 <MudText Typo="Typo.h6">Allergi Typer</MudText>
-                                <MudSpacer/>
+                                <MudSpacer />
                                 <MudButton Variant="Variant.Filled" Color="Color.Secondary">Ny Allergi</MudButton>
                             </ToolBarContent>
                             <HeaderContent>
                                 <MudTh>Id</MudTh>
                                 <MudTh>Namn</MudTh>
                                 <MudTh></MudTh>
-                                <MudTh>Dölj</MudTh>
+                                <MudTh>Synlighet</MudTh>
                                 <MudTh></MudTh>
                             </HeaderContent>
                             <RowTemplate>
                                 <MudTd DataLabel="Id">@context.Id</MudTd>
                                 <MudTd DataLabel="Namn">@context.Name</MudTd>
-                                <MudTd >
+                                <MudTd>
                                     <MudSpacer />
                                 </MudTd>
                                 <MudTd>
-                                    <MudSwitch @bind-Checked="@placeholderSwitch" Label="temp" Color="Color.Primary" />
+                                    @if (@context.IsHidden == true)
+                                    {
+
+                                        <MudSwitch @bind-Checked="@context.IsHidden" Label="Dold" Color="Color.Primary" />
+                                        //<MudSwitch @bind-Checked="@(() => HiddenStatus(context.IsHidden, context.Id))" Label="Dold" Color="Color.Primary" />
+
+                                    }
+                                    else
+                                    {
+                                        <MudSwitch @bind-Checked="@context.IsHidden" Label="Synlig" Color="Color.Primary" />
+                                    }
+
                                 </MudTd>
                                 <MudTd>
                                     <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
                                         <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
-                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
+                                         <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
 
-                                    </MudButtonGroup>
-                                </MudTd>
+                                     </MudButtonGroup>
+                                 </MudTd>
 
-                            </RowTemplate>
+                             </RowTemplate>
 
-                        </MudTable>
-                    </MudGrid>
-                </MudGrid>
+                         </MudTable>
+                     </MudGrid>
+                 </MudGrid>
 
-            </MudPaper>
-        </MudItem>
-
-
-
-
-    </AdminContent>
-</AdminLayout>
+             </MudPaper>
+         </MudItem>
 
 
 
-@code {
+
+     </AdminContent>
+ </AdminLayout>
+
+
+
+ @code {
     private List<AllergyDto> allergies;
     private bool loading;
     private bool placeholderSwitch;
@@ -78,6 +89,17 @@
     {
         allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
     }
+
+    private async Task HiddenStatus(bool isHidden, int id)
+    {
+        var allergy = await HttpClient.GetFromJsonAsync<AllergyDto>("/api/allergy/{id}");
+
+        allergy.IsHidden = isHidden;
+
+        await HttpClient.PutAsJsonAsync<AllergyDto>($"/api/allergy/edit/{allergy.Id}", allergy);
+    }
+
+
 }
 
 
