@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Presentation.Shared.OrderDTO;
 using TheRestaurant.Application.Services.OrderServices;
+using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
+using TheRestaurant.Domain.Entities.OrderEntities;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Order
 {
-    [Route("api/order")]
+    [Route("api/Order")]
     [ApiController]
     public class OrderController : ControllerBase
     {
-        [HttpPost]
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrder(int id)
         {
@@ -28,36 +29,72 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return orderDto;
         }
-        [HttpPost("CreateOrder")]
-        public async Task<ActionResult<OrderDto>> CreateOrder(OrderDto orderDto)
+        [HttpPost("Create")]
+        public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] OrderDto orderDto)
         {
-            var order = new Domain.Entities.OrderEntities.Order
+            var createOrderRequest = new CreateOrderRequest
             {
-                Id = orderDto.Id,
                 OrderDate = orderDto.OrderDate,
-                //OrderItems = orderDto.OrderItems // TODO OrderItems is a list of OrderItem objects
+                OrderItems = orderDto.OrderItems.Select(item => new OrderProductDto
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity
+                }).ToList()
             };
 
+            var order = new Domain.Entities.OrderEntities.Order
+            {
+                OrderDate = orderDto.OrderDate,
+                OrderRows = new List<OrderRow>()
+            };
+
+            foreach (var orderItemDto in orderDto.OrderItems)
+            {
+                // You don't need to create detailed product entities here,
+                // only include the ProductId and Quantity
+                var orderRow = new OrderRow
+                {
+                    // Include the ProductId and Quantity
+                    MenuItem = new List<Domain.Entities.Menu.Product>
+            {
+                new Domain.Entities.Menu.Product
+                {
+                    Id = orderItemDto.ProductId,
+                    Name = "Product Name",
+                    Price = 0,
+                    IsFoodItem = false,
+                    IsDeleted = false
+                }
+            }
+                };
+
+                order.OrderRows.Add(orderRow);
+            }
+
+            // Set the status of the order to "Pending"
+            _orderService.SetOrderStatus(order, "Pending");
+
+            // Create the order
             var createdOrder = await _orderService.CreateOrderAsync(order);
             if (createdOrder == null)
             {
                 return NotFound();
             }
 
-            // Set the status of the order
-            _orderService.SetOrderStatus(createdOrder, "Pending");
-
+            // Return a simplified response
             var createdOrderDto = new OrderDto
             {
                 Id = createdOrder.Id,
                 OrderDate = createdOrder.OrderDate,
-                OrderStatus = createdOrder.OrderStatus.Status // Access the status from the OrderStatus object
+                OrderItems = createdOrder.OrderRows.SelectMany(or => or.MenuItem).Select(mi => new OrderProductDto
+                {
+                    ProductId = mi.Id,
+                    Quantity = 1 // Set a default quantity (you can adjust as needed)
+                }).ToList()
             };
 
             return CreatedAtAction(nameof(GetOrder), new { id = createdOrder.Id }, createdOrderDto);
         }
-
-
 
 
         private readonly IOrderService _orderService;
