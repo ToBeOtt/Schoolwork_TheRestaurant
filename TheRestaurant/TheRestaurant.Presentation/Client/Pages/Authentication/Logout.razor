@@ -2,6 +2,7 @@
 @using Blazored.LocalStorage
 @inject NavigationManager NavigationManager
 @inject ILocalStorageService LocalStorage
+@inject ServerAuthenticationStateProvider authState
 
 @code {
     private bool AuthStateChanged;
@@ -10,6 +11,9 @@
     {
         await LocalStorage.RemoveItemAsync("authToken");
         await LocalStorage.RemoveItemAsync("TokenExpiration");
+
+        authState.NotifyAuthenticationStateChanged();
+
         NavigationManager.NavigateTo("/");
     }
 }

@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using TheRestaurant.Presentation.Client.Helpers
+@inherits LayoutComponentBase
+@inject CheckRole rolechecker
+@inject NavigationManager Navigation
 
 <MudGrid>
 
@@ -22,4 +25,13 @@
 
 @code {
     [Parameter] public RenderFragment AdminContent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(! await rolechecker.CheckIfActiveRole())
+        {
+            Navigation.NavigateTo("/");
+        }
+
+    }
 }

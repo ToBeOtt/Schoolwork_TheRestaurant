@@ -25,14 +25,15 @@
     </MudDrawer>
 
     <MudMainContent>
-        <MudContainer style="">
+        <MudContainer 
+            style="min-height: 65vh;">
         @Body
+           
         </MudContainer>
     </MudMainContent>
-    @* <ThemeReference/> *@
-    <MainFooterComponent/>
-
+    <MainFooterComponent />
 </MudLayout>
+
 
 @code {
     bool _drawerOpen = false;

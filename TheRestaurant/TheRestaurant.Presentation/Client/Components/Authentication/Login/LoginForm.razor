@@ -5,6 +5,8 @@
 @using TheRestaurant.Presentation.Client.ClientServices
 @using TheRestaurant.Presentation.Client.Components.Authentication.Login.DTO
 @inject AuthService AuthService
+@inject NavigationManager Navigate
+@inject ServerAuthenticationStateProvider authState
 
 <style>
     .form {
@@ -28,6 +30,7 @@
                     class="form-control"
                     @bind-Value="_login.Email"
                     />
+                <ValidationMessage For="(() => _login.Email)" />
             </div>
         </div>
 
@@ -46,7 +49,8 @@
                 <MudButton 
                     OnClick = "@Login_User"
                     Variant="Variant.Filled" 
-                    Color="Color.Primary">
+                    Color="Color.Primary"
+                    >
                     Logga in
                 </MudButton>
             </div>
@@ -59,15 +63,33 @@
 
     private bool Error;
     private string ErrorMessage;
+    private int NrOfTries;
+    private int TriesRemaing = 3;
 
     private async Task Login_User()
-    {   
-       
-       var request = new LoginRequest(
+    {
+        TriesRemaing = 3;
+        var request = new LoginRequest(
                     Email: _login.Email,
                     Password: _login.Password);
 
-        await AuthService.Login(request);
+        if(!await AuthService.Login(request))
+        {
+            Error = true;
+            NrOfTries++;
+            TriesRemaing -= NrOfTries;
+            ErrorMessage = "Felaktiga uppgifter, du har " + TriesRemaing + " försök kvar.";
+        }
+        else
+        {
+            authState.NotifyAuthenticationStateChanged();
+            Navigate.NavigateTo("/");
+        }
+
+        if (NrOfTries >= 3)
+        {
+            Navigate.NavigateTo("/register");
+        }
     }
 }
 
