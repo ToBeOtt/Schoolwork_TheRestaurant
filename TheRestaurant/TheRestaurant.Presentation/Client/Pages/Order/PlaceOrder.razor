@@ -7,19 +7,33 @@
 @page "/Order"
 @inject HttpClient HttpClient
 
-<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="AddOrderItem">Lägg till i beställning (@orderProductDto.Quantity)</MudButton>
-<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="CreateOrder">Färdigställ beställning(@orderProductDto.Quantity)</MudButton>
+<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(1)">Add Item 1</MudButton>
+<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(2)">Add Item 2</MudButton>
+<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="CreateOrder">Färdigställ beställning</MudButton>
 @code {
+    private Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
+
+    private const string ServiceEndpoint = "/api/Order";
+
     private OrderDto orderDto = new OrderDto { OrderItems = new List<OrderProductDto>() };
 
-    private OrderProductDto orderProductDto = new OrderProductDto { Id = 1, Quantity = 0 };
+    private OrderProductDto orderProductDto = new OrderProductDto { ProductId = 1, Quantity = 0 };
 
     private async Task CreateOrder()
     {
-        orderDto.OrderDate = DateTime.Now;
-        orderDto.OrderItems.Add(orderProductDto);
+        var createOrderRequest = new OrderDto
+            {
+                OrderDate = DateTime.Now,
+                OrderItems = new List<OrderProductDto>()
+            };
 
-        var response = await HttpClient.PostAsJsonAsync("Order", orderDto);
+        foreach (var item in itemQuantities)
+        {
+            var orderItem = new OrderProductDto { ProductId = item.Key, Quantity = item.Value };
+            createOrderRequest.OrderItems.Add(orderItem);
+        }
+
+        var response = await HttpClient.PostAsJsonAsync("/api/order/Create", createOrderRequest);
 
         if (response.IsSuccessStatusCode)
         {
@@ -30,18 +44,20 @@
             var order = JsonSerializer.Deserialize<OrderDto>(responseData);
 
             // Response to user
-            Snackbar.Add("Order " + order.Id + " was successfully created.");
+            Snackbar.Add("Order was successfully created.");
         }
-
         else
         {
-            // TODO code to handle an unsuccessful order
+            // Handle an unsuccessful order creation
+            Snackbar.Add("Failed to create the order.");
         }
     }
 
+
+
     private async Task GetOrder(int id)
     {
-        var response = await HttpClient.GetAsync($"api/order/{id}");
+        var response = await HttpClient.GetAsync("/order/{id}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -57,8 +73,13 @@
 
 
 
-    private void AddOrderItem()
+    private void AddOrderItem(int id)
     {
-        orderProductDto.Quantity++;
+        if (!itemQuantities.ContainsKey(id))
+        {
+            itemQuantities[id] = 0;
+        }
+
+        itemQuantities[id]++;
     }
 }
