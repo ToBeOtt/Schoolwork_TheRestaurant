@@ -14,5 +14,7 @@ namespace TheRestaurant.Application.Interfaces.IProduct
         Task UpdateAsync(Product menuItem);
         Task SoftDeleteAsync(int id);
         Task<List<Product>> GetAllAsync();
+        Task<List<Product>> GetAllEagerLoadedAsync();
+        Task<List<string>> GetAllCategoryNames();
     }
 }

@@ -1,0 +1,20 @@
+﻿@page "/cart";
+@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.ViewModels
+@inject ClientMenuService MenuService
+
+<h3>cart</h3>
+
+@foreach (var item in CartItems)
+{
+    <p>@item.Name</p>
+    <p>@item.Price</p>
+}
+
+@code {
+    private List<CartDto> CartItems = new();
+    protected override async Task OnInitializedAsync()
+    {
+        CartItems = await MenuService.GetAllCartItems();
+    }
+}

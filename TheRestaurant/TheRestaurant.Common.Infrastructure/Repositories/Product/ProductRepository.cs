@@ -1,10 +1,5 @@
 ﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheRestaurant.Application.Interfaces.IProduct;
 
 namespace TheRestaurant.Common.Infrastructure.Repositories.Product
@@ -41,11 +36,6 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
         public async Task<List<Domain.Entities.Menu.Product>> GetAllAsync()
         {
             return await _context.Products.Where(item => !item.IsDeleted).ToListAsync();
-
-            //return await _context.Products
-            //    .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
-            //    .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
-            //    .ToListAsync();
         }
 
         public async Task<Domain.Entities.Menu.Product> GetByIdAsync(int id)
@@ -60,6 +50,19 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
         {
             _context.Update(menuItem);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Domain.Entities.Menu.Product>> GetAllEagerLoadedAsync()
+        {
+            return await _context.Products
+                .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
+                .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
+                .ToListAsync();
+        }
+
+        public async Task<List<string>> GetAllCategoryNames()
+        {
+            return await _context.Categories.Select(x => x.Name).ToListAsync();
         }
     }
 }

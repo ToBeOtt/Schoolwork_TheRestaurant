@@ -1,0 +1,100 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Client.Components.Menu.Dto
+@inject ClientMenuService MenuService
+
+@foreach (var prod in Products)
+{
+    <MudItem xs="3">
+        <MudCard Elevation="3"
+                 Class="mud-secondary">
+            <div>
+                <img class="product-image"
+                     src="data:image/jpeg;base64,@prod.MenuPhoto"
+                     alt="@prod.Name" />
+            </div>
+
+            <MudCardContent>
+                <MudText Class="single-row-text"
+                         Typo="Typo.h5"
+                         Color="Color.Primary">
+                    @prod.Name
+                </MudText>
+
+                <MudText Class="single-row-text"
+                         Typo="Typo.body2"
+                         Color="Color.Primary">
+                    @prod.Description
+                </MudText>
+            </MudCardContent>
+
+            <MudCardActions Class="px-5 py-2">
+                <MudButton 
+                    Class="mr-6 pb-2"
+                    Variant="Variant.Filled"
+                    Color="Color.Tertiary"
+                    OnClick="@(() => AddItemToCart(prod.Id))">
+                    Beställ
+                </MudButton>
+            </MudCardActions>
+
+            @*  Details expansion info menu *@
+
+            <MudExpansionPanels Elevation="0"
+                                Class="expansion-panel">
+                <MudExpansionPanel Text="Detaljer"
+                                   Class="expansion-panel">
+                    <MudText Typo="Typo.h6"
+                             Color="Color.Secondary">
+                        @prod.Name
+                    </MudText>
+
+                    <MudText Typo="Typo.body2"
+                             Color="Color.Secondary">
+                        @prod.Description
+                    </MudText>
+
+                    <br />
+
+                    <MudText Typo="Typo.h6" Color="Color.Secondary">
+                        Kategorier:
+                    </MudText>
+                    @if (prod.Category.Any())
+                    {
+                        <MudText Typo="Typo.body2" Class="fst-italic" Color="Color.Secondary">
+                            <span>
+                                @string.Join(", ", prod.Category)
+                            </span>
+                        </MudText>
+                    }
+
+                    <br />
+
+                    <MudText Typo="Typo.h6" Color="Color.Secondary">
+                        Allergener:
+                    </MudText>
+                    @if (prod.Allergen.Any())
+                    {
+                        <MudText Typo="Typo.body2" Class="fst-italic" Color="Color.Secondary">
+                            <span>
+                                @string.Join(", ", prod.Allergen)
+                            </span>
+                        </MudText>
+                    }
+
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+
+        </MudCard>
+    </MudItem>
+}
+
+@code {
+    [Parameter]
+    public List<ClientProductDto> Products { get; set; }
+
+
+    private async Task AddItemToCart(int id)
+    {
+        await MenuService.AddItemToCartService(id);
+    }
+}
