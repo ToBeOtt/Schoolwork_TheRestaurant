@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TheRestaurant.Application.Employees;
 using static TheRestaurant.Presentation.Shared.Requests.EmployeeRequests;
 
-namespace TheRestaurant.Presentation.Server.Controllers.Admin
+namespace TheRestaurant.Presentation.Server.Controllers.Admin.Manager
 {
     [Authorize(Roles = "manager")]
     [ApiController]
@@ -43,7 +43,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             {
                 return BadRequest(result.ErrorResponse);
             }
-            
+
             return Ok(result.Data);
         }
     }

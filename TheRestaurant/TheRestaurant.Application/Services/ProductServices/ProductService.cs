@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SharedKernel.Application.ServiceResponse;
 using TheRestaurant.Application.Interfaces.IProduct;
+using TheRestaurant.Application.Services.ProductServices.DTO;
 using TheRestaurant.Contracts.Requests.Product;
 using TheRestaurant.Domain.Entities.Menu;
 
@@ -51,11 +48,47 @@ namespace TheRestaurant.Application.Services.ProductServices
             await _productRepository.SoftDeleteAsync(id);
         }
 
-        public async Task<List<Product>> GetAllProducts()
+        public async Task<ServiceResponse<List<ClientProductDto>>> GetAllProducts()
         {
-            var products = await _productRepository.GetAllAsync();
+            ServiceResponse<List<ClientProductDto>> response = new();
+            var ListOfDtos = new List<ClientProductDto>();
 
-            return products;
+            var products = await _productRepository.GetAllEagerLoadedAsync();
+
+            foreach(var product in products)
+            {
+                var listOfAllergies = new List<string>();
+                if(listOfAllergies != null)
+                {
+                    foreach (var allergy in product.ProductAllergies)
+                    {
+                        listOfAllergies.Add(allergy.Allergy.Name);
+                    }
+                }
+                
+                var listOfCategories = new List<string>();
+                if (listOfCategories != null)
+                {
+                    foreach (var category in product.ProductCategories)
+                    {
+                        listOfCategories.Add(category.Category.Name);
+                    }
+                }
+                   
+                ClientProductDto dto = new(
+                   Id: product.Id,
+                   Name: product.Name,
+                   Price: product.Price,
+                   IsFoodItem: product.IsFoodItem,
+                   Description: product.Description,
+                   MenuPhoto: Convert.ToBase64String(product.MenuPhoto),
+                   Category: listOfCategories,
+                   Allergen: listOfAllergies);
+
+                ListOfDtos.Add(dto);
+            }
+            response.Data = ListOfDtos;
+            return await response.SuccessResponse(response, response.Data);
         }
 
         public async Task<Product> GetProductById(int id)
@@ -91,6 +124,11 @@ namespace TheRestaurant.Application.Services.ProductServices
             await _productRepository.UpdateAsync(productToUpdate);
 
             return productToUpdate;
+        }
+
+        public async Task<List<string>> FetchAllCategoryNames()
+        {
+            return await _productRepository.GetAllCategoryNames();
         }
     }
 }

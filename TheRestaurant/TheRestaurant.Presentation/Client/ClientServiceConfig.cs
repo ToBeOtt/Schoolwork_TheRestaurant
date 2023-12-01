@@ -10,7 +10,8 @@ namespace TheRestaurant.Presentation.Client
             // Services
             services.AddScoped<RoleService>();
             services.AddScoped<AuthService>();
-            services.AddScoped<ClientEmployeeServices>();
+            services.AddScoped<ClientMenuService>();
+            services.AddScoped<ClientEmployeeServices>(); 
 
             // Helpers
             services.AddScoped<CheckRole>();
