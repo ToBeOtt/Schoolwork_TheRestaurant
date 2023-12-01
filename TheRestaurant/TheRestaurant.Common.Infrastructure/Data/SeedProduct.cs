@@ -50,11 +50,11 @@ namespace TheRestaurant.Common.Infrastructure.Data
                     ("Lammkotletter", "Grillade lammkotletter med rosmarin", 149, true, false, "lamb-chops.jpg", new int[] {6}, new int[] {}),
                     ("Blåbärspaj", "Blåbärspaj med vaniljsås", 59, true, false, "blueberry-pie.jpg", new int[] {16}, new int[] {1, 7}),
 
-                    ("Cola", "Klassisk kolsyrad läsk med unik smak", 20, false, false, "cola.jpg", new int[] {14}, new int[] {}),
-                    ("Fanta", "Fruktig apelsinläsk med kolsyra", 20, false, false, "fanta.jpg", new int[] {14}, new int[] {}),
-                    ("Lokalt mikrobryggeri öl", "Öl från lokala mikrobryggerier", 40, false, false, "craft-beer.jpg", new int[] {15}, new int[] {1}),
-                    ("Husets röda vin", "Välbalanserat rödvin från husets urval", 60, false, false, "house-red-wine.jpg", new int[] {15}, new int[] {}),
-                    // Add more products here
+                    ("Cola", "Klassisk kolsyrad läsk med unik smak", 20, true, false, "cola.jpg", new int[] {14}, new int[] {}),
+                    ("Fanta", "Fruktig apelsinläsk med kolsyra", 20, true, false, "fanta.jpg", new int[] {14}, new int[] {}),
+                    ("Lokalt mikrobryggeri öl", "Öl från lokala mikrobryggerier", 40, true, false, "craft-beer.jpg", new int[] {15}, new int[] {1}),
+                    ("Husets röda vin", "Välbalanserat rödvin från husets urval", 60, true, false, "house-red-wine.jpg", new int[] {15}, new int[] {}),
+                    // Add more products here (merch)
             };
 
                 foreach (var data in productData)
