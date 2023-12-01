@@ -1,7 +1,12 @@
 ﻿@page "/admin/product/edit/{id:int}"
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud;
-<h3>Edit</h3>
-<EditProduct Id="@Id"/>
+@using TheRestaurant.Presentation.Client.Shared.Admin
+<AdminLayout>
+    <AdminContent>
+        <EditProduct Id="@Id" />
+    </AdminContent>
+</AdminLayout>
+
 @code {
     [Parameter]
     public int Id { get; set; }

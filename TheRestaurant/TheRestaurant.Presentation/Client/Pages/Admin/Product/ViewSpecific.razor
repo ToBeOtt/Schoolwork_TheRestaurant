@@ -1,31 +1,35 @@
 ﻿@page "/admin/product/view/{id:int}"
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
+@using TheRestaurant.Presentation.Client.Shared.Admin
 @inject HttpClient HttpClient;
 @inject NavigationManager NavigationManager;
-<h3>View Specific</h3>
+<AdminLayout>
+    <AdminContent>
+        @if (product == null)
+        {
+            <p>Loading...</p>
+        }
+        else
+        {
+            <MudItem xs="5">
+                <MudCard Class="mud-secondary">
+                    <MudCardMedia Image="@GetImageSource(product.MenuPhoto)" Height="400" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5" Color="Color.Primary">@product.Name</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Primary">Pris: @product.Price</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Primary">@product.Description</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Primary" Style="margin-top: 15px"><b>Allergies:</b> @string.Join(", ", product.Allergies.Select(a => a.Name))</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Primary" Style="margin-top: 15px"><b>Categories:</b> @string.Join(", ", product.Categories.Select(c => c.Name))</MudText>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-space-between">
+                        <MudButton Class="ml-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="GoBackToView">Gå tilbaka</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </AdminContent>
+</AdminLayout>
 
-@if (product == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <MudItem xs="5">
-        <MudCard Class="mud-secondary">
-            <MudCardMedia Image="@GetImageSource(product.MenuPhoto)" Height="400" />
-            <MudCardContent>
-                <MudText Typo="Typo.h5" Color="Color.Primary">@product.Name</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Primary">Pris: @product.Price</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Primary">@product.Description</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Primary" Style="margin-top: 15px"><b>Allergies:</b> @string.Join(", ", product.Allergies.Select(a => a.Name))</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Primary" Style="margin-top: 15px"><b>Categories:</b> @string.Join(", ", product.Categories.Select(c => c.Name))</MudText>
-            </MudCardContent>
-            <MudCardActions Class="d-flex justify-space-between">
-                <MudButton Class="ml-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="GoBackToView">Gå tilbaka</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-}
 
 @code {
     [Parameter]

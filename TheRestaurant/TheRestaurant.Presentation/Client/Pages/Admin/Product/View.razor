@@ -1,7 +1,12 @@
 ﻿@page "/admin/product/view"
-<h3>Existerande Produkter</h3>
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud;
-<ViewProducts />
+@using TheRestaurant.Presentation.Client.Shared.Admin
+<AdminLayout>
+    <AdminContent>
+        <ViewProducts />
+    </AdminContent>
+</AdminLayout>
+
 @code {
 
 }
