@@ -1,4 +1,4 @@
-﻿using TheRestaurant.Application.Interfaces;
+﻿using TheRestaurant.Application.Interfaces.ICategory;
 using TheRestaurant.Contracts.DTOs;
 using TheRestaurant.Domain.Entities.Menu;
 

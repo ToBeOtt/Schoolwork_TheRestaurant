@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheRestaurant.Domain.Entities.Menu;
 
-namespace TheRestaurant.Application.Interfaces
+namespace TheRestaurant.Application.Interfaces.ICategory
 {
     public interface ICategoryRepository
     {
@@ -13,6 +13,7 @@ namespace TheRestaurant.Application.Interfaces
         Task<IReadOnlyList<Category>> GetAllAsync();
         Task AddAsync(Category category);
         Task UpdateAsync(Category category);
+        Task DeleteAsync(Category category);
         Task DeleteAsync(int id);
         Task SaveChangesAsync();
         bool Exists(int id);

@@ -1,7 +1,7 @@
 ﻿using TheRestaurant.Contracts.DTOs;
 
 
-namespace TheRestaurant.Application.Interfaces
+namespace TheRestaurant.Application.Interfaces.ICategory
 {
     public interface ICategoryService
     {
