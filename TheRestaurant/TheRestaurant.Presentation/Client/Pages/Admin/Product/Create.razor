@@ -1,8 +1,12 @@
 ﻿@page "/admin/product/create"
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud;
-<h3>Create Item</h3>
+@using TheRestaurant.Presentation.Client.Shared.Admin
+<AdminLayout>
+    <AdminContent>
+        <CreateProduct/>
+    </AdminContent>
+</AdminLayout>
 
-<CreateProduct/>
 @code {
 
 }
