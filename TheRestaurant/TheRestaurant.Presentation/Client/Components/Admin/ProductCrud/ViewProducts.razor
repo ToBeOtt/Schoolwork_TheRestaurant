@@ -8,31 +8,30 @@
     <p>@ErrorMessage</p>
 }
 
-else if(products != null)
+@if (products != null)
 {
     <MudGrid Justify="Justify.FlexStart">
         @foreach (var product in products)
         {
-        <MudItem xs="3">
-                <MudCard Class="mud-secondary">
-                    <MudCardMedia Image="@GetImageSource(product.MenuPhoto)" Height="200" />
-                <MudCardContent>
-                    <MudText Typo="Typo.h5" Color="Color.Primary">@product.Name</MudText>
-                    <MudText Typo="Typo.body2" Color="Color.Primary">Pris: @product.Price</MudText>
-                    <MudText Typo="Typo.body2" Color="Color.Primary">@product.Description</MudText>
-                </MudCardContent>
-                <MudCardActions Class="d-flex justify-space-between">
+            <MudItem xs="12" sm="6" md="4" lg="4">
+                <MudCard Class="mud-secondary" Style="margin: 15px;">
+                    <MudCardMedia Image="@GetImageSource(product.MenuPhoto)" Style="height: 150px; object-fit: cover;" />
+                    <MudCardContent Style="min-height: 180px;">
+                        <!-- Set a minimum height -->
+                        <MudText Typo="Typo.h5" Color="Color.Primary">@product.Name</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Primary">Pris: @product.Price</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Primary">@product.Description</MudText>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-space-between">
                         <MudButton Class="ml-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowConfirmation(product.Id))">Radera</MudButton>
                         <MudButton Variant="Variant.Text" OnClick="@(() =>NavigateToViewSpecificProduct(product.Id))">Detaljer</MudButton>
                         <MudButton Class="mr-2" Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => NavigateToEditProduct(product.Id))">Edit</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
         }
     </MudGrid>
 }
-<MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mt-5" OnClick="NavigateToCreatePage">Skapa en ny produkt</MudButton>
-@*<button class="btn btn-primary" @onclick="NavigateToCreatePage">Create New Menu Item</button>*@
 <DeleteProductConfirmation @ref="deleteProductConfirmation" OnConfirmDelete="DeleteProduct" />
 
 @code {
@@ -49,11 +48,6 @@ else if(products != null)
     protected override async Task OnInitializedAsync()
     {
         products = await HttpClient.GetFromJsonAsync<List<ProductDto>>("/admin/products");
-    }
-
-    private void NavigateToCreatePage()
-    {
-        NavigationManager.NavigateTo("/admin/product/create");
     }
 
     private void NavigateToEditProduct(int id)
