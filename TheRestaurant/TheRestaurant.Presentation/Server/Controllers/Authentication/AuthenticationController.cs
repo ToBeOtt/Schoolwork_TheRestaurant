@@ -9,12 +9,12 @@ namespace TheRestaurant.Presentation.Server.Controllers.Authentication
     [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly ILogger<AuthenticationController> _logger;
+        private readonly ILogger<CartController> _logger;
         private readonly RegistrationService _registrationService;
         private readonly AuthenticationService _authenticationService;
 
         public AuthenticationController(
-            ILogger<AuthenticationController> logger,
+            ILogger<CartController> logger,
             RegistrationService registrationService,
             AuthenticationService authenticationService
            )

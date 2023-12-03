@@ -2,6 +2,7 @@
 @using MudBlazor
 @using TheRestaurant.Presentation.Client.Components.Index.Carousel
 @using TheRestaurant.Presentation.Client.Components.Themes
+@using TheRestaurant.Presentation.Client.Shared.Cart
 
 <TheRestaurantColorTheme />
 <MudDialogProvider />
@@ -14,6 +15,8 @@
             <MudText Typo="Typo.h5">The Resturant</MudText>
         </MudNavLink>
 
+        <MudSpacer />
+        <CartMenu />
         <MudSpacer />
         <AdminNavMenu />
         <UserNavMenu />

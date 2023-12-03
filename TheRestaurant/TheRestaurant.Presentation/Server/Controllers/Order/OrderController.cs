@@ -10,7 +10,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 {
     [Route("api/Order")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class ProductController : ControllerBase
     {
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrder(int id)
@@ -99,7 +99,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
         private readonly IOrderService _orderService;
 
-        public OrderController(IOrderService orderService)
+        public ProductController(IOrderService orderService)
         {
             _orderService = orderService;
         }
