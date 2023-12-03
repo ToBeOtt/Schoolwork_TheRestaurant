@@ -1,5 +1,4 @@
 ﻿@using TheRestaurant.Contracts.DTOs
-@using TheRestaurant.Contracts.Requests.Allergy
 @inject ISnackbar Snackbar
 @inject HttpClient HttpClient
 
@@ -15,7 +14,7 @@
 
     <DialogActions>
         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Error" DisableElevation FullWidth OnClick="YesToDeleteAllergy">Ja</MudButton>
-        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Nej</MudButton>
+        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
     </DialogActions>
 
 </MudDialog>

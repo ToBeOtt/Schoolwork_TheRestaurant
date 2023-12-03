@@ -1,0 +1,75 @@
+﻿@using TheRestaurant.Contracts.DTOs
+@using TheRestaurant.Contracts.Requests.Allergy
+@inject ISnackbar Snackbar
+@inject HttpClient HttpClient
+
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h4">Ny Allergy</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.h4">content</MudText>
+        <EditForm Model="@allergy" OnInvalidSubmit="Submit">
+            <DataAnnotationsValidator />
+            <MudTextField AdornmentColor="Color.Default" Label="Namn" HelperText="Får max innehålla 30 tecken"
+            @bind-Value="allergy.Name" For="@(() => allergy.Name)" />
+        </EditForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Success" DisableElevation FullWidth OnClick="Submit">Skapa</MudButton>
+         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
+     </DialogActions>
+
+ </MudDialog>
+
+
+ @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    public AllergyDto allergy { get; set; } = new AllergyDto();
+    private string apiCreateAllergyUrl = "/api/allergy/create";
+
+    private void Cancel()
+    {
+        Snackbar.Add("Skapandet av allergi avbrutet", Severity.Info);
+        MudDialog.Cancel();
+    }
+
+    private async void Submit()
+    {
+
+        //Validera...
+
+        var editContext = new EditContext(allergy);
+        var isValid = editContext.Validate();
+
+        //Validera...
+
+        if (isValid)
+        {
+            var request = new AllergyRequest(Name: allergy.Name);
+
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync(apiCreateAllergyUrl, request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Snackbar.Add($"Allergi {allergy.Name} tillagd", Severity.Success);
+                MudDialog.Close(DialogResult.Ok(allergy.Id));
+            }
+            else
+            {
+                Snackbar.Add("Skapandet av allergi misslyckades", Severity.Error);
+                MudDialog.Close(DialogResult.Ok(allergy.Id));
+            }
+        }
+
+        
+
+    }
+
+
+}

@@ -5,7 +5,7 @@
 @using TheRestaurant.Contracts.DTOs
 
 <MudTable Items="@allergies" Dense=true Hover=true Bordered=false Striped=false Elevation="0" Loading=@loading>
-    
+
     <ToolBarContent>
         <MudText Typo="Typo.h6">Allergi Typer</MudText>
 
@@ -17,22 +17,24 @@
     </ToolBarContent>
 
     <HeaderContent>
-       
+
 
         <MudTh>Id</MudTh>
         <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<AllergyDto, object>(x=>x.Name)">Namn</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
         <MudTh>Synlighet</MudTh>
-        <MudTh> <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary">Ny Allergi</MudButton></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Id">@context.Id</MudTd>
-        <MudTd DataLabel="Namn">@context.Name</MudTd>
-        <MudTd>
-            <MudSpacer />
-        </MudTd>
-        <MudTd>
-            @if (@context.IsHidden == true)
+        <MudTh>
+            <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary" OnClick="@((e) => CreateAllergy(maxWidth))">Ny Allergi</MudButton>
+         </MudTh>
+     </HeaderContent>
+     <RowTemplate>
+         <MudTd DataLabel="Id">@context.Id</MudTd>
+         <MudTd DataLabel="Namn">@context.Name</MudTd>
+         <MudTd>
+             <MudSpacer />
+         </MudTd>
+         <MudTd>
+             @if (@context.IsHidden == true)
             {
 
                 <MudSwitch @bind-Checked="@context.IsHidden" Label="Dold" Color="Color.Primary" />
@@ -48,7 +50,7 @@
         <MudTd>
             <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
                 <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
+                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
                                 OnClick="@((e) => DeleteAllergy(maxWidth ,context))" />
 
              </MudButtonGroup>
@@ -82,9 +84,24 @@
         await HttpClient.PutAsJsonAsync<AllergyDto>($"/api/allergy/edit/{allergy.Id}", allergy);
     }
 
+    private async Task CreateAllergy(DialogOptions options)
+    {
+
+        var dialog = await DialogService.ShowAsync<CreateAllergy>("", options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
+            StateHasChanged();
+        }
+
+    }
+
+
     private async Task DeleteAllergy(DialogOptions options, AllergyDto allergy)
     {
-        var parameters = new DialogParameters<DeleteAllergy> 
+        var parameters = new DialogParameters<DeleteAllergy>
         {
             { x => x.allergy, allergy}
         };
@@ -98,7 +115,6 @@
             StateHasChanged();
         }
 
-
-
     }
+
 }

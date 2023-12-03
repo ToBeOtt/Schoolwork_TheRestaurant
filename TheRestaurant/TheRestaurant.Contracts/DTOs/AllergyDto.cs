@@ -10,7 +10,8 @@ namespace TheRestaurant.Contracts.DTOs
     public class AllergyDto
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Namn måste anges.")]
+        [MaxLength(30, ErrorMessage ="Max 30 tecken långt.")]
         public string Name { get; set; }
         //public bool IsDeleted { get; set; }
         public bool IsHidden { get; set; }
