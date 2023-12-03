@@ -1,14 +1,15 @@
 ﻿@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 
 @using TheRestaurant.Contracts.DTOs
 
 <MudTable Items="@allergies" Dense=true Hover=true Bordered=false Striped=false Elevation="0" Loading=@loading>
+    
     <ToolBarContent>
         <MudText Typo="Typo.h6">Allergi Typer</MudText>
 
         <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Secondary">Ny Allergi</MudButton>
 
         <MudSwitch @bind-Checked="@filtering" Label="Aktivera Filtrering" Color="Color.Primary" />
 
@@ -16,11 +17,13 @@
     </ToolBarContent>
 
     <HeaderContent>
+       
+
         <MudTh>Id</MudTh>
         <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<AllergyDto, object>(x=>x.Name)">Namn</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
         <MudTh>Synlighet</MudTh>
-        <MudTh></MudTh>
+        <MudTh> <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary">Ny Allergi</MudButton></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
@@ -45,7 +48,8 @@
         <MudTd>
             <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
                 <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
-                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
+                                OnClick="@((e) => DeleteAllergy(maxWidth ,context))" />
 
              </MudButtonGroup>
          </MudTd>
@@ -62,6 +66,8 @@
     private bool placeholderSwitch;
     private bool filtering = false;
 
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
+
     protected override async Task OnInitializedAsync()
     {
         allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
@@ -74,5 +80,25 @@
         allergy.IsHidden = isHidden;
 
         await HttpClient.PutAsJsonAsync<AllergyDto>($"/api/allergy/edit/{allergy.Id}", allergy);
+    }
+
+    private async Task DeleteAllergy(DialogOptions options, AllergyDto allergy)
+    {
+        var parameters = new DialogParameters<DeleteAllergy> 
+        {
+            { x => x.allergy, allergy}
+        };
+
+        var dialog = await DialogService.ShowAsync<DeleteAllergy>("", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
+            StateHasChanged();
+        }
+
+
+
     }
 }
