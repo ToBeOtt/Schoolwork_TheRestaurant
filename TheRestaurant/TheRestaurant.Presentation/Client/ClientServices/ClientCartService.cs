@@ -165,6 +165,5 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             // Bör returnera ett kvitto-nr av något slag?
             return true;
         }
-
     }
 }
