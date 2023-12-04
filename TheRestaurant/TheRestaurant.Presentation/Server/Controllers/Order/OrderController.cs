@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheRestaurant.Application.Interfaces;
-using TheRestaurant.Presentation.Shared.OrderDTO;
+using TheRestaurant.Application.DTOs;
 using TheRestaurant.Application.Services.OrderServices;
-using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
 using TheRestaurant.Domain.Entities.OrderEntities;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Presentation.Server.Controllers.Admin;
+using TheRestaurant.Application.DTOs;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Order
 {
@@ -16,7 +16,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
     {
        
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderDto>> GetOrder(int id)
+        public async Task<ActionResult<OrderDTO>> GetOrder(int id)
         {
             var order = await _orderService.GetOrderByIdAsync(id);
             if (order == null)
@@ -24,7 +24,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
                 return NotFound();
             }
 
-            var orderDto = new OrderDto
+            var orderDto = new OrderDTO
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate
@@ -33,71 +33,40 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             return orderDto;
         }
         [HttpPost("create")]
-        public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] OrderDto orderDto)
+        public async Task<ActionResult<OrderDTO>> CreateOrder([FromBody] OrderDTO orderDto)
         {
-            var createOrderRequest = new CreateOrderRequest
+            if (!ModelState.IsValid)
             {
-                OrderDate = orderDto.OrderDate,
-                OrderItems = orderDto.OrderItems.Select(item => new OrderProductDto
-                {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity
-                }).ToList()
-            };
-
-            var order = new Domain.Entities.OrderEntities.Order
-            {
-                OrderDate = orderDto.OrderDate,
-                OrderRows = new List<OrderRow>()
-            };
-
-            foreach (var orderItemDto in orderDto.OrderItems)
-            {
-                // You don't need to create detailed product entities here,
-                // only include the ProductId and Quantity
-                var orderRow = new OrderRow
-                {
-                    // Include the ProductId and Quantity
-                    MenuItem = new List<Domain.Entities.Menu.Product>
-            {
-                new Domain.Entities.Menu.Product
-                {
-                    Id = orderItemDto.ProductId,
-                    Name = "Product Name",
-                    Price = 0,
-                    IsFoodItem = false,
-                    IsDeleted = false
-                }
-            }
-                };
-
-                order.OrderRows.Add(orderRow);
+                return BadRequest(ModelState);
             }
 
-            // Set the status of the order to "Pending"
-            _orderService.SetOrderStatus(order, "Pending");
-
-            // Create the order
-            var createdOrder = await _orderService.CreateOrderAsync(order);
-            if (createdOrder == null)
+            try
             {
-                return NotFound();
+                // Directly pass the OrderDTO to the service
+                var createdOrder = await _orderService.CreateOrderAsync(orderDto);
+
+                // Optionally, map the created Order back to DTO for the response
+                OrderDTO createdOrderDto = MapEntityToDto(createdOrder);
+
+                return CreatedAtAction(nameof(GetOrder), new { id = createdOrder.Id }, createdOrderDto);
             }
-
-            // Return a simplified response
-            var createdOrderDto = new OrderDto
+            catch (Exception ex)
             {
-                Id = createdOrder.Id,
-                OrderDate = createdOrder.OrderDate,
-                OrderItems = createdOrder.OrderRows.SelectMany(or => or.MenuItem).Select(mi => new OrderProductDto
-                {
-                    ProductId = mi.Id,
-                    Quantity = 1 // Set a default quantity (you can adjust as needed)
-                }).ToList()
-            };
-
-            return CreatedAtAction(nameof(GetOrder), new { id = createdOrder.Id }, createdOrderDto);
+                // Log the exception
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the order.");
+            }
         }
+
+        private OrderDTO MapEntityToDto(Domain.Entities.OrderEntities.Order order)
+        {
+            return new OrderDTO
+            {
+                Id = order.Id,
+                OrderDate = order.OrderDate,
+                // ... other property mappings
+            };
+        }
+
 
         private readonly IOrderService _orderService;
 

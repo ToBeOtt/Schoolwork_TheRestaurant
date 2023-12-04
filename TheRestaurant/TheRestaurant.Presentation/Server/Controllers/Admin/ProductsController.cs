@@ -64,6 +64,8 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         }
 
         [HttpGet]
+        [Route("admin/Order")]
+        [Route("Order")]
         public async Task<IActionResult> GetAllProducts()
         {
             try
