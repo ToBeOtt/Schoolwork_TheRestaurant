@@ -10,17 +10,14 @@
     </TitleContent>
     <DialogContent>
         <MudText Typo="Typo.h4">content</MudText>
-        <EditForm Model="@allergy" OnInvalidSubmit="Submit">
+        <EditForm Model="@allergy" OnValidSubmit="AllergySubmit">
             <DataAnnotationsValidator />
-            <MudTextField AdornmentColor="Color.Default" Label="Namn" HelperText="Får max innehålla 30 tecken"
+            <MudTextField AdornmentColor="Color.Warning" Label="Namn" HelperText="Får max innehålla 30 tecken"
             @bind-Value="allergy.Name" For="@(() => allergy.Name)" />
+            <MudButton ButtonType="ButtonType.Submit" Class="ma-1" Variant="Variant.Filled" Color="Color.Success" DisableElevation FullWidth>Skapa</MudButton>
+            <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
         </EditForm>
     </DialogContent>
-
-    <DialogActions>
-        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Success" DisableElevation FullWidth OnClick="Submit">Skapa</MudButton>
-         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
-     </DialogActions>
 
  </MudDialog>
 
@@ -39,35 +36,22 @@
         MudDialog.Cancel();
     }
 
-    private async void Submit()
+    private async void AllergySubmit()
     {
 
-        //Validera...
+        var request = new AllergyRequest(Name: allergy.Name);
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(apiCreateAllergyUrl, request);
 
-        var editContext = new EditContext(allergy);
-        var isValid = editContext.Validate();
-
-        //Validera...
-
-        if (isValid)
+        if (response.IsSuccessStatusCode)
         {
-            var request = new AllergyRequest(Name: allergy.Name);
-
-            HttpResponseMessage response = await HttpClient.PostAsJsonAsync(apiCreateAllergyUrl, request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Snackbar.Add($"Allergi {allergy.Name} tillagd", Severity.Success);
-                MudDialog.Close(DialogResult.Ok(allergy.Id));
-            }
-            else
-            {
-                Snackbar.Add("Skapandet av allergi misslyckades", Severity.Error);
-                MudDialog.Close(DialogResult.Ok(allergy.Id));
-            }
+            Snackbar.Add($"Allergi {allergy.Name} tillagd", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(allergy.Id));
         }
-
-        
+        else
+        {
+            Snackbar.Add("Skapandet av allergi misslyckades", Severity.Error);
+            MudDialog.Close(DialogResult.Ok(allergy.Id));
+        }
 
     }
 
