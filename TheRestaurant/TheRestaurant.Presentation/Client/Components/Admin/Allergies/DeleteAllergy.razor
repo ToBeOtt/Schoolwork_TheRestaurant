@@ -1,0 +1,55 @@
+﻿@using TheRestaurant.Contracts.DTOs
+@inject ISnackbar Snackbar
+@inject HttpClient HttpClient
+
+
+<MudDialog>
+   <TitleContent>
+        <MudText Typo="Typo.h4">Du är på väg att ta bort en allergi</MudText>
+   </TitleContent>
+   <DialogContent>
+        <MudText Align="Align.Center" Typo="Typo.h5">Är du säker på att du vill ta bort <strong>@allergy.Name</strong></MudText>
+        @* <MudText Typo="Typo.body1">Id:@allergy.Id </MudText> *@
+   </DialogContent>
+
+    <DialogActions>
+        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Error" DisableElevation FullWidth OnClick="YesToDeleteAllergy">Ja</MudButton>
+        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
+    </DialogActions>
+
+</MudDialog>
+
+
+ @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public AllergyDto allergy { get; set; }
+
+    private void Cancel()
+    {
+        Snackbar.Add("Borttagning av allergi avbrutet", Severity.Info);
+        MudDialog.Cancel();
+    }
+
+    private async void YesToDeleteAllergy()
+    {
+        
+        HttpResponseMessage response = await HttpClient.DeleteAsync($"/api/allergy/delete/{allergy.Id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            Snackbar.Add($"Allergi {allergy.Name} borttagen", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(allergy.Id));
+        }
+        else
+        {
+            Snackbar.Add("Borttagning av allergi misslyckades", Severity.Error);
+            MudDialog.Close(DialogResult.Ok(allergy.Id));
+        }
+        
+    }
+
+}
