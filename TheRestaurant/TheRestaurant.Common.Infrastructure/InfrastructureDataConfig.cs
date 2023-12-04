@@ -20,6 +20,8 @@ using TheRestaurant.Common.Infrastructure.Repositories.Employees;
 
 using TheRestaurant.Domain.Entities.Authentication;
 using TheRestaurant.Application.Interfaces.ICategory;
+using TheRestaurant.Application.Interfaces.IOrderStatus;
+using TheRestaurant.Common.Infrastructure.Repositories.OrderStatus;
 
 namespace Common.Infrastructure
 {
@@ -52,6 +54,8 @@ namespace Common.Infrastructure
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IAllergyRepository, AllergyRepository>();
+            services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
+            services.AddTransient<IOrderStatusService, OrderStatusService>();
 
             // Seeds
             services.AddTransient<UserSeeds>();
