@@ -1,0 +1,116 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Client.Components.Menu.Dto
+@inject ClientMenuService menuService
+
+<style>
+    .product-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .single-row-text
+    {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis; 
+    }
+
+    .expansion-panel {
+        background-color: #ECEBED;
+        font-family: "Alegreya", "Helvetica", "Arial", "sans-serif";
+        font-weight: 500;
+        line-height: 1.6;
+        letter-spacing: .0075em;
+    }
+
+    .filter-text {
+        color: black;
+        font-family: "Alegreya", "Helvetica", "Arial", "sans-serif";
+        font-weight: 500;
+        line-height: 1.6;
+        letter-spacing: .0075em;
+    }
+    
+</style>
+
+<MudText Typo="Typo.h4" Class="px-6">
+    Meny & produkter
+</MudText>
+<MudSelect T="string"
+           Label="Filtrera"
+           Class="filter-text mr-10"
+           AnchorOrigin="Origin.BottomCenter"
+           ValueChanged="@FilterData">
+
+    <MudSelectItem Value="@("0")"> <span class="filter-text">Alla</span> </MudSelectItem>
+    <MudSelectItem Value="@("1")"><span class="filter-text">Mat & dryck</span> </MudSelectItem>
+    <MudSelectItem Value="@("2")"> <span class="filter-text">Merchandize</span> </MudSelectItem>
+    @foreach(var cat in FilterCategories)
+    {
+        <MudSelectItem Value="@(@cat)"> <span class="filter-text">@cat</span> </MudSelectItem>
+    }
+
+</MudSelect>
+<MudGrid Spacing="5"
+         Class="pb-10 pt-3 px-3"
+         Justify="Justify.FlexStart">
+
+    <FilteredCards Products="@FilteredList" />
+
+@* If products on display is zero *@
+    @if (@FilteredList.Count < 1)
+    {
+        <MudText Class="single-row-text"
+                 Typo="Typo.h5"
+                 Color="Color.Primary">
+            Det finns ingen produkt i den här kategorin.
+        </MudText>
+    }
+
+</MudGrid>
+
+@code {
+    List<ClientProductDto> Products = new();
+    List<ClientProductDto> DefaultDisplay = new();
+    List<ClientProductDto> FilteredList = new();
+
+    private List<string> FilterCategories;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        FilterCategories = await menuService.GetCategories();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await menuService.GetAllMenuItems();
+        DefaultDisplay.AddRange(Products);
+        FilteredList.AddRange(Products);
+    }
+
+    private int FilterValue;
+    private async Task FilterData(string value)
+    {
+        if (value == "0")
+            FilteredList = DefaultDisplay.ToList();
+
+        else if (value == "1")
+            FilteredList = DefaultDisplay
+            .Where(x => x.IsFoodItem == true)
+            .ToList();
+
+        else if (value == "2")
+            FilteredList = DefaultDisplay
+            .Where(x => x.IsFoodItem == false)
+            .ToList();
+        
+        else
+            FilteredList = DefaultDisplay
+            .Where(x => x.Category
+            .Any(category => category.
+                Contains(value))).
+            ToList();
+    }
+}

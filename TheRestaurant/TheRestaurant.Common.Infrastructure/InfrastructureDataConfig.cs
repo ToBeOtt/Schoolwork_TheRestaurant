@@ -20,6 +20,8 @@ using TheRestaurant.Common.Infrastructure.Repositories.Category;
 using TheRestaurant.Common.Infrastructure.Repositories.Employees;
 
 using TheRestaurant.Domain.Entities.Authentication;
+using TheRestaurant.Application.Cart.Interfaces;
+using TheRestaurant.Common.Infrastructure.Repositories.Cart;
 
 namespace Common.Infrastructure
 {
@@ -48,6 +50,7 @@ namespace Common.Infrastructure
             services.AddTransient<IRegistrationRepository, RegistrationRepository>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
 
+            services.AddTransient<ICartRepository, CartRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();

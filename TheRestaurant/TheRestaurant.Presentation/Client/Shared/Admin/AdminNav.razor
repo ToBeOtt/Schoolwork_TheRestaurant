@@ -1,4 +1,10 @@
-﻿<MudPaper Width="250px" Class="d-inline-flex py-3" Elevation="0">
+﻿<style>
+    .active-link {
+        color: #000000;
+        background-color: #F0F0F0;
+</style>
+
+<MudPaper Width="250px" Class="d-inline-flex py-3" Elevation="0">
     <MudNavMenu Class="mud-width-full">
         <MudText Typo="Typo.h6" Class="px-4">Admin</MudText>
         <MudDivider Class="my-2" />
@@ -9,32 +15,32 @@
        @*  Order *@
         <MudNavGroup Title="Ordrar" Icon="@Icons.Material.Filled.Receipt" Expanded="false">
             <MudNavGroup Title="Ej påbörjade" Icon="@Icons.Material.Filled.AdminPanelSettings" Expanded="false">
-                <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit">Ändra order</MudNavLink>
-                <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
+                <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit" ActiveClass="active-link">Ändra order</MudNavLink>
+                <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever" ActiveClass="active-link">Ta bort</MudNavLink>
             </MudNavGroup>
 
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add">Pågående</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit">Avslutade</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Pågående</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit" ActiveClass="active-link">Avslutade</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever" ActiveClass="active-link">Ta bort</MudNavLink>
         </MudNavGroup>
 
         @*Products*@
         <MudNavGroup Title="Produkter" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
-            <MudNavLink Href="admin/product/view" Icon="@Icons.Material.Filled.List">Visa produkter</MudNavLink>
-            <MudNavLink Href="admin/product/create" Icon="@Icons.Material.Filled.Add">Lägg till</MudNavLink>
+            <MudNavLink Href="admin/product/view" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa produkter</MudNavLink>
+            <MudNavLink Href="admin/product/create" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
         </MudNavGroup>
 
         @* Categories *@
         <MudNavGroup Title="Categories" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
-            <MudNavLink Href="/Admin/CategoryList" Icon="@Icons.Material.Filled.List">List</MudNavLink>
-            <MudNavLink Href="/Admin/AddCategory" Icon="@Icons.Material.Filled.Add">Create new</MudNavLink>
+            <MudNavLink Href="/Admin/CategoryList" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">List</MudNavLink>
+            <MudNavLink Href="/Admin/AddCategory" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Create new</MudNavLink>
         </MudNavGroup>
 
         @* Allergies *@
         <MudNavGroup Title="Allergier" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add">Lägg till</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit">Ändra</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Ta bort</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit" ActiveClass="active-link">Ändra</MudNavLink>
+            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever" ActiveClass="active-link">Ta bort</MudNavLink>
         </MudNavGroup>
 
         @* Emloyees *@
