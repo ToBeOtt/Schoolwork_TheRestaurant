@@ -1,0 +1,69 @@
+﻿@using System.Text.Json;
+@using TheRestaurant.Presentation.Client.Pages.OrderPages.OrderDTO;
+@using TheRestaurant.Application.DTOs;
+
+@using MudBlazor;
+
+@using System.Net.Http.Json;
+@inject ISnackbar Snackbar
+@inject HttpClient HttpClient
+
+
+
+@page "/Order"
+
+<EditForm Model="@OrderDto" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputDate @bind-Value="OrderDto.OrderDate" />
+    <!-- ...other input fields for the OrderDTO properties -->
+
+    <button type="submit" disabled="@isSubmitting">Submit Order</button>
+</EditForm>
+
+@if (successMessage != null)
+{
+    <MudSnackbar Message="@successMessage" Severity="Severity.Success"></MudSnackbar>
+}
+
+@code {
+    private TheRestaurant.Application.DTOs.OrderDTO OrderDto = new TheRestaurant.Application.DTOs.OrderDTO();
+
+    private bool isSubmitting = false;
+
+    private string successMessage;
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+
+        try
+        {
+            // Removed the unnecessary local 'orderToCreate' variable
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("api/Order/create", OrderDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // If you want to get the created order back, you can deserialize the response content
+                // OrderDTO createdOrder = await response.Content.ReadFromJsonAsync<OrderDTO>();
+                successMessage = "Order created successfully!";
+                OrderDto = new TheRestaurant.Application.DTOs.OrderDTO(); // Reset the form
+                // Optionally navigate to another page
+            }
+            else
+            {
+                successMessage = "Failed to create order.";
+            }
+        }
+        catch (Exception ex)
+        {
+            successMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
+            Snackbar.Add(successMessage, Severity.Success); // Using MudBlazor Snackbar for feedback
+        }
+    }
+}
