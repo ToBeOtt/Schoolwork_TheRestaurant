@@ -1,4 +1,5 @@
-﻿using TheRestaurant.Application.Interfaces;
+﻿using TheRestaurant.Application.DTOs;
+using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Domain.Entities.OrderEntities;
 
 namespace TheRestaurant.Application.Services.OrderServices
@@ -17,11 +18,18 @@ namespace TheRestaurant.Application.Services.OrderServices
             _orderRepository = orderRepository;
         }
 
-        public async Task<Order> CreateOrderAsync(Order order)
+        public async Task<Order> CreateOrderAsync(OrderDTO orderDto)
         {
-            // Implement the logic to create an order (e.g., validation)
+            var order = new Order
+            {
+                OrderDate = orderDto.OrderDate,
+                // Map other properties from the DTO to the Order entity
+            };
+
+            // Assume that EmployeeOrders and OrderStatus are handled inside the repository
             return await _orderRepository.CreateAsync(order);
         }
+
 
         public async Task<Order> GetOrderByIdAsync(int orderId)
         {
