@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using TheRestaurant.Presentation.Client.Components.Admin.Employees.Dto;
-using static MudBlazor.Colors;
-using static System.Net.WebRequestMethods;
-using static TheRestaurant.Presentation.Client.Components.Admin.Employees.EmployeesDataGrid;
+using TheRestaurant.Presentation.Shared.DTO.Employees;
 using static TheRestaurant.Presentation.Shared.Requests.EmployeeRequests;
 
 namespace TheRestaurant.Presentation.Client.ClientServices

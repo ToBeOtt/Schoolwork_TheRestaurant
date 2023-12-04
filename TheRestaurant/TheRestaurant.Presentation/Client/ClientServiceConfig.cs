@@ -11,6 +11,7 @@ namespace TheRestaurant.Presentation.Client
             services.AddScoped<RoleService>();
             services.AddScoped<AuthService>();
             services.AddScoped<ClientMenuService>();
+            services.AddScoped<ClientCartService>();
             services.AddScoped<ClientEmployeeServices>(); 
 
             // Helpers
