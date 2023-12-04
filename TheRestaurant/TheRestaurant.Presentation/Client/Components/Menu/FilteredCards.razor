@@ -1,6 +1,7 @@
 ﻿@using TheRestaurant.Presentation.Client.ClientServices
-@using TheRestaurant.Presentation.Client.Components.Menu.Dto
-@inject ClientMenuService MenuService
+@using TheRestaurant.Presentation.Shared.DTO.Product
+@inject ClientCartService CartService
+@inject RoleService RoleService
 
 @foreach (var prod in Products)
 {
@@ -28,13 +29,17 @@
             </MudCardContent>
 
             <MudCardActions Class="px-5 py-2">
-                <MudButton 
-                    Class="mr-6 pb-2"
-                    Variant="Variant.Filled"
-                    Color="Color.Tertiary"
-                    OnClick="@(() => AddItemToCart(prod.Id))">
-                    Beställ
-                </MudButton>
+                <MudTooltip Text="@ErrorMessage">
+                    <MudButton 
+                        Class="mr-6 pb-2)"
+                        Variant="Variant.Filled"
+                        Color="Color.Tertiary"
+                        Disabled="@IsButtonDeactivated"
+                        OnClick="@(() => AddItemToCart(prod.Id))"    
+                        >
+                        Beställ
+                    </MudButton>
+                </MudTooltip>
             </MudCardActions>
 
             @*  Details expansion info menu *@
@@ -92,9 +97,23 @@
     [Parameter]
     public List<ClientProductDto> Products { get; set; }
 
+    public string ErrorMessage;
+    public bool IsButtonDeactivated { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var roles = await RoleService.GetRolesAsync();
+        if (roles.IsManager == true || roles.IsAdmin == true)
+        {
+            ErrorMessage = "Det går inte att lägga till en vara i kundkorgen som inloggad.";
+            IsButtonDeactivated = true;
+        }
+    }
 
     private async Task AddItemToCart(int id)
-    {
-        await MenuService.AddItemToCartService(id);
+    {  
+        await CartService.AddItemToCartService(id);
     }
+
+    
 }

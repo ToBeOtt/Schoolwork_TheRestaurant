@@ -1,6 +1,6 @@
 ﻿@using MudBlazor
 @using TheRestaurant.Presentation.Client.ClientServices
-@inject ClientMenuService MenuService
+@inject ClientCartService CartService
 @inject ServerAuthenticationStateProvider AuthState
 
 @if (NrOfItemsInCart > 0)
@@ -17,18 +17,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        NrOfItemsInCart = await MenuService.NrOfItemsInCart();
-        MenuService.CartUpdated += OnCartUpdated;
+        NrOfItemsInCart = await CartService.NrOfItemsInCart();
+        CartService.CartUpdated += OnCartUpdated;
     }
 
     private async void OnCartUpdated()
     {
-        NrOfItemsInCart = await MenuService.NrOfItemsInCart();
+        NrOfItemsInCart = await CartService.NrOfItemsInCart();
         StateHasChanged();
     }
 
     private void DisposeEvents()
     {
-        MenuService.CartUpdated -= OnCartUpdated;
+        CartService.CartUpdated -= OnCartUpdated;
     }
 }

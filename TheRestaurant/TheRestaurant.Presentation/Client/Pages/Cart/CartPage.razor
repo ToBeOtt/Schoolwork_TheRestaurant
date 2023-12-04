@@ -1,20 +1,128 @@
 ﻿@page "/cart";
 @using TheRestaurant.Presentation.Client.ClientServices
-@using TheRestaurant.Presentation.Shared.ViewModels
-@inject ClientMenuService MenuService
+@using TheRestaurant.Presentation.Shared.DTO
+@using TheRestaurant.Presentation.Shared.DTO.Cart
+@inject ClientCartService CartService
 
-<h3>cart</h3>
+<MudText Typo="Typo.h4" Class="px-6 py-5">
+    Din beställning
+</MudText>
 
-@foreach (var item in CartItems)
-{
-    <p>@item.Name</p>
-    <p>@item.Price</p>
-}
+<MudTable Items="@AggregatedCartItemsList" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm">
+   
+    <HeaderContent>
+            <MudTh style="font-weight: 800;">Antal</MudTh>
+            <MudTh style="font-weight: 800;">Produkt</MudTh>
+            <MudTh style="font-weight: 800;">Pris</MudTh>
+            <MudTh style="font-weight: 800;">Ta bort</MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Nr">@context.Count</MudTd>
+        <MudTd DataLabel="Sign">@context.Name</MudTd>
+        <MudTd DataLabel="Name">@context.TotalPrice</MudTd>
+        <MudTd DataLabel="Ta bort"> 
+            <MudIconButton 
+                OnClick="@(() => RemoveCartItem(context.Name))"
+                Size="@Size.Small" 
+                Color="Color.Error" 
+                Icon="@Icons.Material.Filled.Delete"
+                />
+        </MudTd>
+    </RowTemplate>
+        <FooterContent>
+            <MudTd style="font-weight: 600;">Totalt att betala: </MudTd>
+            <MudTd></MudTd>
+            <MudTd style="font-weight: 600;">@TotalPriceToPay</MudTd>
+            <MudTd></MudTd>
+    </FooterContent>
+
+    </MudTable>
+
+    <MudGrid Class="py-4">
+
+     @* Textbox for customer comment *@
+        <MudItem xs="12" Class="justify-content-end py-2">
+            <MudTextField 
+                @bind-Value="@Comment" 
+                Class="text-black-50"
+                Placeholder="Lägg till kommentar.." 
+                Variant="Variant.Text">
+                
+            </MudTextField>
+        </MudItem>
+
+   
+    @* Button for cancel or order *@
+        <MudItem xs="12" Class="justify-content-start py-5 px-6">
+            <MudButton 
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                   OnClick="@(() => ActivatePlaceOrder())">
+                Lägg order
+            </MudButton>
+        
+            <MudButton 
+                Class="mx-4"
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                OnClick="@(() => ActivateClearCart())">
+                Ta bort beställning
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+ 
+  
 
 @code {
     private List<CartDto> CartItems = new();
+
+    private List<AggregatedCartDto> AggregatedCartItemsList = new();
+
+    private double TotalPriceToPay = 0;
+
+    private string Comment;
+
     protected override async Task OnInitializedAsync()
     {
-        CartItems = await MenuService.GetAllCartItems();
+        CartItems = await CartService.GetAllCartItems();
+
+        SortCart(CartItems);
     }
+
+    private async Task SortCart(List<CartDto> list)
+    {
+        AggregatedCartItemsList = await CartService.SortCartItems(CartItems);
+
+        var totalPriceList = AggregatedCartItemsList.Select(x => x.TotalPrice).ToList();
+        TotalPriceToPay = await CartService.TotalPriceOfCartItems(totalPriceList);
+        StateHasChanged();
+    }
+
+    private async void RemoveCartItem(string name)
+    {
+        CartDto itemToRemove = CartItems.FirstOrDefault(x => x.Name == name);
+
+        if (itemToRemove != null)
+        {
+            if (await CartService.DeleteCartItem(itemToRemove.Id))
+            {
+                CartItems.Remove(itemToRemove);
+                await CartService.UpdateCartService();
+                await SortCart(CartItems);
+            }
+        }
+    }
+
+    private void ActivateClearCart()
+    {
+        CartService.ClearCart();
+    }
+
+    private async Task ActivatePlaceOrder()
+    {
+
+        await CartService.PlaceOrder(Comment, AggregatedCartItemsList);
+    }
+
 }

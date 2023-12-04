@@ -1,4 +1,4 @@
-﻿namespace TheRestaurant.Presentation.Client.Components.Admin.Employees.Dto
+﻿namespace TheRestaurant.Presentation.Shared.DTO.Employees
 {
     public record EmployeeDto
        (

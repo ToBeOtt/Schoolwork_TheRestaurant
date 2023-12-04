@@ -1,5 +1,5 @@
 ﻿@using TheRestaurant.Presentation.Client.ClientServices
-@using TheRestaurant.Presentation.Client.Components.Menu.Dto
+@using TheRestaurant.Presentation.Shared.DTO.Product
 @inject ClientMenuService menuService
 
 <style>
@@ -75,7 +75,7 @@
     List<ClientProductDto> DefaultDisplay = new();
     List<ClientProductDto> FilteredList = new();
 
-    private List<string> FilterCategories;
+    private List<string> FilterCategories = new();
 
     protected override async void OnAfterRender(bool firstRender)
     {

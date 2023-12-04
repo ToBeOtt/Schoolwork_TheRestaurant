@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TheRestaurant.Application.Cart;
-using TheRestaurant.Authentication.Requests;
-using TheRestaurant.Authentication.Services.AuthenticationServices;
-using TheRestaurant.Authentication.Services.RegistrationServices;
 using TheRestaurant.Presentation.Shared.Requests;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Authentication
@@ -27,6 +24,10 @@ namespace TheRestaurant.Presentation.Server.Controllers.Authentication
         public async Task<IActionResult> GetProductsForCart(GetCartItemRequest request)
         {
             var result = await _cartServices.FetchAllCartItems(request.ListOfId);
+            
+            if(!result.IsSuccess)
+                return BadRequest(result);
+
             return Ok(result.Data);
         }
     }
