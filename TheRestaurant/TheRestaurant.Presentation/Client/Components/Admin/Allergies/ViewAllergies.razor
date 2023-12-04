@@ -5,13 +5,13 @@
 @using TheRestaurant.Contracts.DTOs
 
 <MudTable Items="@allergies" Dense=true Hover=true Bordered=false Striped=false Elevation="0" Loading=@loading>
-
+    
     <ToolBarContent>
         <MudText Typo="Typo.h6">Allergi Typer</MudText>
 
         <MudSpacer />
 
-        <MudSwitch @bind-Checked="@filtering" Label="Aktivera Filtrering" Color="Color.Primary" />
+        <MudSwitch @bind-Checked="@filtering" Label="Aktivera Filtrering!" Color="Color.Primary" />
 
 
     </ToolBarContent>
