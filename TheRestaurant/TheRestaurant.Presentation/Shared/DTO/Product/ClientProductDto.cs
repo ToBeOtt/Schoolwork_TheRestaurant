@@ -1,4 +1,4 @@
-﻿namespace TheRestaurant.Presentation.Client.Components.Menu.Dto
+﻿namespace TheRestaurant.Presentation.Shared.DTO.Product
 {
     public record ClientProductDto(
          int Id,

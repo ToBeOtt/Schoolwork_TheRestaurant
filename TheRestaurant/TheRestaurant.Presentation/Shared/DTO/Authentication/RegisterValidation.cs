@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TheRestaurant.Presentation.Client.Components.Authentication.Registration.Validation
+namespace TheRestaurant.Presentation.Shared.DTO.Authentication
 {
     public class RegisterValidation
     {

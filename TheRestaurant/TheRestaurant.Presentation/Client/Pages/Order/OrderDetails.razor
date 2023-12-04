@@ -1,0 +1,89 @@
+﻿@page "/OrderDetails"
+@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject ClientOrderService OrderService
+
+ <MudText 
+     Class="py-5"
+     Typo="Typo.h5">
+    Dina beställningar               
+</MudText>
+
+
+<MudTextField 
+    Class="w-25"
+    @bind-Value="@OrderNr" 
+    Label="Skriv in beställningsnummer" 
+    Variant="Variant.Outlined">
+</MudTextField>
+
+<div class="form-group">
+    <div class="col-md-offset-2 py-3 col-md-3 text-right esh-button-actions">
+        <MudButton 
+            OnClick="@CheckOrderStatus"
+            Variant="Variant.Filled"
+            Color="Color.Primary">
+            Hämta beställning
+        </MudButton>
+    </div>
+</div>
+
+
+@* Order exists and can be modified *@
+@if (@OrderExists && @CanBeModified)
+{
+    @* Visa hela ordern och bifoga knappar för att ändra eller ta bort order. *@
+}
+
+@* Order exists and but is started and can not be modified *@
+@if (@OrderExists && !@CanBeModified)
+{
+    @* Visa hela ordern och bifoga meddelande om att ordern inte längre kan ändras *@
+}
+
+@* No order exist with given ordernr. *@
+@if (@OrderDoesNotExist)
+{
+    <MudText 
+        Color="@Color.Warning"
+        Typo="Typo.h6">
+        Det finns ingen beställning som matchar angivet order-nummer.
+    </MudText>
+}
+
+
+@if (@OrderNrValidationMessage != null)
+{
+    <MudText Color="@Color.Warning"
+             Typo="Typo.h6">
+        @OrderNrValidationMessage
+    </MudText>
+}
+
+@code {
+    private bool OrderExists;
+    private bool CanBeModified;
+    private string OrderNr;
+    private bool OrderDoesNotExist = false;
+    private string OrderNrValidationMessage;
+
+
+     private OrderDetailsDTO Order;
+
+    private async Task CheckOrderStatus()
+    {
+        int parsedOrderNr;
+        if(!int.TryParse(OrderNr, out parsedOrderNr))
+        {
+            OrderNrValidationMessage = "Fel inmatning, ordernummer innehåller bara siffror.";
+        }
+
+        else
+        {
+            var order = await OrderService.CheckOrderStatus(parsedOrderNr);
+
+            // kolla order.OrderStatus etc
+            // om order går att ändra, implementera logik för ändra order eller ta bort order.
+        }
+    }
+}

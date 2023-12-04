@@ -12,15 +12,17 @@ namespace TheRestaurant.Presentation.Client.ClientServices
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         private readonly NavigationManager _navigationManager;
-
+        private readonly ClientCartService _clientCartService;
 
         public AuthService(HttpClient httpClient,
                            ILocalStorageService localStorage,
-                           NavigationManager navigationManager)
+                           NavigationManager navigationManager,
+                           ClientCartService clientCartService)
         {
             _httpClient = httpClient;
             _localStorage = localStorage;
             _navigationManager = navigationManager;
+            _clientCartService = clientCartService;
         }
         public async Task<bool> Login(LoginRequest request)
         {
@@ -38,8 +40,13 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
                 await _localStorage.SetItemAsync("authToken", token);
 
+                // Set header to authorized so controller can authorize user
                 _httpClient.DefaultRequestHeaders.Authorization = 
                     new AuthenticationHeaderValue("bearer", token);
+
+                // Logged in user cannot use cart -> remove cart-items from storage
+                await _localStorage.RemoveItemAsync("CartItems");
+                await _clientCartService.UpdateCartService();
 
                 if (_navigationManager.Uri.Contains("login"))
                 {

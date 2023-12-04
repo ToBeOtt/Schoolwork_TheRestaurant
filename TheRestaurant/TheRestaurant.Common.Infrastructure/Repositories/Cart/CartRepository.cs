@@ -38,6 +38,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Cart
                 {
                     CartResponse cartItem = new CartResponse
                     (
+                        Id: product.Id,
                         Name: product.Name,
                         Price: product.Price
                     );
