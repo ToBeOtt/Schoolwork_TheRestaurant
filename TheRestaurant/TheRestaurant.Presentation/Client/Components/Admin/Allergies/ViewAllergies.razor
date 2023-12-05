@@ -1,8 +1,11 @@
 ﻿@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
+@inject RoleService RoleService
+
 
 @using TheRestaurant.Contracts.DTOs
+@using TheRestaurant.Presentation.Client.ClientServices;
 
 <MudTable Items="@allergies" Dense=true Hover=true Bordered=false Striped=false Elevation="0" Loading=@loading>
 
@@ -23,9 +26,13 @@
         <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<AllergyDto, object>(x=>x.Name)">Namn</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
         <MudTh>Synlighet</MudTh>
-        <MudTh>
-            <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary" OnClick="@((e) => CreateAllergy(maxWidth))">Ny Allergi</MudButton>
-         </MudTh>
+        @if (IsManager)
+        {
+            <MudTh>
+                <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary" OnClick="@((e) => CreateAllergy(maxWidth))">Ny Allergi</MudButton>
+             </MudTh>
+        }
+        
      </HeaderContent>
      <RowTemplate>
          <MudTd DataLabel="Id">@context.Id</MudTd>
@@ -48,15 +55,19 @@
             } *@
 
         </MudTd>
-        <MudTd>
-            <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
-                <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
-                                OnClick="@((e) => UpdateAllergy(maxWidth, context))" />
-                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
-                                OnClick="@((e) => DeleteAllergy(maxWidth ,context))" />
+         @if (IsManager)
+        {
+            <MudTd>
+                <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
+                 <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
+                                    OnClick="@((e) => UpdateAllergy(maxWidth, context))" />
+                     <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
+                                    OnClick="@((e) => DeleteAllergy(maxWidth ,context))" />
 
-             </MudButtonGroup>
-         </MudTd>
+                 </MudButtonGroup>
+             </MudTd>
+        }
+        
 
      </RowTemplate>
 
@@ -69,12 +80,22 @@
     private bool loading;
     private bool placeholderSwitch;
     private bool filtering = false;
+    private bool IsManager;
+
 
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
         allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
+
+        var roles = await RoleService.GetRolesAsync();
+        if (roles.IsManager == true)
+        {
+            IsManager = true;
+        }
+
+
     }
 
 
