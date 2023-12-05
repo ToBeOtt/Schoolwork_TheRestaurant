@@ -3,7 +3,8 @@
     public record CartDto(
         int Id,
         string Name,
-        double Price
+        double Price,
+        int Count
         );
 
 }

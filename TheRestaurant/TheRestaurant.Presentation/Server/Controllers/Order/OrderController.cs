@@ -32,69 +32,91 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
         [HttpPost("create")]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] OrderDto orderDto)
         {
-            var createOrderRequest = new CreateOrderRequest
+            try
             {
-                OrderDate = orderDto.OrderDate,
-                OrderItems = orderDto.OrderItems.Select(item => new OrderProductDto
+                if (!ModelState.IsValid)
                 {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity
-                }).ToList()
-            };
-
-            var order = new Domain.Entities.OrderEntities.Order
-            {
-                OrderDate = orderDto.OrderDate,
-                OrderRows = new List<OrderRow>()
-            };
-
-            foreach (var orderItemDto in orderDto.OrderItems)
-            {
-                // You don't need to create detailed product entities here,
-                // only include the ProductId and Quantity
-                var orderRow = new OrderRow
-                {
-                    // Include the ProductId and Quantity
-                    MenuItem = new List<Domain.Entities.Menu.Product>
-            {
-                new Domain.Entities.Menu.Product
-                {
-                    Id = orderItemDto.ProductId,
-                    Name = "Product Name",
-                    Price = 0,
-                    IsFoodItem = false,
-                    IsDeleted = false
+                    // Return a 400 Bad Request response with validation errors
+                    return BadRequest(ModelState);
                 }
-            }
+
+                var createOrderRequest = new CreateOrderRequest
+                {
+                    OrderDate = orderDto.OrderDate,
+                    OrderItems = orderDto.CartItems.Select(item => new OrderProductDto
+                    {
+                        Id = item.Id,
+                        Count = item.Count,
+                        Name = item.Name,
+                        Price = item.Price
+                    }).ToList()
                 };
 
-                order.OrderRows.Add(orderRow);
-            }
-
-            // Set the status of the order to "Pending"
-            _orderService.SetOrderStatus(order, "Pending");
-
-            // Create the order
-            var createdOrder = await _orderService.CreateOrderAsync(order);
-            if (createdOrder == null)
-            {
-                return NotFound();
-            }
-
-            // Return a simplified response
-            var createdOrderDto = new OrderDto
-            {
-                Id = createdOrder.Id,
-                OrderDate = createdOrder.OrderDate,
-                OrderItems = createdOrder.OrderRows.SelectMany(or => or.MenuItem).Select(mi => new OrderProductDto
+                var order = new Domain.Entities.OrderEntities.Order
                 {
-                    ProductId = mi.Id,
-                    Quantity = 1 // Set a default quantity (you can adjust as needed)
-                }).ToList()
-            };
+                    OrderDate = orderDto.OrderDate,
+                    OrderRows = new List<OrderRow>()
+                };
 
-            return CreatedAtAction(nameof(GetOrder), new { id = createdOrder.Id }, createdOrderDto);
+                foreach (var orderItemDto in orderDto.CartItems)
+                {
+                    // You don't need to create detailed product entities here,
+                    // only include the ProductId and Quantity
+                    var orderRow = new OrderRow
+                    {
+                        // Include the ProductId and Quantity
+                        MenuItem = new List<Domain.Entities.Menu.Product>
+                {
+                    new Domain.Entities.Menu.Product
+                    {
+                        Id = orderItemDto.Id,
+                        Name = "Product Name",
+                        Price = 0,
+                        IsFoodItem = false,
+                        IsDeleted = false
+                    }
+                }
+                    };
+
+                    order.OrderRows.Add(orderRow);
+                }
+
+                // Set the status of the order to "Pending"
+                _orderService.SetOrderStatus(order, "Pending");
+
+                // Create the order
+                var createdOrder = await _orderService.CreateOrderAsync(order);
+                if (createdOrder == null)
+                {
+                    // Return a 500 Internal Server Error response if creation fails
+                    return StatusCode(500, "Failed to create the order.");
+                }
+
+                // Return a simplified response
+                var createdOrderDto = new OrderDto
+                {
+                    Id = createdOrder.Id,
+                    OrderDate = createdOrder.OrderDate,
+                    CartItems = createdOrder.OrderRows.SelectMany(or => or.MenuItem).Select(mi => new OrderProductDto
+                    {
+                        Id = mi.Id,
+                        Price = mi.Price,
+                        Name = mi.Name
+                    }).ToList()
+                };
+
+                return CreatedAtAction(nameof(GetOrder), new { id = createdOrder.Id }, createdOrderDto);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                
+
+                // Return a 500 Internal Server Error response for unhandled exceptions
+                return StatusCode(500, "An error occurred during order creation.");
+            }
         }
+
 
 
         private readonly IOrderService _orderService;

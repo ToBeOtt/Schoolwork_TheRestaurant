@@ -1,7 +1,9 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
+using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
 using TheRestaurant.Presentation.Shared.DTO.Cart;
+using TheRestaurant.Presentation.Shared.OrderDTO;
 using TheRestaurant.Presentation.Shared.Requests;
 
 namespace TheRestaurant.Presentation.Client.ClientServices
@@ -150,20 +152,45 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
         public async Task<bool> PlaceOrder(string comment, List<AggregatedCartDto> listOfOrderItems)
         {
-            List<int> cartItemIdsForOrder = new List<int>();
+            List<OrderProductDto> cartItemsForOrder = new List<OrderProductDto>();
             foreach (var item in listOfOrderItems)
             {
                 for (int i = 0; i < item.Count; i++)
                 {
-                    cartItemIdsForOrder.Add(item.IdOfOrderAggregate);
+                    cartItemsForOrder.Add(new OrderProductDto
+                    {
+                        Id = item.IdOfOrderAggregate,
+                        Name = item.Name,
+                        Price = item.TotalPrice / item.Count,
+                        Count = 1
+                    });
                 }
             }
 
-            // Anropa controller, fortsätt med produktlogik.
+            var order = new OrderDto
+            {
+                Id = 123, // Set a valid integer value for the Id
+                OrderDate = DateTime.Now,
+                OrderStatus = "Pending",
+                Comment = comment,
+                CartItems = cartItemsForOrder
+            };
 
-            // fixa någon lämplig return för om order går igenom eller inte. 
-            // Bör returnera ett kvitto-nr av något slag?
-            return true;
+
+            // Send the order to the server
+            var apiUrl = "/api/Order/create";
+            var response = await _httpClient.PostAsJsonAsync(apiUrl, order);
+
+            // Check if the order was successfully placed
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
+
     }
 }

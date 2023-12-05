@@ -21,6 +21,13 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.OrderRepository
 
         public async Task<Order> CreateAsync(Order order)
         {
+            if (order == null)
+            {
+                throw new ArgumentException("Invalid order data");
+            }
+
+            // Additional validation logic here
+
             _dbContext.Orders.Add(order);
             await _dbContext.SaveChangesAsync();
             return order;
