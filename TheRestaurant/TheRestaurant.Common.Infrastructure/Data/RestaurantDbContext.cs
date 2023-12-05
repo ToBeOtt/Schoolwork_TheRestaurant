@@ -32,11 +32,12 @@ namespace Common.Infrastructure.Data
         public DbSet<OrderRow> OrderRows { get; set; } = null!;
 
         public DbSet<OrderStatus> OrderStatus { get; set; } = null!;
-        public DbSet<EmployeeOrder> EmployeeOrders { get; set; } = null!;
+        //public DbSet<EmployeeOrder> EmployeeOrders { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new OrderConfiguration());
+
+            //builder.ApplyConfiguration(new OrderConfiguration());
             builder.AllergySeed();
             builder.CategorySeed();
             //builder.SeedOrder();

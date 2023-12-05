@@ -10,7 +10,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 {
     [Route("api/Order")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class OrderController : ControllerBase
     {
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrder(int id)
@@ -29,16 +29,18 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return orderDto;
         }
-        [HttpPost("create")]
-        public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] OrderDto orderDto)
+        [HttpPost("createOrder")]
+        public async Task<ActionResult<OrderDto>> CreateOrder(OrderDto orderDto)
         {
             try
             {
+
                 if (!ModelState.IsValid)
                 {
-                    // Return a 400 Bad Request response with validation errors
+                    _logger.LogInformation($"");
                     return BadRequest(ModelState);
                 }
+
 
                 var createOrderRequest = new CreateOrderRequest
                 {
@@ -62,24 +64,18 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
                 {
                     // You don't need to create detailed product entities here,
                     // only include the ProductId and Quantity
-                    var orderRow = new OrderRow
-                    {
-                        // Include the ProductId and Quantity
-                        MenuItem = new List<Domain.Entities.Menu.Product>
+                    // Include the ProductId and Quantity
+                    var product =
+                new Domain.Entities.Menu.Product
                 {
-                    new Domain.Entities.Menu.Product
-                    {
-                        Id = orderItemDto.Id,
-                        Name = "Product Name",
-                        Price = 0,
-                        IsFoodItem = false,
-                        IsDeleted = false
-                    }
-                }
-                    };
-
-                    order.OrderRows.Add(orderRow);
-                }
+                    Id = orderItemDto.Id,
+                    Name = "Product Name",
+                    Price = 0,
+                    IsFoodItem = false,
+                    IsDeleted = false
+                };
+                    var orderRow = new OrderRow(product, order);
+                };
 
                 // Set the status of the order to "Pending"
                 _orderService.SetOrderStatus(order, "Pending");
@@ -93,19 +89,21 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
                 }
 
                 // Return a simplified response
-                var createdOrderDto = new OrderDto
-                {
-                    Id = createdOrder.Id,
-                    OrderDate = createdOrder.OrderDate,
-                    CartItems = createdOrder.OrderRows.SelectMany(or => or.MenuItem).Select(mi => new OrderProductDto
-                    {
-                        Id = mi.Id,
-                        Price = mi.Price,
-                        Name = mi.Name
-                    }).ToList()
-                };
+                //var createdOrderDto = new OrderDto
+                //{
+                //    Id = createdOrder.Id,
+                //    OrderDate = createdOrder.OrderDate,
+                //    CartItems = createdOrder.OrderRows
+                //    .SelectMany(or => or.Product)
+                //    .Select(mi => new OrderProductDto
+                //    {
+                //        Id = mi.Id,
+                //        Price = mi.Price,
+                //        Name = mi.Name
+                //    }).ToList()
+                //};
 
-                return CreatedAtAction(nameof(GetOrder), new { id = createdOrder.Id }, createdOrderDto);
+                return Ok(orderDto);
             }
             catch (Exception ex)
             {
@@ -121,11 +119,13 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
         private readonly IOrderService _orderService;
 
-        public ProductController(IOrderService orderService)
+        private readonly ILogger<OrderController> _logger;
+
+        public OrderController(IOrderService orderService, ILogger<OrderController> logger)
         {
             _orderService = orderService;
+            _logger = logger;
         }
-
     }
 
 }

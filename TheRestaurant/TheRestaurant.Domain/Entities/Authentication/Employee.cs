@@ -6,7 +6,6 @@ namespace TheRestaurant.Domain.Entities.Authentication
     public sealed class Employee : IdentityUser
     {
         public string Alias { get; set; }
-        public ICollection<EmployeeOrder> Orders {  get; set; } 
         
         
         public bool IsDeleted { get; set; } = false;
