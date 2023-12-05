@@ -14,9 +14,10 @@ namespace TheRestaurant.Presentation.Client
             services.AddScoped<ClientCartService>();
             services.AddScoped<ClientEmployeeServices>();
             services.AddScoped<ClientOrderService>();
-            
-            // Helpers
-            services.AddScoped<CheckRole>();
+			services.AddScoped<ClientDashboardServices>();
+			
+			// Helpers
+			services.AddScoped<CheckRole>();
 
             return services;
         }

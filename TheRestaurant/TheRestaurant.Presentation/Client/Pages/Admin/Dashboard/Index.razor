@@ -1,0 +1,51 @@
+﻿@page "/admin/dashboard/index"
+@using TheRestaurant.Presentation.Client.Components.Admin.Dashboard
+@using TheRestaurant.Presentation.Client.Shared.Admin
+@inject HttpClient Http
+
+
+<AdminLayout>
+    <AdminContent>
+        <MudGrid>
+
+@* List-chart for orders *@
+            <MudItem xs="12">
+                <MudPaper 
+                    Elevation="0"
+                    Class="d-flex align-center justify-center mud-width-full py-3">
+
+                        <OrderListChart />
+
+                </MudPaper>
+            </MudItem>
+
+
+@* Donut-chart for products *@
+            <MudItem xs="6">
+                <MudPaper 
+                    Elevation="0"
+                    Class="d-flex align-center justify-center py-3">
+                    
+                    <CategoriesPieChart />
+
+                </MudPaper>
+            </MudItem>
+
+@* Pie-chart for Categories *@
+            <MudItem xs="6">
+                <MudPaper Elevation="0"
+                          Class="d-flex align-center justify-center py-3">
+
+                    <ProductsDonutChart />
+
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+
+        
+
+        
+   
+    </AdminContent>
+</AdminLayout>
+
