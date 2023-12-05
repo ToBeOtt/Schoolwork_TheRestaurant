@@ -5,7 +5,7 @@
 @using TheRestaurant.Contracts.DTOs
 
 <MudTable Items="@allergies" Dense=true Hover=true Bordered=false Striped=false Elevation="0" Loading=@loading>
-    
+
     <ToolBarContent>
         <MudText Typo="Typo.h6">Allergi Typer</MudText>
 
@@ -34,7 +34,8 @@
              <MudSpacer />
          </MudTd>
          <MudTd>
-             @if (@context.IsHidden == true)
+             Om den är soft deleted...
+           @*   @if (@context.IsHidden == true)
             {
 
                 <MudSwitch @bind-Checked="@context.IsHidden" Label="Dold" Color="Color.Primary" />
@@ -44,12 +45,13 @@
             else
             {
                 <MudSwitch @bind-Checked="@context.IsHidden" Label="Synlig" Color="Color.Primary" />
-            }
+            } *@
 
         </MudTd>
         <MudTd>
             <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
-                <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation />
+                <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
+                                OnClick="@((e) => UpdateAllergy(maxWidth, context))" />
                  <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
                                 OnClick="@((e) => DeleteAllergy(maxWidth ,context))" />
 
@@ -75,6 +77,8 @@
         allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
     }
 
+
+    //Currently not used.
     private async Task HiddenStatus(bool isHidden, int id)
     {
         var allergy = await HttpClient.GetFromJsonAsync<AllergyDto>("/api/allergy/{id}");
@@ -98,6 +102,24 @@
 
     }
 
+    private async Task UpdateAllergy(DialogOptions options, AllergyDto allergy)
+    {
+
+        var parameters = new DialogParameters<UpdateAllergy>
+        {
+            { x => x.allergy, allergy}
+        };
+
+        var dialog = await DialogService.ShowAsync<UpdateAllergy>("", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
+            StateHasChanged();
+        }
+
+    }
 
     private async Task DeleteAllergy(DialogOptions options, AllergyDto allergy)
     {

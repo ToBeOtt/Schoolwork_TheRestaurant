@@ -5,20 +5,22 @@
 
 
 <MudDialog>
-    <TitleContent>
-        <MudText Typo="Typo.h4">Ny Allergy</MudText>
-    </TitleContent>
+   <TitleContent>
+        <MudText Typo="Typo.h4">Uppdatera @allergy.Name</MudText>
+   </TitleContent>
     <DialogContent>
-        <EditForm Model="@allergy" OnValidSubmit="AllergySubmit">
+        <EditForm Model="@allergy" OnValidSubmit="AllergyUpdate">
             <DataAnnotationsValidator />
             <MudTextField AdornmentColor="Color.Warning" Label="Namn" HelperText="Får max innehålla 30 tecken"
             @bind-Value="allergy.Name" For="@(() => allergy.Name)" />
-            <MudButton ButtonType="ButtonType.Submit" Class="ma-1" Variant="Variant.Filled" Color="Color.Success" DisableElevation FullWidth>Skapa</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Class="ma-1" Variant="Variant.Filled" Color="Color.Success" DisableElevation FullWidth>Uppdatera</MudButton>
             <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
-        </EditForm>
-    </DialogContent>
+         </EditForm>
+     </DialogContent>
 
- </MudDialog>
+    
+
+</MudDialog>
 
 
  @code {
@@ -26,33 +28,31 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
 
-    public AllergyDto allergy { get; set; } = new AllergyDto();
-    private string apiCreateAllergyUrl = "/api/allergy/create";
+    [Parameter]
+    public AllergyDto allergy { get; set; }
 
     private void Cancel()
     {
-        Snackbar.Add("Skapandet av allergi avbrutet", Severity.Info);
+        Snackbar.Add("Uppdatering av allergi avbrutet", Severity.Info);
         MudDialog.Cancel();
     }
 
-    private async void AllergySubmit()
+    private async void AllergyUpdate()
     {
-
         var request = new AllergyRequest(Name: allergy.Name);
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(apiCreateAllergyUrl, request);
+        HttpResponseMessage response = await HttpClient.PutAsJsonAsync($"/api/allergy/edit/{allergy.Id}", request);
 
         if (response.IsSuccessStatusCode)
         {
-            Snackbar.Add($"Allergi {allergy.Name} tillagd", Severity.Success);
+            Snackbar.Add($"Allergi {allergy.Name} uppdaterad", Severity.Success);
             MudDialog.Close(DialogResult.Ok(allergy.Id));
         }
         else
         {
-            Snackbar.Add("Skapandet av allergi misslyckades", Severity.Error);
+            Snackbar.Add("Uppdatering av allergi misslyckades", Severity.Error);
             MudDialog.Close(DialogResult.Ok(allergy.Id));
         }
-
+        
     }
-
 
 }
