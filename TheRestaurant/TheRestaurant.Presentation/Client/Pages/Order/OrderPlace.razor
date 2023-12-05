@@ -1,0 +1,33 @@
+﻿@page "/PlaceOrder"
+@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Cart;
+@inject ClientCartService CartService
+
+
+@code {
+    private async Task PlaceOrder()
+    {
+        var comment = "Some comment";
+        var listOfCartItems = await CartService.GetAllCartItems();
+
+        var listOfOrderItems = listOfCartItems.Select(item => new AggregatedCartDto(
+            IdOfOrderAggregate: item.Id,  // Assuming item.Id is an int
+            Name: item.Name,
+            TotalPrice: item.Price,  // Assuming item.Price is a double
+            Count: item.Count  // Assuming item.Count is an int
+        )).ToList();
+
+
+        var result = await CartService.PlaceOrder(comment, listOfOrderItems);
+
+        if (result)
+        {
+            // Handle successful order placement
+        }
+        else
+        {
+            // Handle failed order placement
+        }
+    }
+
+}
