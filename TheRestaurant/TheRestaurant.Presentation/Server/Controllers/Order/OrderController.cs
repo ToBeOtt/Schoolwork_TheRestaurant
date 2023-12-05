@@ -29,7 +29,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return orderDto;
         }
-        [HttpPost("Create")]
+        [HttpPost("create")]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] OrderDto orderDto)
         {
             var createOrderRequest = new CreateOrderRequest

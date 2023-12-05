@@ -1,55 +1,88 @@
-﻿@using System.Text.Json;
+﻿@* @using System.Text.Json;
 @using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
 @using TheRestaurant.Presentation.Shared.OrderDTO;
 @using MudBlazor;
-@inject ISnackbar Snackbar
+@using TheRestaurant.Presentation.Client.ClientServices;
 
+@inject ISnackbar Snackbar
+@inject ClientCartService CartService
 @page "/Order"
 @inject HttpClient HttpClient
 
-<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(1)">Add Item 1</MudButton>
-<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick="() => AddOrderItem(2)">Add Item 2</MudButton>
-<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="CreateOrder">Färdigställ beställning</MudButton>
+<MudGrid>
+    @foreach (var product in products)
+    {
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">@product.Name</MudText>
+                    <MudButton Color="Color.Primary" @onclick="() => AddToCart(product.Id)">Add to Cart</MudButton>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>
+
+
+<MudButton Color="Color.Primary" @onclick="() => SubmitOrder()">Färdigställ beställning</MudButton>
+
 @code {
     private Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
 
-    private const string ServiceEndpoint = "/api/Order";
+    private List<TheRestaurant.Presentation.Client.Pages.Order.ProductModel.ProductModel> products = new List<TheRestaurant.Presentation.Client.Pages.Order.ProductModel.ProductModel>();
 
-    private OrderDto orderDto = new OrderDto { OrderItems = new List<OrderProductDto>() };
-
-    private OrderProductDto orderProductDto = new OrderProductDto { ProductId = 1, Quantity = 0 };
-
-    private async Task CreateOrder()
+    protected override async Task OnInitializedAsync()
     {
-        var createOrderRequest = new OrderDto
+        await FetchProducts();
+        CartService.CartUpdated += UpdateCart;
+    }
+
+    private async Task FetchProducts()
+    {
+        try
+        {
+            var response = await HttpClient.GetAsync("Products/GetProducts");
+            if (response.IsSuccessStatusCode)
             {
-                OrderDate = DateTime.Now,
-                OrderItems = new List<OrderProductDto>()
-            };
-
-        foreach (var item in itemQuantities)
+                var productData = await response.Content.ReadFromJsonAsync<List<TheRestaurant.Presentation.Client.Pages.Order.ProductModel.ProductModel>>();
+                products = productData ?? new List<TheRestaurant.Presentation.Client.Pages.Order.ProductModel.ProductModel>();
+            }
+            else
+            {
+                Snackbar.Add("Failed to load products.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
         {
-            var orderItem = new OrderProductDto { ProductId = item.Key, Quantity = item.Value };
-            createOrderRequest.OrderItems.Add(orderItem);
+            Snackbar.Add($"An error occurred: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void AddToOrder(int productId)
+    {
+        // Implement the logic to add a product to the order
+    }
+    @code {
+        private List<int> cartItems = new List<int>();
+
+        private async Task SubmitOrder()
+        {
+            var success = await CartService.PlaceOrder("Special instructions", cartItems);
+            if (success)
+            {
+                Snackbar.Add("Order placed successfully.", Severity.Success);
+                CartService.ClearCart();
+            }
+            else
+            {
+                Snackbar.Add("Failed to place order.", Severity.Error);
+            }
         }
 
-        var response = await HttpClient.PostAsJsonAsync("/api/order/Create", createOrderRequest);
-
-        if (response.IsSuccessStatusCode)
+        private async Task ViewCart()
         {
-            // Parse the response data
-            var responseData = await response.Content.ReadAsStringAsync();
-
-            // Deserialize the response data into an OrderDto object
-            var order = JsonSerializer.Deserialize<OrderDto>(responseData);
-
-            // Response to user
-            Snackbar.Add("Order was successfully created.");
-        }
-        else
-        {
-            // Handle an unsuccessful order creation
-            Snackbar.Add("Failed to create the order.");
+            cartItems = await CartService.GetAllCartItems();
+            // Now you can use cartItems to display in the UI
         }
     }
 
@@ -72,14 +105,23 @@
     }
 
 
-
-    private void AddOrderItem(int id)
-    {
-        if (!itemQuantities.ContainsKey(id))
+        private async Task AddToCart(int productId)
         {
-            itemQuantities[id] = 0;
+            await CartService.AddItemToCartService(productId);
+            Snackbar.Add("Product added to cart.", Severity.Success);
         }
 
-        itemQuantities[id]++;
+    private void UpdateCart()
+    {
+        // Update UI elements related to the cart, if necessary
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        CartService.CartUpdated -= UpdateCart;
     }
 }
+
+
+ *@
