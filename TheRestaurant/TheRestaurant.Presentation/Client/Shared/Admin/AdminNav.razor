@@ -8,11 +8,11 @@
     <MudNavMenu Class="mud-width-full">
         <MudText Typo="Typo.h6" Class="px-4">Admin</MudText>
         <MudDivider Class="my-2" />
-        
+
         @*  Dashboard *@
         <MudNavLink Href="/dashboard" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
 
-       @*  Order *@
+        @*  Order *@
         <MudNavGroup Title="Ordrar" Icon="@Icons.Material.Filled.Receipt" Expanded="false">
             <MudNavGroup Title="Ej påbörjade" Icon="@Icons.Material.Filled.AdminPanelSettings" Expanded="false">
                 <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit" ActiveClass="active-link">Ändra order</MudNavLink>
@@ -25,34 +25,27 @@
         </MudNavGroup>
 
         @*Products*@
-        <MudNavGroup Title="Produkter" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
+        <MudNavGroup Title="Produkter" Icon="@Icons.Material.Filled.ViewList" Expanded="false">
             <MudNavLink Href="admin/product/view" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa produkter</MudNavLink>
             <MudNavLink Href="admin/product/create" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
         </MudNavGroup>
 
         @* Categories *@
-        <MudNavGroup Title="Categories" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
-            <MudNavLink Href="/Admin/CategoryList" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">List</MudNavLink>
-            <MudNavLink Href="/Admin/AddCategory" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Create new</MudNavLink>
+        <MudNavGroup Title="Kategorier" Icon="@Icons.Material.Filled.Folder" Expanded="false">
+            <MudNavLink Href="/Admin/CategoryList" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa kategorier</MudNavLink>
+            <MudNavLink Href="/Admin/AddCategory" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
         </MudNavGroup>
 
         @* Allergies *@
-        <MudNavGroup Title="Allergier" Icon="@Icons.Material.Filled.HealthAndSafety" Expanded="false">
-
-            <MudNavLink Href="/admin/allergy/view" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit" ActiveClass="active-link">Ändra</MudNavLink>
-            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever" ActiveClass="active-link">Ta bort</MudNavLink>
-
-        </MudNavGroup>
+        <MudNavLink Icon="@Icons.Material.Filled.HealthAndSafety" Href="/admin/allergy/view" ActiveClass="active-link">Allergier</MudNavLink>
 
         @* Emloyees *@
-        <MudNavLink Href="/admin/employees/Index" Icon="@Icons.Material.Filled.People">Anställda</MudNavLink>
-        
-        @* Receipts *@
-        <MudNavLink Href="/billing" Icon="@Icons.Material.Filled.Receipt">Kvitton</MudNavLink>
+        <MudNavLink Href="/admin/employees/Index" Icon="@Icons.Material.Filled.People" ActiveClass="active-link">Anställda</MudNavLink>
 
-       
+        @* Receipts *@
+        <MudNavLink Href="/billing" Icon="@Icons.Material.Filled.Receipt" ActiveClass="active-link">Kvitton</MudNavLink>
+
+
 
     </MudNavMenu>
 </MudPaper>
