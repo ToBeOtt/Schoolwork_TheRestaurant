@@ -145,5 +145,70 @@ namespace TheRestaurant.Testing.ProductTests
             Assert.True(product.IsDeleted);
             mockRepo.Verify(repo => repo.SoftDeleteAsync(productId), Times.Once);
         }
+
+        [Fact]
+        public async Task GetAllProducts_ShouldReturnProducts_ProductsExists()
+        {
+            var products = new List<Product>
+            {
+                new Product
+                {
+                    Id = 1,
+                    Name = "Product 1",
+                    Price = 100,
+                    IsFoodItem = true,
+                    Description = "Description 1",
+                    MenuPhoto = new byte[0],
+                    ProductAllergies = new List<ProductAllergy>
+                    {
+                        new ProductAllergy { Allergy = new Allergy { Name = "Allergy 1" } }
+                    },
+                    ProductCategories = new List<ProductCategory>
+                    {
+                        new ProductCategory { Category = new Category { Name = "Category 1" } }
+                    }
+                },
+
+                new Product
+                {
+                    Id = 2,
+                    Name = "Product 2",
+                    Price = 50,
+                    IsFoodItem = true,
+                    Description = "Description 2",
+                    MenuPhoto = new byte[0],
+                    ProductAllergies = new List<ProductAllergy>
+                    {
+                        new ProductAllergy { Allergy = new Allergy { Name = "Allergy 2"} }
+                    },
+                    ProductCategories = new List<ProductCategory>
+                    {
+                        new ProductCategory { Category = new Category { Name = "Category 2"} }
+                    }
+                }
+            };
+
+            var mockRepo = new Mock<IProductRepository>();
+            mockRepo.Setup(repo => repo.GetAllEagerLoadedAsync()).ReturnsAsync(products);
+
+
+            var productService = new ProductService(mockRepo.Object);
+
+            var response = await productService.GetAllProducts();
+
+            Assert.NotNull(response);
+            Assert.NotNull(response.Data);
+            Assert.Equal(products.Count, response.Data.Count);
+
+            var firstDto = response.Data[0];
+
+            Assert.Equal(products[0].Id, firstDto.Id);
+            Assert.Equal(products[0].Name, firstDto.Name);
+
+            var secondDto = response.Data[1];
+
+            Assert.Equal(products[1].Id , secondDto.Id);
+            Assert.Equal(products[1].Name, secondDto.Name);
+        }
     }
 }
