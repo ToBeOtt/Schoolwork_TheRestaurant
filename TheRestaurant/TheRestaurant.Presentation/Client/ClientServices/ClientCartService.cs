@@ -169,7 +169,7 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
             var order = new OrderDto
             {
-                Id = 123, // Set a valid integer value for the Id
+                Id = 123,
                 OrderDate = DateTime.Now,
                 OrderStatus = "Pending",
                 Comment = comment,
