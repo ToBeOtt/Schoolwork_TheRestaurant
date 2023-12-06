@@ -2,6 +2,7 @@
 
 
 @using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Components.Admin.Orders
 @using TheRestaurant.Presentation.Client.Shared.Admin;
 
 <AdminLayout>
@@ -12,7 +13,7 @@
 
                 <MudGrid>
                     <MudGrid Justify="Justify.FlexStart">
-                        <MudText Typo="Typo.h5">här kommer nya order som väntar på att behandlas att visas... yay</MudText>
+                        <ViewPendingOrders/>
                     </MudGrid>
 
                 </MudGrid>
