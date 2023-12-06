@@ -23,6 +23,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             var orderDto = new OrderDto
             {
+                Comment = null,
                 Id = order.Id,
                 OrderDate = order.OrderDate
             };
