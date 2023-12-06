@@ -2,8 +2,6 @@
 {
     public record AggregatedCartDto(
         int IdOfOrderAggregate,
-        string Name,
-        double TotalPrice,
         int Count
         );
 }

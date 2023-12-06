@@ -150,36 +150,16 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             CartUpdated?.Invoke();
         }
 
-        public async Task<bool> PlaceOrder(string comment, List<AggregatedCartDto> listOfOrderItems)
+        public async Task<bool> PlaceOrder(string? comment, List<AggregatedCartDto> listOfOrderItems)
         {
-            List<OrderProductDto> cartItemsForOrder = new List<OrderProductDto>();
-            foreach (var item in listOfOrderItems)
-            {
-                for (int i = 0; i < item.Count; i++)
-                {
-                    cartItemsForOrder.Add(new OrderProductDto
-                    {
-                        Id = item.IdOfOrderAggregate,
-                        Name = item.Name,
-                        Price = item.TotalPrice / item.Count,
-                        Count = 1
-                    });
-                }
-            }
 
-            var order = new OrderDto
-            {
-                Id = 123,
-                OrderDate = DateTime.Now,
-                OrderStatus = "Pending",
-                Comment = comment,
-                CartItems = cartItemsForOrder
-            };
+            PlaceOrderRequest request = new(
+                ListOfAggregatedIds: listOfOrderItems,
+                Comment: comment);
 
 
-            // Send the order to the server
-            var apiUrl = "/api/Order/create";
-            var response = await _httpClient.PostAsJsonAsync(apiUrl, order);
+            var apiUrl = "/Order/CreateOrder";
+            var response = await _httpClient.PostAsJsonAsync(apiUrl, request);
 
             // Check if the order was successfully placed
             if (response.IsSuccessStatusCode)

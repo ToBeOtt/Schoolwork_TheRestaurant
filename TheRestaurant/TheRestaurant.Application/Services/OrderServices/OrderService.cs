@@ -1,5 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using TheRestaurant.Application.Interfaces;
+using TheRestaurant.Application.Interfaces.IProduct;
+using TheRestaurant.Contracts.Requests.Order;
+using TheRestaurant.Domain.Entities.Menu;
 using TheRestaurant.Domain.Entities.OrderEntities;
 
 namespace TheRestaurant.Application.Services.OrderServices
@@ -7,36 +11,45 @@ namespace TheRestaurant.Application.Services.OrderServices
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IProductRepository _productRepository;
+
         public void SetOrderStatus(Order order, string status)
         {
             var orderStatus = new OrderStatus { Status = status };
             order.OrderStatus = orderStatus;
         }
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(
+            IOrderRepository orderRepository,
+            IProductRepository productRepository)
         {
             _orderRepository = orderRepository;
+            _productRepository = productRepository;
         }
 
-        public async Task<Order> CreateOrderAsync(Order order)
+        public async Task<Order> CreateOrderAsync(CreateOrderRequest request)
         {
-            try
+
+            // new order
+            Order order = new();
+
+            // Product and order row
+
+            foreach(var item in request.ProductAggregate)
             {
-                // Validation and creation logic here
-                return await _orderRepository.CreateAsync(order);
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+                for (int i = 0; i < item.ProductCount; i++)
+                {
+                    OrderRow orderRow = new(order, product);
+                    if (!await _orderRepository.CreateOrderRow(orderRow))
+                        throw new DbUpdateException();
+                }
             }
-            catch (ValidationException ex)
-            {
-                // Handle validation errors and return a 400 Bad Request response
-                // Log the error for debugging purposes
-                return null; // or return a meaningful error response
-            }
-            catch (Exception ex)
-            {
-                // Handle other exceptions and return appropriate responses
-                // Log the error for debugging purposes
-                return null; // or return a meaningful error response
-            }
+
+
+            return await _orderRepository.CreateAsync(order);
+            
+            
         }
 
         public async Task<Order> GetOrderByIdAsync(int orderId)
