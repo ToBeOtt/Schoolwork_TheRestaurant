@@ -13,6 +13,6 @@ namespace TheRestaurant.Presentation.Shared.OrderDTO
         public DateTime OrderDate { get; set; }
         public string OrderStatus { get; set; }
         public List<OrderProductDto> CartItems { get; set; }
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
     }
 }

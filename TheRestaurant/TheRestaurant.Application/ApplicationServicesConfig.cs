@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using TheRestaurant.Application.Cart;
 using TheRestaurant.Application.Dashboard;
 using TheRestaurant.Application.Employees;
+using TheRestaurant.Application.Interfaces;
+using TheRestaurant.Application.Services.OrderServices;
 using TheRestaurant.Application.Services.ProductServices;
 
 namespace TheRestaurant.Application

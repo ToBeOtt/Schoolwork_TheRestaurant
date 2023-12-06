@@ -1,6 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text;
 using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
 using TheRestaurant.Presentation.Shared.DTO.Cart;
 using TheRestaurant.Presentation.Shared.OrderDTO;
@@ -152,24 +154,21 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
         public async Task<bool> PlaceOrder(string comment, List<AggregatedCartDto> listOfOrderItems)
         {
+
             List<OrderProductDto> cartItemsForOrder = new List<OrderProductDto>();
             foreach (var item in listOfOrderItems)
             {
-                for (int i = 0; i < item.Count; i++)
-                {
+                //for (int i = 0; i < item.Count; i++)
                     cartItemsForOrder.Add(new OrderProductDto
                     {
                         Id = item.IdOfOrderAggregate,
                         Name = item.Name,
-                        Price = item.TotalPrice / item.Count,
-                        Count = 1
-                    });
-                }
+                        Price = item.TotalPrice
+                    });    
             }
 
             var order = new OrderDto
             {
-                Id = 123,
                 OrderDate = DateTime.Now,
                 OrderStatus = "Pending",
                 Comment = comment,
@@ -178,8 +177,13 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
 
             // Send the order to the server
-            var apiUrl = "/api/Order/create";
-            var response = await _httpClient.PostAsJsonAsync(apiUrl, order);
+            var json = JsonSerializer.Serialize(order);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var apiUrl = "/api/Order/createOrder";
+
+            var response = await _httpClient.PostAsJsonAsync(apiUrl, content);
 
             // Check if the order was successfully placed
             if (response.IsSuccessStatusCode)
