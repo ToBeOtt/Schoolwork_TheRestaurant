@@ -1,0 +1,213 @@
+﻿@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
+
+@using TheRestaurant.Contracts.DTOs
+@using TheRestaurant.Presentation.Client.ClientServices;
+
+
+<MudTable Items="@orders" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Nya Order</MudText>
+        <MudSpacer />
+        <MudSwitch @bind-Checked="@filtering" Label="Aktivera Filtrering!" Color="Color.Primary" />
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<MockOrderDTO, object>(x=>x.OrderDate)">Datum/Tid</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+        <MudTh>Status</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Id">@context.OrderDate.ToShortDateString() / @context.OrderDate.ToShortTimeString()</MudTd>
+        <MudTd>
+            <MudSpacer />
+        </MudTd>
+        <MudTd>
+            Visa status här
+        </MudTd>
+
+        <MudTd>
+            <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary"
+                        OnClick="@((e)=> TakeOrder(maxWidth ,context))">Hantera order</MudButton>
+         </MudTd>
+     </RowTemplate>
+
+ </MudTable>
+
+
+
+ @code {
+
+    //Set correct DTO, few things in code might have to be altered.
+    private List<MockOrderDTO> orders;
+    private bool filtering = false;
+
+
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<MockOrderDTO> mockOrders = new();
+        mockOrders = seedMock();
+
+        //Call the orders endpoint and get all orders with status pending
+        orders = mockOrders.Where(x => x.OrderStatus.Status == "Pending").ToList(); ;
+
+    }
+
+
+    private async Task TakeOrder(DialogOptions options, MockOrderDTO order)
+    {
+
+        var parameters = new DialogParameters<TakePendingOrder>
+        {
+            { x => x.order, order}
+        };
+
+        var dialog = await DialogService.ShowAsync<TakePendingOrder>("", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            //Get all orders again... and update the state.
+            //Or redirect to the active orders page.
+        
+
+            // Example from allergies
+            // allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
+            //StateHasChanged();
+
+            NavigationManager.NavigateTo("/admin/orders/active");
+
+        }
+
+    }
+
+
+    //Remove when correct DTO implemented
+    private List<MockOrderDTO> seedMock()
+    {
+
+        MockEmployee employee1 = new("Kalle");
+        MockEmployee employee2 = new("Eva");
+
+        MockOrderStatus pending = new MockOrderStatus(1, "Pending");
+        //MockOrderStatus active = new MockOrderStatus(2, "Pending");
+
+        List<MockOrderRow> products1 = new List<MockOrderRow>
+        {
+            new MockOrderRow("Voffla"),
+            new MockOrderRow("Keps"),
+            new MockOrderRow("Kattmat")
+        };
+
+        List<MockOrderRow> products2 = new List<MockOrderRow>
+        {
+            new MockOrderRow("Dumplings"),
+            new MockOrderRow("T-Shirt"),
+            new MockOrderRow("Kaffe")
+        };
+
+        var orderDate = DateTime.Now;
+
+
+
+        //skapa två mockorder
+        MockOrderDTO order1 = new()
+            {
+                Id = 1,
+                OrderDate = orderDate.AddHours(2),
+                Employee = null,
+                OrderStatus = pending,
+                OrderRows = products1
+
+            };
+
+
+        MockOrderDTO order2 = new()
+            {
+                Id = 2,
+                OrderDate = orderDate,
+                Employee = null,
+                OrderStatus = pending,
+                OrderRows = products2
+
+            };
+
+        //Lägg in på listan
+        List<MockOrderDTO> mockorderlist = new List<MockOrderDTO>
+        {
+            order1,
+            order2
+        };
+
+        return mockorderlist;
+    }
+
+    //Remove when correct DTO implemented
+    public class MockOrderDTO
+    {
+        public MockOrderDTO()
+        {
+
+        }
+
+        public int Id { get; set; }
+        public DateTime OrderDate { get; set; }
+
+        public MockEmployee? Employee { get; set; }
+
+        public MockOrderStatus OrderStatus { get; set; }
+        public ICollection<MockOrderRow>
+    OrderRows
+        { get; set; }
+
+
+
+    }
+
+
+
+    public class MockEmployee
+    {
+        public MockEmployee(string alias)
+        {
+            Id = Guid.NewGuid().ToString();
+            Alias = alias;
+        }
+
+        public string Id { get; set; }
+        public string Alias { get; set; }
+
+    }
+
+    public class MockOrderStatus
+    {
+        public MockOrderStatus(int id, string status)
+        {
+            Id = id;
+            Status = status;
+        }
+
+        public int Id { get; set; }
+        public string Status { get; set; }
+        public bool IsDeleted { get; set; }
+
+    }
+
+    public class MockOrderRow
+    {
+
+        public MockOrderRow(string productName)
+        {
+            ProductName = productName;
+        }
+
+        public string ProductName { get; set; }
+    }
+ }
