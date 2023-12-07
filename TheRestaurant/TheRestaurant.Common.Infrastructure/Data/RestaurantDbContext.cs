@@ -32,7 +32,6 @@ namespace Common.Infrastructure.Data
         public DbSet<OrderRow> OrderRows { get; set; } = null!;
 
         public DbSet<OrderStatus> OrderStatus { get; set; } = null!;
-        //public DbSet<EmployeeOrder> EmployeeOrders { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,7 +39,7 @@ namespace Common.Infrastructure.Data
             //builder.ApplyConfiguration(new OrderConfiguration());
             builder.AllergySeed();
             builder.CategorySeed();
-            //builder.SeedOrder();
+            OrderSeed.SeedOrder(builder);
             builder.OrderStatusSeed();
             //builder.OrderRowSeed();
 
