@@ -30,7 +30,11 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
 
         public async Task<Order> GetByIdAsync(int orderId)
         {
-            return await _dbContext.Orders.FindAsync(orderId);
+            return await _dbContext.Orders
+                .Include(x => x.OrderRows)
+                    .ThenInclude(o => o.Product)
+                .Include(x => x.OrderStatus)
+                .Where(x => x.Id == orderId && x.IsDeleted != true).FirstOrDefaultAsync();
         }
 
         public async Task<List<Order>> GetAllAsync()
@@ -44,14 +48,10 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int orderId)
+        public async Task DeleteAsync(Order order)
         {
-            var order = await _dbContext.Orders.FindAsync(orderId);
-            if (order != null)
-            {
-                _dbContext.Orders.Remove(order);
-                await _dbContext.SaveChangesAsync();
-            }
+            _dbContext.Orders.Update(order);
+            await _dbContext.SaveChangesAsync(); 
         }
 
         public async Task<OrderStatus> GetPendingStatusId()

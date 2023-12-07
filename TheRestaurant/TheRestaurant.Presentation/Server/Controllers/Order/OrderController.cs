@@ -7,29 +7,28 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 {
     [Route("Order")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class OrderController : ControllerBase
     {
         private readonly OrderService _orderService;
 
-        public ProductController(OrderService orderService)
+        public OrderController(OrderService orderService)
         {
             _orderService = orderService;
         }
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<OrderDto>> GetOrder(int id)
-        //{
-        //    var order = await _orderService.GetOrderByIdAsync(id);
-        //    if (order == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var orderDto = new OrderDto
-        //    {
-        //        Id = order.Id,
-        //        OrderDate = order.OrderDate
-        //    };
-        //    return orderDto;
-        //}
+
+
+        [HttpGet("GetCustomerOrder")]
+        public async Task<ActionResult> GetCustomerOrder(int id)
+        {
+            var result = await _orderService.GetCustomerOrder(id);
+            if (! result.IsSuccess)
+            {
+                return BadRequest();
+            }
+            
+            return Ok(result.Data);
+        }
+
 
         [HttpPost("CreateOrder")]
         public async Task<ActionResult> CreateOrder([FromBody] PlaceOrderRequest request)
@@ -55,6 +54,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
                 return Ok(result.Data);
         }
 
+
         [HttpGet("{status}")]
         public async Task<ActionResult<List<Domain.Entities.Orders.Order>>> GetOrdersByStatus(string status)
         {
@@ -67,5 +67,14 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return Ok(orders);
         }
+
+        [HttpDelete("CancelOrder/{id}")]
+        public async Task<ActionResult> CancelOrder(int id)
+        {
+            await _orderService.DeleteOrderAsync(id);
+            return NoContent();
+        }
+
+
     }
 }

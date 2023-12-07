@@ -1,58 +1,85 @@
 ﻿@page "/OrderDetails"
+@using TheRestaurant.Contracts.Responses.Orders
 @using TheRestaurant.Presentation.Client.ClientServices
 @using TheRestaurant.Presentation.Shared.DTO.Orders
 @inject ClientOrderService OrderService
 
- <MudText 
-     Class="py-5"
-     Typo="Typo.h5">
-    Dina beställningar               
-</MudText>
+@if (!OrderExists)
+{
+    <MudText Class="py-5"
+             Typo="Typo.h5">
+        Dina beställningar
+    </MudText>
 
+    <MudTextField Class="w-25"
+                  @bind-Value="@OrderNr"
+                  Label="Skriv in beställningsnummer"
+                  Variant="Variant.Outlined">
+    </MudTextField>
 
-<MudTextField 
-    Class="w-25"
-    @bind-Value="@OrderNr" 
-    Label="Skriv in beställningsnummer" 
-    Variant="Variant.Outlined">
-</MudTextField>
-
-<div class="form-group">
-    <div class="col-md-offset-2 py-3 col-md-3 text-right esh-button-actions">
-        <MudButton 
-            OnClick="@CheckOrderStatus"
-            Variant="Variant.Filled"
-            Color="Color.Primary">
-            Hämta beställning
-        </MudButton>
+    <div class="form-group">
+        <div class="col-md-offset-2 py-3 col-md-3 text-right esh-button-actions">
+            <MudButton OnClick="@CheckOrderStatus"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary">
+                Hämta beställning
+            </MudButton>
+        </div>
     </div>
-</div>
-
-
-@* Order exists and can be modified *@
-@if (@OrderExists && @CanBeModified)
-{
-    @* Visa hela ordern och bifoga knappar för att ändra eller ta bort order. *@
 }
 
-@* Order exists and but is started and can not be modified *@
-@if (@OrderExists && !@CanBeModified)
+else if(@OrderExists)
 {
-    @* Visa hela ordern och bifoga meddelande om att ordern inte längre kan ändras *@
+    <MudTable 
+        Class="w-50"
+        Items="@OrderInfo.ProductName" 
+        Dense="true" 
+        Hover="true" 
+        Breakpoint="Breakpoint.Sm"
+        >
+
+        <HeaderContent>
+            <MudTh style="font-weight: 800;">Order: @OrderInfo.OrderNr</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+                <MudTd DataLabel="productname">@context</MudTd>
+            </RowTemplate>
+            <FooterContent>
+                <MudTd 
+                    Class="justify-content-end"
+                    style="font-weight: 600;">Totalt att betala: @OrderInfo.SumToPay kr</MudTd>
+
+            </FooterContent>
+
+        </MudTable>
+
+    <MudGrid Class="py-4">
+        @if (CanBeModified)
+        {
+        @* Button for cancel *@
+        <MudItem xs="12" Class="justify-content-start py-5">
+            <MudButton Class="mx-4"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="@(() => CancelOrder(@OrderInfo.OrderNr))">
+                Avbryt order
+            </MudButton>
+        </MudItem>
+        }
+    </MudGrid>
+
 }
 
-@* No order exist with given ordernr. *@
-@if (@OrderDoesNotExist)
+@if(OrderDoesNotExist)
 {
-    <MudText 
-        Color="@Color.Warning"
-        Typo="Typo.h6">
-        Det finns ingen beställning som matchar angivet order-nummer.
+    <MudText Class="py-5"
+                Typo="Typo.h6">
+        Ordern är påbörjad och kan tyvärr inte ändras. Kontakta personal om du har frågor kring detta.
     </MudText>
 }
 
-
-@if (@OrderNrValidationMessage != null)
+@if(OrderNrValidationMessage != null)
 {
     <MudText Color="@Color.Warning"
              Typo="Typo.h6">
@@ -60,30 +87,53 @@
     </MudText>
 }
 
+@if (@OrderDeleted)
+{
+    <MudText Color="@Color.Warning"
+             Typo="Typo.h6">
+        Din order har blivit borttagen.
+    </MudText>
+}
+
+
 @code {
     private bool OrderExists;
     private bool CanBeModified;
     private string OrderNr;
     private bool OrderDoesNotExist = false;
     private string OrderNrValidationMessage;
-
-
-     private OrderDetailsDTO Order;
+    private GetCustomerOrderDTO OrderInfo;
 
     private async Task CheckOrderStatus()
     {
         int parsedOrderNr;
-        if(!int.TryParse(OrderNr, out parsedOrderNr))
+        if (!int.TryParse(OrderNr, out parsedOrderNr))
         {
             OrderNrValidationMessage = "Fel inmatning, ordernummer innehåller bara siffror.";
         }
-
         else
         {
-            var order = await OrderService.CheckOrderStatus(parsedOrderNr);
-
-            // kolla order.OrderStatus etc
-            // om order går att ändra, implementera logik för ändra order eller ta bort order.
+            var orderDetails = await OrderService.CheckOrderStatus(parsedOrderNr);
+            if (orderDetails == null)
+            {
+                OrderExists = false;
+                OrderDoesNotExist = true;
+            }
+            else
+            {
+                OrderExists = true;
+                OrderInfo = orderDetails;
+                CanBeModified = OrderInfo.Status == "Pending";
+            }
         }
+    }
+
+    private bool OrderDeleted;
+
+    private async Task CancelOrder(int orderId)
+    {
+        await OrderService.CancelCustomerOrder(orderId);
+        OrderDeleted = true;
+        OrderExists = false;
     }
 }

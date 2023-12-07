@@ -9,7 +9,7 @@ namespace TheRestaurant.Application.Orders.Interfaces
         Task<Order> GetByIdAsync(int orderId);
         Task<List<Order>> GetAllAsync();
         Task UpdateAsync(Order order);
-        Task DeleteAsync(int orderId);
+        Task DeleteAsync(Order Order);
 
 
         // Order-status handling
