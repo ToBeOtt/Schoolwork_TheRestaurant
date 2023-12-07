@@ -4,6 +4,10 @@
 @using TheRestaurant.Presentation.Shared.DTO.Cart
 @inject ClientCartService CartService
 
+@if (!OrderIsMade)
+{
+    
+
 <MudText Typo="Typo.h4" Class="px-6 py-5">
     Din beställning
 </MudText>
@@ -71,19 +75,41 @@
             </MudButton>
         </MudItem>
     </MudGrid>
-
-    @if (@OrderSucccesful)
+}
+@if (@OrderIsMade)
     {
-        <MudText Typo="Typo.h4" Class="px-6 py-5">
-            Tack för din beställning, den kommer snart påbörjas av köket. Ditt ordernummer är: @OrderNr
-        </MudText>
-        <MudText Typo="Typo.subtitle1" Class="px-6 py-5">
+        <p>
+            <MudText 
+                Typo="Typo.h6" 
+                Class="px-6 py-5"
+                Color="@Color.Secondary">
+                Tack för din beställning, den kommer snart påbörjas av köket.
+            </MudText>
+
+            <MudText Typo="Typo.h5"
+                     Class="px-6 pt-5"
+                     Color="@Color.Secondary">
+                Ditt ordernummer är:
+            </MudText>
+            <MudText 
+                Typo="Typo.h3" 
+                Class="px-6 fw-bolder">
+                @OrderNr
+            </MudText>
+            
+       
+        </p>
+        <p>
+        <MudText 
+            Typo="Typo.subtitle2" 
+            Class="px-6 py-5"
+            Color="@Color.Warning">
             Vänligen spara ditt order-nummer.
         </MudText>
+        </p>   
     }
 
  
-  
 
     @code {
     private List<CartDto> CartItems = new();
@@ -130,7 +156,7 @@
         CartService.ClearCart();
     }
 
-    private bool OrderSucccesful;
+    private bool OrderIsMade;
     private int OrderNr;
     private string OrderPlacedFailedMessage;
 
@@ -143,13 +169,13 @@
         if (result.IsSuccess)
         {
             ActivateClearCart();
-            OrderSucccesful = true;
+            await CartService.UpdateCartService();
+            OrderIsMade = true;
             OrderNr = result.OrderNr;
         }
 
         // FELHANTERING
         else
-            OrderSucccesful = false;
             OrderPlacedFailedMessage = 
             "Tyvärr gick din order inte att genomföra. Vänligen ta kontakt med kassa-personal.";
     }

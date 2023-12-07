@@ -52,7 +52,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
                 return BadRequest(result.Data);
 
             else
-                return Ok(result);
+                return Ok(result.Data);
         }
     }
 }
