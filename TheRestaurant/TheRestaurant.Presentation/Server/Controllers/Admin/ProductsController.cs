@@ -66,15 +66,8 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
-            try
-            {
-                var products = await _productService.GetAllProducts();
-                return Ok(products);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Ett fel uppstod när menyalternativen hämtades");
-            }
+            var result = await _productService.GetAllProducts();
+            return Ok(result.Data);
         }
         [HttpPut("delete/{id}")]
         public async Task<IActionResult> SoftDeleteProduct(int id)
