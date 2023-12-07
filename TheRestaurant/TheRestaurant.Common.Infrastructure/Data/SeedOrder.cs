@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheRestaurant.Domain.Entities.OrderEntities;
+using TheRestaurant.Domain.Entities.Orders;
 
 namespace TheRestaurant.Common.Infrastructure.Data
 {
@@ -20,7 +15,7 @@ namespace TheRestaurant.Common.Infrastructure.Data
             {
                 Id = 1,
                 OrderDate = DateTime.Now,
-                OrderStatus = orderStatus
+                //OrderStatus = orderStatus
             };
             modelBuilder.Entity<Order>().HasData(order);
         }

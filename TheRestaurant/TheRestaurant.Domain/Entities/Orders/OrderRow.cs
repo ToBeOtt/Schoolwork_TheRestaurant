@@ -1,6 +1,6 @@
 ﻿using TheRestaurant.Domain.Entities.Menu;
 
-namespace TheRestaurant.Domain.Entities.OrderEntities
+namespace TheRestaurant.Domain.Entities.Orders
 {
     public class OrderRow
     {

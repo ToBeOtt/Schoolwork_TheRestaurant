@@ -36,19 +36,19 @@ namespace TheRestaurant.Application.Employees
             return await response.SuccessResponse(response, true);
         }
 
-        public async Task<ServiceResponse<ICollection<FetchEmployeeDto>>> FetchAllEmployees()
+        public async Task<ServiceResponse<ICollection<FetchEmployeeResponse>>> FetchAllEmployees()
         {
-            ServiceResponse<ICollection<FetchEmployeeDto>> response = new();
+            ServiceResponse<ICollection<FetchEmployeeResponse>> response = new();
             var empList = await _employeeRepository.GetAllEmployees();
             if (empList == null)
                 return await response.ErrorResponse
                     (response, "Employees could not be found", _logger);
 
-            List<FetchEmployeeDto> listOfDto = new List<FetchEmployeeDto>();
+            List<FetchEmployeeResponse> listOfDto = new List<FetchEmployeeResponse>();
             foreach (var emp in empList)
             {
                 listOfDto.Add(
-                   new FetchEmployeeDto
+                   new FetchEmployeeResponse
                     (
                        Id: emp.Id,
                        Alias: emp.Alias,

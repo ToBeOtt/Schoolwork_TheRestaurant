@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using TheRestaurant.Contracts.Responses;
-using TheRestaurant.Domain.Entities.OrderEntities;
+﻿using TheRestaurant.Contracts.Responses;
 
 namespace TheRestaurant.Application.Dashboard.Interfaces
 {

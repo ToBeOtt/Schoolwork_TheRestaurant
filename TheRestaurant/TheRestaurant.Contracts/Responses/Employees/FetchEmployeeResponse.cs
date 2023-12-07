@@ -1,6 +1,6 @@
 ﻿namespace TheRestaurant.Application.Employees.DTOs
 {
-    public record FetchEmployeeDto
+    public record FetchEmployeeResponse
         (
         string Id,
         string Alias,
