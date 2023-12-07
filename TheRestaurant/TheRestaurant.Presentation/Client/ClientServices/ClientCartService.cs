@@ -146,6 +146,8 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             }
         }
 
+
+        // Update cart-nav in shared
         public async Task UpdateCartService()
         {
             CartUpdated?.Invoke();

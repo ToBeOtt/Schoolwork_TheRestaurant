@@ -1,25 +1,33 @@
 ﻿
 <MudNavMenu>
+    <MudPaper Class="my-10" />
+
     <MudNavLink href="/Menu" OnClick="@DrawerToggle">
-        <MudText Typo="Typo.h6">
-            Se meny
-        </MudText>
-
-    </MudNavLink>
-    <MudNavLink href="/Order" OnClick="@DrawerToggle">
-
-        <MudText Typo="Typo.h6">
-            Beställning
+        <MudText 
+            Typo="Typo.h6">
+            Meny
         </MudText>
     </MudNavLink>
+
     <MudNavLink href="/AboutPage" OnClick="@DrawerToggle">
         <MudText Typo="Typo.h6">
             Om restaurangen
         </MudText>
     </MudNavLink>
 
+    <MudNavLink href="/OrderDetails" OnClick="@DrawerToggle">
+        <MudText 
+            Icon="@Icons.Material.Filled.Receipt"
+            Typo="Typo.h6">
+            Dina beställningar
+        </MudText>
+    </MudNavLink>
+
+    <MudPaper Class="my-10"/>
+
     <MudNavLink href="/Styleguide" OnClick="@DrawerToggle">
-        <MudText Typo="Typo.h6">
+        <MudText 
+            Typo="Typo.h6">
             Styleguide
         </MudText>
     </MudNavLink>

@@ -4,6 +4,7 @@ using SharedKernel.Application.ServiceResponse;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Orders.Interfaces;
 using TheRestaurant.Contracts.Requests.Order;
+using TheRestaurant.Contracts.Responses.Orders;
 using TheRestaurant.Domain.Entities.Orders;
 
 namespace TheRestaurant.Application.Orders
@@ -23,13 +24,6 @@ namespace TheRestaurant.Application.Orders
             _orderRepository = orderRepository;
             _productRepository = productRepository;
         }
-
-
-        //public void SetOrderStatus(Order order, string status)
-        //{
-        //    var orderStatus = new OrderStatus { Status = status };
-        //    order.OrderStatus = orderStatus;
-        //}
         public async Task<ServiceResponse<int>> CreateOrderAsync(CreateOrderRequest request)
         {
             ServiceResponse<int> response = new();
@@ -63,9 +57,24 @@ namespace TheRestaurant.Application.Orders
             return await _orderRepository.GetPendingStatusId();
         }
 
-        public async Task<Order> GetOrderByIdAsync(int orderId)
+        public async Task<ServiceResponse<GetCustomerOrderResponse>> GetCustomerOrder(int orderId)
         {
-            return await _orderRepository.GetByIdAsync(orderId);
+            ServiceResponse<GetCustomerOrderResponse> response = new();
+
+            var order =  await _orderRepository.GetByIdAsync(orderId);
+            if(order == null)
+                return await response.ErrorResponse
+                      (response, "Order could not be fetched from database.", _logger);
+
+            GetCustomerOrderResponse dto = new(
+                OrderNr: order.Id,
+                ProductName: order.OrderRows.Select(item => item.Product.Name).ToList(),
+                Status: order.OrderStatus.Status,
+                SumToPay: order.OrderRows.Sum(item => item.Product.Price)
+                );
+
+            response.Data = dto;
+            return await response.SuccessResponse(response, response.Data);
         }
 
         public async Task<List<Order>> GetAllOrdersAsync()
@@ -80,7 +89,13 @@ namespace TheRestaurant.Application.Orders
 
         public async Task DeleteOrderAsync(int orderId)
         {
-            await _orderRepository.DeleteAsync(orderId);
+            var order = await _orderRepository.GetByIdAsync(orderId);
+            if (order == null)
+            {
+                // felhantering
+            }
+            order.IsDeleted = true;
+            await _orderRepository.DeleteAsync(order);
         }
     }
 }

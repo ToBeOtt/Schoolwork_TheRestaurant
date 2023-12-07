@@ -1,4 +1,4 @@
-﻿namespace TheRestaurant.Application.Employees.DTOs
+﻿namespace TheRestaurant.Contracts.Responses.Employees
 {
     public record FetchEmployeeResponse
         (
