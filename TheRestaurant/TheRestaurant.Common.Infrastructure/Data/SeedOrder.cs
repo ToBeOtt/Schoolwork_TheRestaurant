@@ -19,22 +19,23 @@ namespace TheRestaurant.Common.Infrastructure.Data
             int lambchopsProductId = 9;
             int blueberrypieProductId = 10;
 
-            var orderStatus = new OrderStatus { Id = 1, Status = "Pending" };
-            var completedStatus = new OrderStatus { Id = 3, Status = "Delivered" };
+
+            var orderStatus = 1;
+            var completedStatus = 3;
 
             // Seed Order
             var order1 = new Order
             {
                 Id = 1,
                 OrderDate = DateTime.Now,
-                OrderStatus = orderStatus
+                OrderStatusId = orderStatus
             };
 
             var order2 = new Order
             {
                 Id = 2,
                 OrderDate = DateTime.Now.AddDays(-1),
-                OrderStatus = completedStatus
+                OrderStatusId = completedStatus
             };
 
             modelBuilder.Entity<Order>().HasData(order1, order2);

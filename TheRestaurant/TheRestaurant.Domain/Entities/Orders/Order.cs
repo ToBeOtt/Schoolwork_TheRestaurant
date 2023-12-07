@@ -16,6 +16,8 @@ namespace TheRestaurant.Domain.Entities.Orders
         public Employee? Employee { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
+
+        public int OrderStatusId { get; set; }
         public ICollection<OrderRow>? OrderRows { get; set; }
 
         public Order()

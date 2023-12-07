@@ -38,7 +38,7 @@ namespace Common.Infrastructure.Data
             builder.AllergySeed();
             builder.CategorySeed();
             //OrderSeed.SeedOrder(builder);
-
+            builder.SeedOrder();
             builder.OrderStatusSeed();
             //builder.OrderRowSeed();
 
