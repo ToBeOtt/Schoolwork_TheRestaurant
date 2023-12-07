@@ -63,6 +63,11 @@ namespace TheRestaurant.Application.Orders
             return await _orderRepository.GetPendingStatusId();
         }
 
+        public async Task<List<Order>> GetOrderByOrderStatus(string orderStatus)
+        {
+            return await _orderRepository.GetOrdersByStatus(orderStatus);
+        }
+
         public async Task<Order> GetOrderByIdAsync(int orderId)
         {
             return await _orderRepository.GetByIdAsync(orderId);

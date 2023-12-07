@@ -61,5 +61,11 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                                     .SingleOrDefaultAsync();
             return status;
         }
+
+        public async Task<List<Order>> GetOrdersByStatus(string status)
+        {
+            var orders = await _dbContext.Orders.Where(x => x.OrderStatus.Status == status).ToListAsync();
+            return orders;
+        }
     }
 }

@@ -54,5 +54,18 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             else
                 return Ok(result.Data);
         }
+
+        [HttpGet("{status}")]
+        public async Task<ActionResult<List<Domain.Entities.Orders.Order>>> GetOrdersByStatus(string status)
+        {
+            var orders = await _orderService.GetOrderByOrderStatus(status);
+
+            if(orders.Count is 0)
+            {
+                return Ok($"Inga order med status:{status} kunde hittas");
+            }
+
+            return Ok(orders);
+        }
     }
 }
