@@ -12,11 +12,9 @@
     <p>@ErrorMessage</p>
 }
 
-<div class="container mt-3">
+@*<div class="container mt-3">
     <div class="d-flex justify-content-start">
-        <!-- This will align the form to the start of the flex container -->
         <div class="col-sm-10 col-md-8 col-lg-6">
-            <!-- Adjust the column sizes as needed -->
             <h3>Skapa ny produkt</h3>
             <EditForm Model="_createProduct" OnValidSubmit="HandleValidSubmit">
                 <DataAnnotationsValidator />
@@ -78,6 +76,51 @@
         </div>
     </div>
 </div>
+*@
+
+
+<MudGrid>
+    <MudItem xs="12" md="8" lg="6">
+        <MudPaper Class="pa-4">
+            <h3>Skapa ny produkt</h3>
+            @*<MudForm Model="_createProduct" OnValidSubmit="HandleValidSubmit">*@
+                <EditForm Model="_createProduct" OnValidSubmit="HandleValidSubmit">
+
+                
+                <MudTextField Label="Namn" @bind-Value="_createProduct.Name" Required="true" FullWidth="true" />
+                <MudNumericField Label="Pris" @bind-Value="_createProduct.Price" FullWidth="true" />
+                <MudTextField Label="Beskrivning" @bind-Value="_createProduct.Description" FullWidth="true" Multiline="true" />
+               
+
+                <MudSelect Label="Kategorier" T="string" MultiSelection="true" SelectedValuesChanged="@(EventCallback.Factory.Create<IEnumerable<string>>(this, OnCategoriesChanged))">
+                    @foreach (var category in categories)
+                    {
+                        <MudSelectItem Value="@category.Id.ToString()">@category.Name</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <MudSelect Label="Allergener" T="string" MultiSelection="true" SelectedValuesChanged="@(EventCallback.Factory.Create<IEnumerable<string>>(this, OnAllergiesChanged))">
+                    @foreach (var allergy in allergies)
+                    {
+                        <MudSelectItem Value="@allergy.Id.ToString()">@allergy.Name</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <MudCheckBox Label="Mat/dryck?" @bind-Checked="_createProduct.IsFoodItem" />
+                <div class="form-group">
+                    <label for="menuPhoto">Produkt bild</label>
+                    <InputFile id="menuPhoto" class="form-control" OnChange="HandlePhotoUpload" />
+                </div>
+
+                <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">Lägg till</MudButton>
+                <MudButton Color="Color.Secondary" OnClick="NavigateToView">Avbryt</MudButton>
+            @*</MudForm>*@
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
 
 @code {
     private readonly ProductValidation _createProduct = new ProductValidation();
@@ -103,8 +146,6 @@
             IsDeleted: _createProduct.IsDeleted,
             SelectedAllergyIds: _createProduct.SelectedAllergyIds,
             SelectedCategoryIds: _createProduct.SelectedCategoryIds
-
-        // Include Category & Allergy when implemented
         );
 
         var apiUrl = "/admin/products/create";
@@ -151,6 +192,16 @@
         {
             _createProduct.SelectedCategoryIds = selectedOptions.Select(int.Parse).ToList();
         }
+    }
+
+    private async Task OnCategoriesChanged(IEnumerable<string> selectedValues)
+    {
+        _createProduct.SelectedCategoryIds = selectedValues.Select(int.Parse).ToList();
+    }
+
+    private async Task OnAllergiesChanged(IEnumerable<string> selectedValues)
+    {
+        _createProduct.SelectedAllergyIds = selectedValues.Select(int.Parse).ToList();
     }
 
     private void NavigateToView()
