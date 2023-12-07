@@ -20,7 +20,7 @@
 
         var result = await CartService.PlaceOrder(comment, listOfOrderItems);
 
-        if (result)
+        if (result.IsSuccess)
         {
             // Handle successful order placement
         }
