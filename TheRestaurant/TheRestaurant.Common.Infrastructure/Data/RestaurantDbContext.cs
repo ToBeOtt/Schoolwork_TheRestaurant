@@ -36,7 +36,7 @@ namespace Common.Infrastructure.Data
             //builder.ApplyConfiguration(new OrderConfiguration());
             builder.AllergySeed();
             builder.CategorySeed();
-            OrderSeed.SeedOrder(builder);
+            //OrderSeed.SeedOrder(builder);
             builder.OrderStatusSeed();
             //builder.OrderRowSeed();
 
