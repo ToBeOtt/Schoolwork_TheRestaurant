@@ -28,7 +28,7 @@ namespace TheRestaurant.Common.Infrastructure.Data
             {
                 Id = 1,
                 OrderDate = DateTime.Now,
-                //OrderStatus = orderStatus
+                OrderStatus = orderStatus
             };
 
             var order2 = new Order
