@@ -23,7 +23,6 @@ namespace TheRestaurant.Common.Infrastructure.Data
             var orderStatus = 1;
             var completedStatus = 3;
 
-            // Seed Order
             var order1 = new Order
             {
                 Id = 1,
