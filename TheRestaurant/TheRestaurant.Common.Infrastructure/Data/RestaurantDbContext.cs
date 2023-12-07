@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Domain.Entities.Authentication;
 using TheRestaurant.Domain.Entities.Menu;
@@ -37,6 +38,7 @@ namespace Common.Infrastructure.Data
             builder.AllergySeed();
             builder.CategorySeed();
             //OrderSeed.SeedOrder(builder);
+
             builder.OrderStatusSeed();
             //builder.OrderRowSeed();
 

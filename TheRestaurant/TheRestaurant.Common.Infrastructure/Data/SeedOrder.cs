@@ -3,10 +3,10 @@ using TheRestaurant.Domain.Entities.Orders;
 
 namespace TheRestaurant.Common.Infrastructure.Data
 {
-    public class OrderSeed
+    public static class OrderSeed
     {
 
-        public static void SeedOrder(ModelBuilder modelBuilder)
+        public static void SeedOrder(this ModelBuilder modelBuilder)
         {
             int hamburgerProductId = 1;
             int kebabProductId = 2;
@@ -21,7 +21,6 @@ namespace TheRestaurant.Common.Infrastructure.Data
 
             var orderStatus = new OrderStatus { Id = 1, Status = "Pending" };
             var completedStatus = new OrderStatus { Id = 3, Status = "Delivered" };
-            modelBuilder.Entity<OrderStatus>().HasData(orderStatus);
 
             // Seed Order
             var order1 = new Order
