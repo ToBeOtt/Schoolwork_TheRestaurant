@@ -1,14 +1,9 @@
 ﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheRestaurant.Application.Interfaces;
-using TheRestaurant.Domain.Entities.OrderEntities;
+using TheRestaurant.Application.Orders.Interfaces;
+using TheRestaurant.Domain.Entities.Orders;
 
-namespace TheRestaurant.Common.Infrastructure.Repositories.OrderRepository
+namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
 {
     public class OrderRepository : IOrderRepository
     {
@@ -21,16 +16,16 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.OrderRepository
 
         public async Task<Order> CreateAsync(Order order)
         {
-            if (order == null)
-            {
-                throw new ArgumentException("Invalid order data");
-            }
-
-            // Additional validation logic here
-
             _dbContext.Orders.Add(order);
             await _dbContext.SaveChangesAsync();
             return order;
+        }
+
+        public async Task<bool> CreateOrderRow(OrderRow orderRow)
+        {
+            _dbContext.OrderRows.Add(orderRow);
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<Order> GetByIdAsync(int orderId)
@@ -57,6 +52,14 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.OrderRepository
                 _dbContext.Orders.Remove(order);
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<OrderStatus> GetPendingStatusId()
+        {
+            var status = await _dbContext.OrderStatus
+                                    .Where(x => x.Status == "Pending")
+                                    .SingleOrDefaultAsync();
+            return status;
         }
     }
 }

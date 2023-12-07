@@ -1,12 +1,10 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text;
-using TheRestaurant.Presentation.Client.Pages.Order.OrderDTO;
 using TheRestaurant.Presentation.Shared.DTO.Cart;
-using TheRestaurant.Presentation.Shared.OrderDTO;
+using TheRestaurant.Presentation.Shared.DTO.Orders;
 using TheRestaurant.Presentation.Shared.Requests;
+using TheRestaurant.Presentation.Shared.Requests.Order;
 
 namespace TheRestaurant.Presentation.Client.ClientServices
 {
@@ -82,7 +80,8 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             List<AggregatedCartDto> SortedList = new();
             foreach (var groupedItem in groupedCartItems)
             {
-                AggregatedCartDto dto = new(groupedItem.Id, groupedItem.Name, groupedItem.TotalPrice, groupedItem.Count);
+                AggregatedCartDto dto = new
+                    (groupedItem.Id, groupedItem.Name, groupedItem.TotalPrice, groupedItem.Count);
                 SortedList.Add(dto);
             }
             return SortedList;
@@ -152,49 +151,29 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             CartUpdated?.Invoke();
         }
 
-        public async Task<bool> PlaceOrder(string comment, List<AggregatedCartDto> listOfOrderItems)
+        public async Task<OrderConfirmation> PlaceOrder(string? comment, List<AggregatedCartDto> listOfOrderItems)
         {
+            PlaceOrderRequest request = new(
+                ListOfAggregatedIds: listOfOrderItems,
+                Comment: comment);
 
-            List<OrderProductDto> cartItemsForOrder = new List<OrderProductDto>();
-            foreach (var item in listOfOrderItems)
-            {
-                //for (int i = 0; i < item.Count; i++)
-                    cartItemsForOrder.Add(new OrderProductDto
-                    {
-                        Id = item.IdOfOrderAggregate,
-                        Name = item.Name,
-                        Price = item.TotalPrice
-                    });    
-            }
-
-            var order = new OrderDto
-            {
-                OrderDate = DateTime.Now,
-                OrderStatus = "Pending",
-                Comment = comment,
-                CartItems = cartItemsForOrder
-            };
-
-
-            // Send the order to the server
-            var json = JsonSerializer.Serialize(order);
-
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var apiUrl = "/api/Order/createOrder";
-
-            var response = await _httpClient.PostAsJsonAsync(apiUrl, content);
-
+            var apiUrl = "/Order/CreateOrder";
+            var response = await _httpClient.PostAsJsonAsync(apiUrl, request);
+            
             // Check if the order was successfully placed
             if (response.IsSuccessStatusCode)
             {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+                int orderId = await response.Content.ReadFromJsonAsync<int>();
 
+                OrderConfirmation orderConfirmation = new OrderConfirmation
+                    (IsSuccess: true, OrderNr: orderId);
+                return orderConfirmation;
+            }
+
+            OrderConfirmation orderConfirmationNegative = new OrderConfirmation
+                    (IsSuccess: false, OrderNr: 0);
+            return orderConfirmationNegative;
+
+        }
     }
 }

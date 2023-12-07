@@ -1,15 +1,9 @@
 ﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheRestaurant.Application.Dashboard.Interfaces;
 using TheRestaurant.Common.Infrastructure.Repositories.Cart;
 using TheRestaurant.Contracts.Responses;
-using TheRestaurant.Domain.Entities.OrderEntities;
 
 namespace TheRestaurant.Common.Infrastructure.Repositories.Dashboard
 {

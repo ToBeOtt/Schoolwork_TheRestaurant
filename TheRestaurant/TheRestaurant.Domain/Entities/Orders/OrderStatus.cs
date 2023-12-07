@@ -1,4 +1,4 @@
-﻿namespace TheRestaurant.Domain.Entities.OrderEntities
+﻿namespace TheRestaurant.Domain.Entities.Orders
 {
     public class OrderStatus
     {

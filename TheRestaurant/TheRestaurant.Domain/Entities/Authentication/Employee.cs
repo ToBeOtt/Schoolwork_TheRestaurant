@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using TheRestaurant.Domain.Entities.OrderEntities;
 
 namespace TheRestaurant.Domain.Entities.Authentication
 {

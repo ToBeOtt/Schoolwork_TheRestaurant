@@ -4,6 +4,10 @@
 @using TheRestaurant.Presentation.Shared.DTO.Cart
 @inject ClientCartService CartService
 
+@if (!OrderIsMade)
+{
+    
+
 <MudText Typo="Typo.h4" Class="px-6 py-5">
     Din beställning
 </MudText>
@@ -71,10 +75,43 @@
             </MudButton>
         </MudItem>
     </MudGrid>
- 
-  
+}
+@if (@OrderIsMade)
+    {
+        <p>
+            <MudText 
+                Typo="Typo.h6" 
+                Class="px-6 py-5"
+                Color="@Color.Secondary">
+                Tack för din beställning, den kommer snart påbörjas av köket.
+            </MudText>
 
-@code {
+            <MudText Typo="Typo.h5"
+                     Class="px-6 pt-5"
+                     Color="@Color.Secondary">
+                Ditt ordernummer är:
+            </MudText>
+            <MudText 
+                Typo="Typo.h3" 
+                Class="px-6 fw-bolder">
+                @OrderNr
+            </MudText>
+            
+       
+        </p>
+        <p>
+        <MudText 
+            Typo="Typo.subtitle2" 
+            Class="px-6 py-5"
+            Color="@Color.Warning">
+            Vänligen spara ditt order-nummer.
+        </MudText>
+        </p>   
+    }
+
+ 
+
+    @code {
     private List<CartDto> CartItems = new();
 
     private List<AggregatedCartDto> AggregatedCartItemsList = new();
@@ -119,30 +156,27 @@
         CartService.ClearCart();
     }
 
+    private bool OrderIsMade;
+    private int OrderNr;
+    private string OrderPlacedFailedMessage;
+
     private async Task ActivatePlaceOrder()
     {
-        try
-        {
-            var result = await CartService.PlaceOrder(Comment, AggregatedCartItemsList);
 
-            if (result)
-            {
-                // Order was successfully placed; you can take further actions if needed
-                // For example, you can clear the cart or redirect to a confirmation page.
-            }
-            else
-            {
-                // Handle the case where placing the order failed
-                // You can display an error message to the user or take appropriate action.
-            }
-        }
-        catch (Exception ex)
+        var result = await CartService.PlaceOrder(Comment, AggregatedCartItemsList);
+
+        // FIXA NÅN PRESENTATION AV ORDER OCH CLEARA ALLT?
+        if (result.IsSuccess)
         {
-            // Handle any exceptions that might occur during the order placement process
-            // You can log the exception for debugging purposes
-            Console.WriteLine(ex.Message); // Log the exception message
-                                           // You can also display an error message to the user or take appropriate action.
+            ActivateClearCart();
+            await CartService.UpdateCartService();
+            OrderIsMade = true;
+            OrderNr = result.OrderNr;
         }
+
+        // FELHANTERING
+        else
+            OrderPlacedFailedMessage = 
+            "Tyvärr gick din order inte att genomföra. Vänligen ta kontakt med kassa-personal.";
     }
-
 }

@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheRestaurant.Domain.Entities.Menu;
-using TheRestaurant.Domain.Entities.OrderEntities;
+using TheRestaurant.Domain.Entities.Orders;
 
 namespace TheRestaurant.Common.Infrastructure.Data
 {
