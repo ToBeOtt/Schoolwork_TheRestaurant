@@ -1,7 +1,12 @@
 ﻿
 <MudLayout>
 
-    <MudDrawer @bind-Open="@open" Elevation="1" OnBackdropClick="@CloseDrawer">
+    <MudDrawer 
+        @bind-Open="@open" 
+        Elevation="1" 
+        OnBackdropClick="@CloseDrawer"
+        onchange="@CloseDrawer">
+
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">The Restaurant</MudText>
         </MudDrawerHeader>

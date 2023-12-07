@@ -5,8 +5,6 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
     [ApiController]
     [Route("Products")]
-
-
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SharedKernel.Application.ServiceResponse;
-using TheRestaurant.Application.Employees.DTOs;
 using TheRestaurant.Application.Employees.Interfaces;
+using TheRestaurant.Contracts.Responses.Employees;
 using TheRestaurant.Domain.Entities.Authentication;
 
 namespace TheRestaurant.Application.Employees

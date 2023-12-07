@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231207123031_AddedIsDeletePropertyForOrderEntity")]
+    partial class AddedIsDeletePropertyForOrderEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -546,20 +549,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasIndex("OrderStatusId");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            OrderDate = new DateTime(2023, 12, 7, 11, 13, 43, 546, DateTimeKind.Local).AddTicks(220),
-                            OrderStatusId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            OrderDate = new DateTime(2023, 12, 6, 11, 13, 43, 546, DateTimeKind.Local).AddTicks(268),
-                            OrderStatusId = 3
-                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderRow", b =>
@@ -583,68 +572,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderRows");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            OrderId = 1,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            OrderId = 1,
-                            ProductId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            OrderId = 1,
-                            ProductId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            OrderId = 1,
-                            ProductId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            OrderId = 1,
-                            ProductId = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            OrderId = 2,
-                            ProductId = 6
-                        },
-                        new
-                        {
-                            Id = 7,
-                            OrderId = 2,
-                            ProductId = 7
-                        },
-                        new
-                        {
-                            Id = 8,
-                            OrderId = 2,
-                            ProductId = 8
-                        },
-                        new
-                        {
-                            Id = 9,
-                            OrderId = 2,
-                            ProductId = 9
-                        },
-                        new
-                        {
-                            Id = 10,
-                            OrderId = 2,
-                            ProductId = 10
-                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderStatus", b =>
