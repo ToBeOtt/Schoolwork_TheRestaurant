@@ -167,6 +167,7 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
                 OrderConfirmation orderConfirmation = new OrderConfirmation
                     (IsSuccess: true, OrderNr: orderId);
+                return orderConfirmation;
             }
 
             OrderConfirmation orderConfirmationNegative = new OrderConfirmation

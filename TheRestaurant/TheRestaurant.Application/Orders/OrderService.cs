@@ -53,8 +53,9 @@ namespace TheRestaurant.Application.Orders
                         throw new DbUpdateException();
                 }
             }
-            
-            return await response.SuccessResponse(response, persistedOrder.Id);
+            response.Data = persistedOrder.Id;
+
+            return await response.SuccessResponse(response, response.Data);
         }
 
         private async Task<OrderStatus> GetPendingStatusForOrder()
