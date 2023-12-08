@@ -34,16 +34,11 @@ namespace Common.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            //builder.ApplyConfiguration(new OrderConfiguration());
             builder.AllergySeed();
             builder.CategorySeed();
             builder.SeedProducts();
-            //OrderSeed.SeedOrder(builder);
-            //builder.SeedOrder();
-            //builder.SeedOrder2();
+            builder.SeedOrder();
             builder.OrderStatusSeed();
-            //builder.OrderRowSeed();
-
 
             base.OnModelCreating(builder);
 
