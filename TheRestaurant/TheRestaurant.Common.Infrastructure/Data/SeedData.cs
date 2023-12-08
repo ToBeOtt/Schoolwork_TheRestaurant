@@ -26,7 +26,8 @@ namespace TheRestaurant.Common.Infrastructure.Data
                 new Category { Id = 14, Name = "Non Alcoholic Beverages", IsDeleted = false },
                 new Category { Id = 15, Name = "Alcoholic Beverages", IsDeleted = true },
                 new Category { Id = 16, Name = "Desserts", IsDeleted = false },
-                new Category { Id = 17, Name = "Poultry", IsDeleted = false }
+                new Category { Id = 17, Name = "Poultry", IsDeleted = false },
+                new Category { Id = 18, Name = "Merch", IsDeleted = false }
 
             );
         }
