@@ -44,6 +44,7 @@ namespace TheRestaurant.Presentation
 
             builder.Services.AddScoped<DeleteProductConfirmation>();
 
+            builder.Services.AddScoped<OrderEmployeeAssignmentService>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
@@ -80,6 +81,7 @@ namespace TheRestaurant.Presentation
             app.MapFallbackToFile("index.html");
 
             SeedDataAsync(app).GetAwaiter().GetResult();
+            AssignEmployeesToOrdersAsync(app).GetAwaiter().GetResult();
 
             app.Run();
         }
@@ -94,9 +96,18 @@ namespace TheRestaurant.Presentation
                 await userSeeds.SeedManager();
                 await userSeeds.SeedEmployee();
 
-                var produtSeeds = serviceProvider.GetRequiredService<ProductSeeds>();
+                var procutImageUpdater = serviceProvider.GetRequiredService<SeedImagesToProduct>();
+                await procutImageUpdater.AddImagesToProductsAsync();
+                
+            }
+        }
 
-                await produtSeeds.SeedProducts();
+        private static async Task AssignEmployeesToOrdersAsync(WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var orderEmployeeAssignmentService = scope.ServiceProvider.GetRequiredService<OrderEmployeeAssignmentService>();
+                await orderEmployeeAssignmentService.AssignEmployeesToOrdersAsync();
             }
         }
     }

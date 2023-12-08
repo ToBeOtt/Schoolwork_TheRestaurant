@@ -61,7 +61,8 @@ namespace Common.Infrastructure
 
             // Seeds
             services.AddTransient<UserSeeds>();
-            services.AddTransient<ProductSeeds>();
+
+            services.AddTransient<SeedImagesToProduct>();
 
 
             return services;

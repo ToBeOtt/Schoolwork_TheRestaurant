@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20231206192604_resetOrders")]
-    partial class resetOrders
+    [Migration("20231208094612_OrderSeeding")]
+    partial class OrderSeeding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -461,7 +461,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<byte[]>("MenuPhoto")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Name")
@@ -474,6 +473,134 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Hamburgare med krispiga pommes",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Hamburgare med pommes",
+                            Price = 79.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "God kebabpizza med färska grönsaker",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Kebabpizza",
+                            Price = 99.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Grillad lax med dill och citronsås",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Grillad lax",
+                            Price = 129.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Krispig sallad med kyckling och caesardressing",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Caesarsallad",
+                            Price = 89.0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Friterade mozzarella sticks med dipp",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Mozzarella Sticks",
+                            Price = 49.0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Varm chokladkaka med flytande kärna",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Chokladfondant",
+                            Price = 69.0
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Kryddig vegetarisk curry med ris",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Vegetarisk curry",
+                            Price = 109.0
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "Syrlig thailändsk soppa med räkor",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Tom Yum Soppa",
+                            Price = 119.0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "Grillade lammkotletter med rosmarin",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Lammkotletter",
+                            Price = 149.0
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "Blåbärspaj med vaniljsås",
+                            IsDeleted = false,
+                            IsFoodItem = true,
+                            Name = "Blåbärspaj",
+                            Price = 59.0
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Description = "Klassisk kolsyrad läsk med unik smak",
+                            IsDeleted = false,
+                            IsFoodItem = false,
+                            Name = "Cola",
+                            Price = 20.0
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Description = "Fruktig apelsinläsk med kolsyra",
+                            IsDeleted = false,
+                            IsFoodItem = false,
+                            Name = "Fanta",
+                            Price = 20.0
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Description = "Öl från lokala mikrobryggerier",
+                            IsDeleted = false,
+                            IsFoodItem = false,
+                            Name = "Lokalt mikrobryggeri öl",
+                            Price = 40.0
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Description = "Välbalanserat rödvin från husets urval",
+                            IsDeleted = false,
+                            IsFoodItem = false,
+                            Name = "Husets röda vin",
+                            Price = 60.0
+                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductAllergy", b =>
@@ -497,6 +624,98 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductAllergies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AllergyId = 7,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AllergyId = 9,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AllergyId = 3,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AllergyId = 7,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AllergyId = 5,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AllergyId = 3,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AllergyId = 7,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AllergyId = 1,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AllergyId = 3,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AllergyId = 7,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AllergyId = 2,
+                            ProductId = 8
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AllergyId = 5,
+                            ProductId = 8
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AllergyId = 1,
+                            ProductId = 10
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AllergyId = 7,
+                            ProductId = 10
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AllergyId = 1,
+                            ProductId = 13
+                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductCategory", b =>
@@ -520,6 +739,98 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 9,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 11,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 7,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 1,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 16,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 8,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 12,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryId = 3,
+                            ProductId = 8
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryId = 6,
+                            ProductId = 9
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CategoryId = 16,
+                            ProductId = 10
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoryId = 14,
+                            ProductId = 11
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CategoryId = 14,
+                            ProductId = 12
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CategoryId = 15,
+                            ProductId = 13
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CategoryId = 15,
+                            ProductId = 14
+                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.Order", b =>
@@ -532,6 +843,9 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -546,6 +860,85 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasIndex("OrderStatusId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 31,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 8, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1648),
+                            OrderStatusId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 8, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1653),
+                            OrderStatusId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 8, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1655),
+                            OrderStatusId = 1
+                        },
+                        new
+                        {
+                            Id = 34,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 6, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1661),
+                            OrderStatusId = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 5, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1664),
+                            OrderStatusId = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 4, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1666),
+                            OrderStatusId = 4
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 7, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1669),
+                            OrderStatusId = 5
+                        },
+                        new
+                        {
+                            Id = 32,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 7, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1672),
+                            OrderStatusId = 2
+                        },
+                        new
+                        {
+                            Id = 33,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 7, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1674),
+                            OrderStatusId = 5
+                        },
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 8, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1576),
+                            OrderStatusId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            OrderDate = new DateTime(2023, 12, 7, 10, 46, 12, 266, DateTimeKind.Local).AddTicks(1638),
+                            OrderStatusId = 3
+                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderRow", b =>
@@ -569,6 +962,146 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderRows");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 16,
+                            OrderId = 31,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 17,
+                            OrderId = 31,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 18,
+                            OrderId = 4,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 19,
+                            OrderId = 4,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 20,
+                            OrderId = 5,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 21,
+                            OrderId = 6,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 22,
+                            OrderId = 6,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 23,
+                            OrderId = 32,
+                            ProductId = 8
+                        },
+                        new
+                        {
+                            Id = 24,
+                            OrderId = 32,
+                            ProductId = 9
+                        },
+                        new
+                        {
+                            Id = 25,
+                            OrderId = 33,
+                            ProductId = 10
+                        },
+                        new
+                        {
+                            Id = 26,
+                            OrderId = 34,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 27,
+                            OrderId = 10,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 28,
+                            OrderId = 11,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 1,
+                            OrderId = 1,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            OrderId = 1,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            OrderId = 1,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            OrderId = 1,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            OrderId = 1,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            OrderId = 2,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            OrderId = 2,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            OrderId = 2,
+                            ProductId = 8
+                        },
+                        new
+                        {
+                            Id = 9,
+                            OrderId = 2,
+                            ProductId = 9
+                        },
+                        new
+                        {
+                            Id = 10,
+                            OrderId = 2,
+                            ProductId = 10
+                        });
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderStatus", b =>
@@ -719,7 +1252,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         .HasForeignKey("EmployeeId");
 
                     b.HasOne("TheRestaurant.Domain.Entities.Orders.OrderStatus", "OrderStatus")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("OrderStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -763,6 +1296,11 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.Order", b =>
                 {
                     b.Navigation("OrderRows");
+                });
+
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderStatus", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
