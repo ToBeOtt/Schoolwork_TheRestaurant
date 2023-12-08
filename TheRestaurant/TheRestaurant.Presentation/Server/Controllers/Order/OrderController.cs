@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Application.Orders;
 using TheRestaurant.Contracts.Requests.Order;
+using TheRestaurant.Presentation.Shared.DTO.Orders;
 using TheRestaurant.Presentation.Shared.Requests.Order;
 namespace TheRestaurant.Presentation.Server.Controllers.Order
 {
@@ -61,5 +63,16 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             return NoContent();
         }
 
+        [HttpGet("FetchAllActiveOrders")]
+        public async Task<ActionResult> FetchAllActiveOrders()
+        {
+            var result = await _orderService.GetListOfActiveOrders();
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result.Data);
+        }
     }
 }

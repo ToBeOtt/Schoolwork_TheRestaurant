@@ -1,0 +1,75 @@
+﻿@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject ISnackbar Snackbar
+@inject HttpClient HttpClient
+
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h4">Du är på väg att påbörja hantering av en order</MudText>
+    </TitleContent>
+        <DialogContent>
+            <MudText Align="Align.Center" Typo="Typo.h5">Är du säker på att vill påbörja hantering av order: <strong>@ActiveOrder.OrderNr</strong></MudText>
+            <MudTable Items="@ActiveOrder.ProductAndQuantity" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
+                <ToolBarContent>
+
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Namn</MudTh>
+                    <MudTh>Antal</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                     <MudTd>@context.ProductName</MudTd>
+                        <MudTd>@context.Quantity</MudTd>
+                    </RowTemplate>
+
+                </MudTable>
+
+        </DialogContent>
+
+        <DialogActions>
+            <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Error" DisableElevation FullWidth OnClick="YesToTakeOrder">Ja</MudButton>
+         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
+     </DialogActions>
+
+ </MudDialog> 
+
+ @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public ActiveOrdersDto ActiveOrder { get; set; }
+
+    private void Cancel()
+    {
+        Snackbar.Add("Hantering av order avbruten", Severity.Info);
+        MudDialog.Cancel();
+    }
+
+    //Should be a async method when implemented
+    private void YesToTakeOrder()
+    {
+        //call correct endpoint to update status
+
+
+
+        //Example from allergy
+        //HttpResponseMessage response = await HttpClient.DeleteAsync($"/api/allergy/delete/{allergy.Id}");
+
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     Snackbar.Add($"Allergi {allergy.Name} borttagen", Severity.Success);
+        //     MudDialog.Close(DialogResult.Ok(allergy.Id));
+        // }
+        // else
+        // {
+        //     Snackbar.Add("Borttagning av allergi misslyckades", Severity.Error);
+        //     MudDialog.Close(DialogResult.Ok(allergy.Id));
+        // }
+
+        Snackbar.Add($"Hantering av order:{ActiveOrder.OrderNr} påbörjad", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(ActiveOrder.OrderNr));
+
+    }
+}

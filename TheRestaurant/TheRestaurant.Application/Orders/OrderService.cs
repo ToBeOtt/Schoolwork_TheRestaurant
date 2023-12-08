@@ -97,5 +97,41 @@ namespace TheRestaurant.Application.Orders
             order.IsDeleted = true;
             await _orderRepository.DeleteAsync(order);
         }
+
+        public async Task<ServiceResponse<List<ActiveOrdersResponse>>> GetListOfActiveOrders()
+        {
+            ServiceResponse<List<ActiveOrdersResponse>> response = new();
+
+            var activeOrdersList = await _orderRepository.GetActiveOrders();
+            if (activeOrdersList == null)
+                return await response.ErrorResponse
+                      (response, "Orders could not be fetched from database.", _logger);
+
+            List<ActiveOrdersResponse> activeOrdersDtoList = new();
+
+            foreach(var item in activeOrdersList)
+            {
+                var productAndQuantityList = item.OrderRows
+                    .GroupBy(orderRow => orderRow.Product.Name)
+                    .Select(group => new ProductAndQuantity
+                    (
+                        ProductName: group.Key,
+                        Quantity: group.Count()
+                    ))
+                    .OrderBy(productAndQuantity => productAndQuantity.ProductName)
+                    .ToList();
+
+                ActiveOrdersResponse dto = new ActiveOrdersResponse(
+                    OrderNr: item.Id,
+                    DateTimeOfOrder: item.OrderDate,
+                    ProductAndQuantity: productAndQuantityList
+                );
+
+                activeOrdersDtoList.Add(dto);
+            }
+
+            response.Data = activeOrdersDtoList;
+            return await response.SuccessResponse(response, response.Data);
+        }
     }
 }

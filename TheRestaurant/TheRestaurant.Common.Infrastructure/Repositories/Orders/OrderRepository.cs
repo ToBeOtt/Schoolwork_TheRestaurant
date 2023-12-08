@@ -61,5 +61,15 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                                     .SingleOrDefaultAsync();
             return status;
         }
+
+        public async Task<List<Order>> GetActiveOrders()
+        {
+            return await _dbContext.Orders
+                           .Include(x => x.OrderRows)
+                               .ThenInclude(o => o.Product)
+                           .Include(x => x.OrderStatus)
+                           .Where(x => x.OrderStatus.Status == "Active" && x.IsDeleted != true)
+                           .ToListAsync();
+        }
     }
 }
