@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TheRestaurant.Authentication.Requests;
 using TheRestaurant.Authentication.Services.AuthenticationServices;
 using TheRestaurant.Authentication.Services.RegistrationServices;
@@ -27,6 +28,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Authentication
         // REGISTRATION
         [HttpPost]
         [Route("Register")]
+        [Authorize(Roles = "manager")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
             var result = await _registrationService.Register

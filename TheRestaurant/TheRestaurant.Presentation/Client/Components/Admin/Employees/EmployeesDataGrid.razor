@@ -1,15 +1,22 @@
 ﻿@using TheRestaurant.Presentation.Client.ClientServices
 @using TheRestaurant.Presentation.Shared.DTO.Employees
-@inject NavigationManager navManager
+@inject NavigationManager Navigation
 @inject ClientEmployeeServices EmployeeService
 
 <MudGrid>
+
+    <MudItem xs="12">
+        <MudText Class="p-10 px-5"
+                 Typo="Typo.h4">
+            Anställda
+        </MudText>
+    </MudItem>
+
     <MudItem>
         <MudDataGrid Items="@FilteredEmployees">
             <ToolBarContent>
-                <MudText Typo="Typo.h6">Anställda</MudText>
-                <MudSpacer/>
                 <MudSelect 
+                    Class="m-10 pb-10"
                     T="string" 
                     Label="Filtrera" 
                     AnchorOrigin="Origin.BottomCenter"
@@ -50,6 +57,15 @@
         </MudDataGrid>
     </MudItem>
 
+    <MudItem Class="justify-content-center"
+             xs="12">
+        <MudIconButton 
+            Class="mx-10"
+            Size="@Size.Large"
+            Color="Color.Tertiary"
+            Icon="@Icons.Material.Outlined.Add"
+            OnClick="@AddEmployee" />
+    </MudItem>
 
     <MudItem>
         @if (Affirmation != null)
@@ -84,12 +100,18 @@
         FilteredEmployees.AddRange(Employees);
     }
 
+    // Add employee
+    private async Task AddEmployee()
+    {
+        Navigation.NavigateTo("/admin/employees/AddEmployee");
+    }
+
 
     // Edit and delete
     private string Affirmation = null;
     private void EditEmployee(string employeeId)
     {
-        navManager.NavigateTo($"/admin/employees/EditEmployee/{employeeId}");
+        Navigation.NavigateTo($"/admin/employees/EditEmployee/{employeeId}");
     }
 
 
