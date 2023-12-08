@@ -1,0 +1,73 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject ClientOrderService OrderService
+@inject IDialogService DialogService
+
+
+<MudTable 
+    Items="@ListOfActiveOrders" 
+    Dense=true 
+    Hover=true 
+    Bordered=false 
+    Striped=false 
+    Elevation="0">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            Nya Order
+            </MudText>
+        <MudSpacer />
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
+        <MudTh>Status</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.OrderNr</MudTd>
+            <MudTd DataLabel="Id">@context.DateTimeOfOrder.ToShortDateString() / @context.DateTimeOfOrder.ToShortTimeString()</MudTd>
+            <MudTd>
+                <MudSpacer />
+            </MudTd>
+            <MudTd>
+                Visa status här
+            </MudTd>
+
+            <MudTd>
+                <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary"
+                        OnClick="@((e)=> CheckOutOrder(maxWidth ,context))">Leverera order</MudButton>
+         </MudTd>
+     </RowTemplate>
+
+ </MudTable>
+ @code {
+    private List<ActiveOrdersDto> ListOfActiveOrders;
+
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+         ListOfActiveOrders = await OrderService.FetchListOfActiveOrders();
+    }
+
+
+    private async Task CheckOutOrder(DialogOptions options, ActiveOrdersDto order)
+    {
+        var parameters = new DialogParameters
+        {
+            { "ActiveOrder", order }
+        };
+
+        var dialog = await DialogService.ShowAsync<OrderCompleteDialog>("", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            StateHasChanged();
+        }
+
+    }
+
+}

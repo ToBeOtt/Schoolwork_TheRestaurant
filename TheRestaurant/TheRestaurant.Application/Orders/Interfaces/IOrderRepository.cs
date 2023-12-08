@@ -6,10 +6,14 @@ namespace TheRestaurant.Application.Orders.Interfaces
     {
         Task<Order> CreateAsync(Order order);
         Task<bool> CreateOrderRow(OrderRow orderRow);
-        Task<Order> GetByIdAsync(int orderId);
-        Task<List<Order>> GetAllAsync();
         Task UpdateAsync(Order order);
         Task DeleteAsync(Order Order);
+
+
+        // Order-Queries
+        Task<Order> GetByIdAsync(int orderId);
+        Task<List<Order>> GetAllAsync();
+        Task<List<Order>> GetActiveOrders();
 
 
         // Order-status handling

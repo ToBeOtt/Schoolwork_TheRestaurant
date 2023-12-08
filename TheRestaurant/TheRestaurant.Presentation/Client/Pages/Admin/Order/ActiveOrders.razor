@@ -1,6 +1,7 @@
 ﻿@page "/admin/orders/active"
 
 @using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Components.Admin.Orders
 @using TheRestaurant.Presentation.Client.Shared.Admin;
 
 <AdminLayout>
@@ -11,7 +12,7 @@
 
                 <MudGrid>
                     <MudGrid Justify="Justify.FlexStart">
-                        <MudText Typo="Typo.h5">här kommer aktiva orders att visas... yay</MudText>
+                        <ViewActiveOrders/>
                      </MudGrid>
                  </MudGrid>
 

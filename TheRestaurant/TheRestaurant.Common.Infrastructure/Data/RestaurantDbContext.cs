@@ -39,7 +39,7 @@ namespace Common.Infrastructure.Data
             builder.CategorySeed();
             //OrderSeed.SeedOrder(builder);
             builder.SeedOrder();
-            builder.SeedOrder2();
+            //builder.SeedOrder2();
             builder.OrderStatusSeed();
             //builder.OrderRowSeed();
 
