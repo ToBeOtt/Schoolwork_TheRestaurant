@@ -4,92 +4,53 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<style>
-    .form {
-        padding-left: 25px;
-    }
-</style>
+
 @if (Error)
 {
     <p>@ErrorMessage</p>
 }
-<div class="form">
+<MudPaper Class="pa-4">
+    <h3>Redigera produkt</h3>
     <EditForm Model="_editProduct" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
 
-        <div class="form-group row">
-            <div class="col-md-3">
-                <label for="name" class="control-label col-md-2">Namn</label>
-                <InputText id="name" class="form-control" @bind-Value="_editProduct.Name" />
-                <ValidationMessage For="@(() => _editProduct.Name)" />
+        <MudTextField Label="Namn" @bind-Value="_editProduct.Name" FullWidth />
+        <MudNumericField Label="Pris" @bind-Value="_editProduct.Price" FullWidth />
+        <MudTextField Label="Beskrivning" @bind-Value="_editProduct.Description" FullWidth Multiline />
+
+        <MudCheckBox Label="Mat/dryck?" @bind-Checked="_editProduct.IsFoodItem" />
+
+
+
+        <MudSelect Label="Kategorier" T="string" MultiSelection="true" SelectedValuesChanged="HandleCategoriesSelection">
+            @foreach (var category in categories)
+            {
+                <MudSelectItem Value="@category.Id.ToString()" Selected="@(_editProduct.SelectedCategoryIds.Contains(category.Id))">@category.Name</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect Label="Allergener" T="string" MultiSelection="true" SelectedValuesChanged="HandleAllergiesSelection">
+            @foreach (var allergy in allergies)
+            {
+                <MudSelectItem Value="@allergy.Id.ToString()" Selected="@(_editProduct.SelectedAllergyIds.Contains(allergy.Id))">@allergy.Name</MudSelectItem>
+            }
+        </MudSelect>
+
+        <InputFile OnChange="HandlePhotoUpload" />
+        @if (_editProduct.MenuPhoto != null)
+        {
+            <div>
+                <p>Nuvarande bild:</p>
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(_editProduct.MenuPhoto)" alt="Menu Item Photo" style="height: 300px;">
             </div>
-        </div>
+        }
 
-        <div class="form-group row">
-            <div class="col-md-3">
-                <label for="price" class="control-label col-md-2">Pris</label>
-                <InputNumber id="price" class="form-control" @bind-Value="_editProduct.Price" />
-                <ValidationMessage For="@(() => _editProduct.Price)" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-md-3">
-                <label for="description" class="control-label col-md-2">Beskrivning</label>
-                <InputTextArea id="description" class="form-control" @bind-Value="_editProduct.Description" />
-                <ValidationMessage For="@(() => _editProduct.Description)" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-md-3">
-                <label for="isFoodItem" class="control-label">Food item?</label>
-                <InputCheckbox id="isFoodItem" @bind-Value="_editProduct.IsFoodItem" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-md-4">
-                <label for="menuPhoto" class="control-label col-md-2">Meny bild</label>
-                <InputFile id="menuPhoto" class="form-control" OnChange="HandlePhotoUpload" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="categories">Categories</label>
-            <select id="categories" class="form-control" multiple @onchange="HandleCategoriesSelection">
-                @foreach (var category in categories)
-                {
-                    <option value="@category.Id" selected="@(_editProduct.SelectedCategoryIds.Contains(category.Id))">@category.Name</option>
-                }
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="allergies">Allergies</label>
-            <select id="allergies" class="form-control" multiple @onchange="HandleAllergiesSelection">
-                @foreach (var allergy in allergies)
-                {
-                    <option value="@allergy.Id" selected="@(_editProduct.SelectedAllergyIds.Contains(allergy.Id))">@allergy.Name</option>
-                }
-            </select>
-        </div>
-
-        <div class="col-md-4">
-            <p>Nuvarande bild:</p>
-            <img src="data:image/jpeg;base64,@Convert.ToBase64String(_editProduct.MenuPhoto)" alt="Menu Item Photo" style="height: 300px;">
-        </div>
-
-
-
-        <div class="form-group row">
-            <div class="col-md-offset-2 col-md-3 text-right">
-                <button type="submit" class="btn btn-primary">Uppdatera</button>
-            </div>
+        <div class="mt-2"> 
+        <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">Uppdatera</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="NavigateBackToView">Avbryt</MudButton>
         </div>
     </EditForm>
-    <button type="submit" class="btn btn-danger" @onclick="NavigateBackToView">Avbryt</button>
-</div>
+</MudPaper>
 
 @code {
     [Parameter]
@@ -166,22 +127,14 @@
         }
     }
 
-    private void HandleCategoriesSelection(ChangeEventArgs e)
+    private void HandleCategoriesSelection(IEnumerable<string> selectedValues)
     {
-        var selectedOptions = e.Value as IEnumerable<string>;
-        if (selectedOptions != null)
-        {
-            _editProduct.SelectedCategoryIds = selectedOptions.Select(int.Parse).ToList();
-        }
+        _editProduct.SelectedCategoryIds = selectedValues.Select(int.Parse).ToList();
     }
 
-    private void HandleAllergiesSelection(ChangeEventArgs e)
+    private void HandleAllergiesSelection(IEnumerable<string> selectedValues)
     {
-        var selectedOptions = e.Value as IEnumerable<string>;
-        if (selectedOptions != null)
-        {
-            _editProduct.SelectedAllergyIds = selectedOptions.Select(int.Parse).ToList();
-        }
+        _editProduct.SelectedAllergyIds = selectedValues.Select(int.Parse).ToList();
     }
 
     private void NavigateBackToView()
