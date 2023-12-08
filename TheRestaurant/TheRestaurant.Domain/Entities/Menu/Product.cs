@@ -7,7 +7,7 @@
         public double Price { get; set; }
         public bool IsFoodItem { get; set; }
         public string Description { get; set; }
-        public byte[] MenuPhoto { get; set; }
+        public byte[]? MenuPhoto { get; set; }
         public bool IsDeleted { get; set; }
         public ICollection<ProductCategory> ProductCategories { get; set; }
         public ICollection<ProductAllergy> ProductAllergies { get; set; }
