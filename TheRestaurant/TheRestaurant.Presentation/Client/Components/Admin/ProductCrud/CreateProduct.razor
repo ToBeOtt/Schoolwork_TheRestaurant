@@ -12,78 +12,10 @@
     <p>@ErrorMessage</p>
 }
 
-@*<div class="container mt-3">
-    <div class="d-flex justify-content-start">
-        <div class="col-sm-10 col-md-8 col-lg-6">
-            <h3>Skapa ny produkt</h3>
-            <EditForm Model="_createProduct" OnValidSubmit="HandleValidSubmit">
-                <DataAnnotationsValidator />
-
-                <div class="form-group">
-                    <label for="name">Namn</label>
-                    <InputText id="name" class="form-control" @bind-Value="_createProduct.Name" />
-                    <ValidationMessage For="@(() => _createProduct.Name)" />
-                </div>
-
-                <div class="form-group">
-                    <label for="price">Pris</label>
-                    <InputNumber id="price" class="form-control" @bind-Value="_createProduct.Price" />
-                    <ValidationMessage For="@(() => _createProduct.Price)" />
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Beskrivning</label>
-                    <InputTextArea id="description" class="form-control" @bind-Value="_createProduct.Description" />
-                    <ValidationMessage For="@(() => _createProduct.Description)" />
-                </div>
-
-                <div class="form-group">
-                    <label for="isFoodItem">Mat/dryck?</label>
-                    <InputCheckbox id="isFoodItem" @bind-Value="_createProduct.IsFoodItem" />
-                    <ValidationMessage For="@(() => _createProduct.IsFoodItem)" />
-                </div>
-
-                <div class="form-group">
-                    <label for="menuPhoto">Produkt bild</label>
-                    <InputFile id="menuPhoto" class="form-control" OnChange="HandlePhotoUpload" />
-                </div>
-
-                <div class="form-group">
-                    <label for="categories">Kategorier</label>
-                    <select id="categories" class="form-control" multiple @onchange="HandleCategoriesSelection">
-                        @foreach (var category in categories)
-                        {
-                            <option value="@category.Id">@category.Name</option>
-                        }
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="allergies">Allergener</label>
-                    <select id="allergies" class="form-control" multiple @onchange="HandleAllergiesSelection">
-                        @foreach (var allergy in allergies)
-                        {
-                            <option value="@allergy.Id">@allergy.Name</option>
-                        }
-                    </select>
-                </div>
-
-                <div class="form-group text-center mt-3">
-                    <button type="submit" class="btn btn-success">Lägg till</button>
-                    <a class="btn btn-danger" @onclick="NavigateToView">Avbryt</a>
-                </div>
-            </EditForm>
-        </div>
-    </div>
-</div>
-*@
-
-
 <MudGrid>
     <MudItem xs="12" md="8" lg="6">
         <MudPaper Class="pa-4">
             <h3>Skapa ny produkt</h3>
-            @*<MudForm Model="_createProduct" OnValidSubmit="HandleValidSubmit">*@
                 <EditForm Model="_createProduct" OnValidSubmit="HandleValidSubmit">
 
                 
@@ -111,10 +43,10 @@
                     <label for="menuPhoto">Produkt bild</label>
                     <InputFile id="menuPhoto" class="form-control" OnChange="HandlePhotoUpload" />
                 </div>
-
-                <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">Lägg till</MudButton>
+                <div class="mt-2">
+                <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">Lägg till</MudButton>
                 <MudButton Color="Color.Secondary" OnClick="NavigateToView">Avbryt</MudButton>
-            @*</MudForm>*@
+                </div>
             </EditForm>
         </MudPaper>
     </MudItem>
@@ -173,24 +105,6 @@
             MemoryStream ms = new MemoryStream();
             await stream.CopyToAsync(ms);
             _createProduct.MenuPhoto = ms.ToArray();
-        }
-    }
-
-    private void HandleAllergiesSelection(ChangeEventArgs e)
-    {
-        var selectedOptions = e.Value as IEnumerable<string>;
-        if (selectedOptions != null)
-        {
-            _createProduct.SelectedAllergyIds = selectedOptions.Select(int.Parse).ToList();
-        }
-    }
-
-    private void HandleCategoriesSelection(ChangeEventArgs e)
-    {
-        var selectedOptions = e.Value as IEnumerable<string>;
-        if (selectedOptions != null)
-        {
-            _createProduct.SelectedCategoryIds = selectedOptions.Select(int.Parse).ToList();
         }
     }
 
