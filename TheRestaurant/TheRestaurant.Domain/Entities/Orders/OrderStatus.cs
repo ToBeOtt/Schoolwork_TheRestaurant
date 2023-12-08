@@ -6,6 +6,8 @@
         public string Status { get; set; }
         public bool IsDeleted { get; set; }
 
+        public ICollection<Order> Orders { get; set; }
+
         public OrderStatus() { }
     }
 }

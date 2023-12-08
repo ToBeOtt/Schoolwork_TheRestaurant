@@ -69,26 +69,32 @@ namespace TheRestaurant.Common.Infrastructure.Data
                     OrderStatusId = cancelledStatus
                 }
             };
-            var activeOrders = new Order
+            var activeOrders = new List<Order>
             {
-                Id = 6,
-                OrderDate = DateTime.Now.AddDays(-1),
-                OrderStatusId = activeStatus
-            };
-            var activeOrders2 = new Order
-            {
-                Id = 32,
-                OrderDate = DateTime.Now.AddDays(-1),
-                OrderStatusId = processingStatus
-            };
-            var activeOrders3 = new Order
-            {
-                Id = 33,
-                OrderDate = DateTime.Now.AddDays(-1),
-                OrderStatusId = activeStatus
+                new Order
+                {
+                    Id = 6,
+                    OrderDate = DateTime.Now.AddDays(-1),
+                    OrderStatusId = activeStatus
+                },
+                new Order
+                {
+                    Id = 32,
+                    OrderDate = DateTime.Now.AddDays(-1),
+                    OrderStatusId = processingStatus
+                },
+                new Order
+                {
+                    Id = 33,
+                    OrderDate = DateTime.Now.AddDays(-1),
+                    OrderStatusId = activeStatus
+                }
             };
 
-            modelBuilder.Entity<Order>().HasData(activeOrders2, activeOrders, activeOrders3, spreadOrders, pendingOrders);
+            modelBuilder.Entity<Order>().HasData(pendingOrders.ToArray());
+            modelBuilder.Entity<Order>().HasData(spreadOrders.ToArray());
+            modelBuilder.Entity<Order>().HasData(activeOrders.ToArray());
+
 
             var orderRowsForPendingOrders = new List<OrderRow>
             {
