@@ -1,0 +1,93 @@
+﻿@page "/Admin/OrderStatusList"
+@using TheRestaurant.Contracts.DTOs
+@using MudBlazor
+@using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Shared.Admin
+@inject HttpClient HttpClient
+
+<AdminLayout>
+    <AdminContent>
+        <MudGrid Spacing="2" Justify="Justify.Center">
+
+            <MudItem xs="12">
+
+                <div class="px-3 mb-5">
+
+                    <div class=" d-flex justify-content-between mb-3">
+                        <h3>Orderstatus lista</h3>
+
+                        <a class="btn btn-outline-success" href="/Admin/AddOrderStatus">Lägg till</a>
+                    </div>
+
+
+                    @if (orderStatusList != null)
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Status</th>
+                                    <th>Är Aktiv</th>
+                                    <th>Inställningar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in orderStatusList)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.Status</td>
+                                        @if (item.IsDeleted)
+                                        {
+                                            <td>Nej</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Ja</td>
+                                        }
+
+                                        <td>
+                                            <a class="btn btn-sm btn-outline-warning me-1" href="/Admin/EditOrderStatus/@item.Id">Redigera</a>
+                                            @* <a class="btn btn-sm btn-outline-danger" href="/Admin/DeleteCategory/@item.Id">Delete</a> *@
+                                            @if (item.IsDeleted)
+                                            {
+                                                <a class="btn btn-sm btn-outline-success" href="/Admin/ActiveOrderStatus/@item.Id">Aktiv</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-sm btn-outline-danger" href="/Admin/InactiveOrderStatus/@item.Id">Inaktiv</a>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            No Data
+                        </div>
+                    }
+
+                </div>
+                <br />
+                <br />
+
+            </MudItem>
+
+        </MudGrid>
+    </AdminContent>
+</AdminLayout>
+
+@code {
+    private OrderStatusDto[] orderStatusList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        orderStatusList = await HttpClient.GetFromJsonAsync<OrderStatusDto[]>("api/OrderStatus");
+    }
+
+}
+

@@ -1,0 +1,60 @@
+﻿@page "/Admin/InactiveOrderStatus/{orderStatusId:int}"
+
+@using TheRestaurant.Contracts.DTOs;
+@using MudBlazor
+@using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Shared.Admin
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager;
+
+<AdminLayout>
+    <AdminContent>
+        <MudGrid Spacing="2" Justify="Justify.Center">
+
+            <MudItem xs="12">
+
+                <div class="px-3">
+                    <h3 class="mb-5">Inactiv orderstatus</h3>
+
+                    @* <h5>Do you want to remove Category "@orderStatusDto.Status" ?</h5> *@
+                    <h5>Är du säker på att du vill inaktivera "@orderStatusDto.Status" orderstatus? </h5>
+
+                    <div class="w-100 ">
+                        <a class="btn btn-sm btn-success" href="Admin/OrderStatusList">Nej</a>
+                        <a class="btn btn-sm btn-danger" onclick="@Inactive">Ja</a>
+                    </div>
+
+                </div>
+
+            </MudItem>
+
+        </MudGrid>
+    </AdminContent>
+</AdminLayout>
+
+
+@code {
+    [Parameter]
+    public int orderStatusId { get; set; }
+
+    public OrderStatusDto orderStatusDto = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        orderStatusDto = await HttpClient.GetFromJsonAsync<OrderStatusDto>
+                ($"/api/OrderStatus/{orderStatusId}");
+    }
+
+    protected async Task Inactive()
+    {
+        // await HttpClient.DeleteAsync($"/api/Category/{categoryId}");
+
+        orderStatusDto.IsDeleted = true;
+        await HttpClient.PutAsJsonAsync($"/api/OrderStatus/{orderStatusId}", orderStatusDto);
+        NavigationManager.NavigateTo("/Admin/OrderStatusList");
+    }
+
+
+
+}
