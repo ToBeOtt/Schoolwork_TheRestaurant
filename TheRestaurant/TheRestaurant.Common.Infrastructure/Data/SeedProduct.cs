@@ -3,12 +3,6 @@ using TheRestaurant.Domain.Entities.Menu;
 
 public static class ProductSeeds
 {
-    //private readonly RestaurantDbContext _context;
-    //public ProductSeeds(RestaurantDbContext context)
-    //{
-    //    _context = context;
-    //}
-
     public static void SeedProducts(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Product>().HasData(

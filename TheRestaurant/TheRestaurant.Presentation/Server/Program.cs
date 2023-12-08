@@ -93,6 +93,10 @@ namespace TheRestaurant.Presentation
                 var userSeeds = serviceProvider.GetRequiredService<UserSeeds>();
                 await userSeeds.SeedManager();
                 await userSeeds.SeedEmployee();
+
+                var procutImageUpdater = serviceProvider.GetRequiredService<ProductImageUpdater>();
+                await procutImageUpdater.AddImagesToProductsAsync();
+                
             }
         }
     }
