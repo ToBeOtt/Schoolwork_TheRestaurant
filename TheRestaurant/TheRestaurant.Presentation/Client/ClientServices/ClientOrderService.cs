@@ -34,6 +34,17 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             var listOfOrders = await _httpClient.GetFromJsonAsync<List<ActiveOrdersDto>>(apiUrl);
             return listOfOrders;
         }
-   
+
+        public async Task<bool> SetStatusToFinished(int orderId)
+        {
+            var apiUrl = "/Order/SetStatusToFinished";
+            var outcome = await _httpClient.PostAsJsonAsync(apiUrl, orderId);
+            
+            if (outcome.IsSuccessStatusCode)
+                return true;
+
+            else 
+                return false;
+        }
     }
 }

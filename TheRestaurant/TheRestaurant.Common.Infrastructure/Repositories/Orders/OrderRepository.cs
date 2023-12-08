@@ -71,6 +71,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                            .Include(x => x.OrderStatus)
                            .Where(x => x.OrderStatus.Status == "Active" && x.IsDeleted != true)
                            .ToListAsync();
+        }
 
         public async Task<List<Order>> GetOrdersByStatus(string status)
         {
