@@ -57,7 +57,15 @@ namespace TheRestaurant.Application.Orders
             return await _orderRepository.GetPendingStatusId();
         }
 
+
+        public async Task<List<Order>> GetOrderByOrderStatus(string orderStatus)
+        {
+            return await _orderRepository.GetOrdersByStatus(orderStatus);
+        }
+       
+
         public async Task<ServiceResponse<GetCustomerOrderResponse>> GetCustomerOrder(int orderId)
+
         {
             ServiceResponse<GetCustomerOrderResponse> response = new();
 

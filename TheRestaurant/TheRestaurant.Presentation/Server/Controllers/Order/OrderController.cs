@@ -56,12 +56,27 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
                 return Ok(result.Data);
         }
 
+
+        [HttpGet("{status}")]
+        public async Task<ActionResult<List<Domain.Entities.Orders.Order>>> GetOrdersByStatus(string status)
+        {
+            var orders = await _orderService.GetOrderByOrderStatus(status);
+
+            if(orders.Count is 0)
+            {
+                return Ok($"Inga order med status:{status} kunde hittas");
+            }
+
+            return Ok(orders);
+        }
+
         [HttpDelete("CancelOrder/{id}")]
         public async Task<ActionResult> CancelOrder(int id)
         {
             await _orderService.DeleteOrderAsync(id);
             return NoContent();
         }
+
 
         [HttpGet("FetchAllActiveOrders")]
         public async Task<ActionResult> FetchAllActiveOrders()
@@ -74,5 +89,6 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return Ok(result.Data);
         }
+
     }
 }
