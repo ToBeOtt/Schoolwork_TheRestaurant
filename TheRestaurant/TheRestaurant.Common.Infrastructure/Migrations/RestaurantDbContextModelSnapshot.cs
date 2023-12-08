@@ -260,7 +260,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Allergies");
+                    b.ToTable("Allergies", (string)null);
 
                     b.HasData(
                         new
@@ -332,7 +332,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -470,7 +470,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductAllergy", b =>
@@ -493,7 +493,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductAllergies");
+                    b.ToTable("ProductAllergies", (string)null);
                 });
 
             modelBuilder.Entity("TheRestaurant.Domain.Entities.Menu.ProductCategory", b =>
@@ -516,10 +516,10 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.Order", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -529,9 +529,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -545,78 +542,10 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("OrderStatusId");
 
-                    b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            OrderDate = new DateTime(2023, 12, 7, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3597),
-                            OrderStatusId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            OrderDate = new DateTime(2023, 12, 6, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3653),
-                            OrderStatusId = 3
-                        },
-                        new
-                        {
-                            Id = 31,
-                            OrderDate = new DateTime(2023, 12, 7, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3761),
-                            OrderStatusId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            OrderDate = new DateTime(2023, 12, 7, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3767),
-                            OrderStatusId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            OrderDate = new DateTime(2023, 12, 7, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3769),
-                            OrderStatusId = 1
-                        },
-                        new
-                        {
-                            Id = 34,
-                            OrderDate = new DateTime(2023, 12, 5, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3772),
-                            OrderStatusId = 1
-                        },
-                        new
-                        {
-                            Id = 10,
-                            OrderDate = new DateTime(2023, 12, 4, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3776),
-                            OrderStatusId = 3
-                        },
-                        new
-                        {
-                            Id = 11,
-                            OrderDate = new DateTime(2023, 12, 3, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3778),
-                            OrderStatusId = 4
-                        },
-                        new
-                        {
-                            Id = 6,
-                            OrderDate = new DateTime(2023, 12, 6, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3780),
-                            OrderStatusId = 5
-                        },
-                        new
-                        {
-                            Id = 32,
-                            OrderDate = new DateTime(2023, 12, 6, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3783),
-                            OrderStatusId = 2
-                        },
-                        new
-                        {
-                            Id = 33,
-                            OrderDate = new DateTime(2023, 12, 6, 15, 20, 33, 876, DateTimeKind.Local).AddTicks(3786),
-                            OrderStatusId = 5
-                        });
+                    b.ToTable("Orders", (string)null);
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderRow", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.OrderRow", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -636,150 +565,10 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderRows");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            OrderId = 1,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            OrderId = 1,
-                            ProductId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            OrderId = 1,
-                            ProductId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            OrderId = 1,
-                            ProductId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            OrderId = 1,
-                            ProductId = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            OrderId = 2,
-                            ProductId = 6
-                        },
-                        new
-                        {
-                            Id = 7,
-                            OrderId = 2,
-                            ProductId = 7
-                        },
-                        new
-                        {
-                            Id = 8,
-                            OrderId = 2,
-                            ProductId = 8
-                        },
-                        new
-                        {
-                            Id = 9,
-                            OrderId = 2,
-                            ProductId = 9
-                        },
-                        new
-                        {
-                            Id = 10,
-                            OrderId = 2,
-                            ProductId = 10
-                        },
-                        new
-                        {
-                            Id = 16,
-                            OrderId = 31,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            Id = 17,
-                            OrderId = 31,
-                            ProductId = 3
-                        },
-                        new
-                        {
-                            Id = 18,
-                            OrderId = 4,
-                            ProductId = 2
-                        },
-                        new
-                        {
-                            Id = 19,
-                            OrderId = 4,
-                            ProductId = 5
-                        },
-                        new
-                        {
-                            Id = 20,
-                            OrderId = 5,
-                            ProductId = 4
-                        },
-                        new
-                        {
-                            Id = 21,
-                            OrderId = 6,
-                            ProductId = 6
-                        },
-                        new
-                        {
-                            Id = 22,
-                            OrderId = 6,
-                            ProductId = 7
-                        },
-                        new
-                        {
-                            Id = 23,
-                            OrderId = 32,
-                            ProductId = 8
-                        },
-                        new
-                        {
-                            Id = 24,
-                            OrderId = 32,
-                            ProductId = 9
-                        },
-                        new
-                        {
-                            Id = 25,
-                            OrderId = 33,
-                            ProductId = 10
-                        },
-                        new
-                        {
-                            Id = 26,
-                            OrderId = 34,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            Id = 27,
-                            OrderId = 10,
-                            ProductId = 3
-                        },
-                        new
-                        {
-                            Id = 28,
-                            OrderId = 11,
-                            ProductId = 2
-                        });
+                    b.ToTable("OrderRows", (string)null);
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderStatus", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.OrderStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -796,7 +585,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("OrderStatus", (string)null);
 
                     b.HasData(
                         new
@@ -920,14 +709,14 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.Order", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.Order", b =>
                 {
                     b.HasOne("TheRestaurant.Domain.Entities.Authentication.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
 
-                    b.HasOne("TheRestaurant.Domain.Entities.Orders.OrderStatus", "OrderStatus")
-                        .WithMany("Orders")
+                    b.HasOne("TheRestaurant.Domain.Entities.OrderEntities.OrderStatus", "OrderStatus")
+                        .WithMany()
                         .HasForeignKey("OrderStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -937,9 +726,9 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Navigation("OrderStatus");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderRow", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.OrderRow", b =>
                 {
-                    b.HasOne("TheRestaurant.Domain.Entities.Orders.Order", "Order")
+                    b.HasOne("TheRestaurant.Domain.Entities.OrderEntities.Order", "Order")
                         .WithMany("OrderRows")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -968,14 +757,9 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Navigation("ProductCategories");
                 });
 
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.Order", b =>
+            modelBuilder.Entity("TheRestaurant.Domain.Entities.OrderEntities.Order", b =>
                 {
                     b.Navigation("OrderRows");
-                });
-
-            modelBuilder.Entity("TheRestaurant.Domain.Entities.Orders.OrderStatus", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
