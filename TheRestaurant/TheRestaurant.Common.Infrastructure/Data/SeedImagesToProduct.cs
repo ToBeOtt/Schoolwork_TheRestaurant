@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace TheRestaurant.Common.Infrastructure.Data
 {
-    public class ProductImageUpdater
+    public class SeedImagesToProduct
     {
         private readonly RestaurantDbContext _context;
 
-        public ProductImageUpdater(RestaurantDbContext context)
+        public SeedImagesToProduct(RestaurantDbContext context)
         {
             _context = context;
         }
