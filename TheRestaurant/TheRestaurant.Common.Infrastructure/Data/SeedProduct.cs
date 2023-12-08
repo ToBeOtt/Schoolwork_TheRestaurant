@@ -19,7 +19,10 @@ public static class ProductSeeds
             new Product { Id = 11, Name = "Cola", Description = "Klassisk kolsyrad läsk med unik smak", Price = 20, IsFoodItem = false, IsDeleted = false },
             new Product { Id = 12, Name = "Fanta", Description = "Fruktig apelsinläsk med kolsyra", Price = 20, IsFoodItem = false, IsDeleted = false },
             new Product { Id = 13, Name = "Lokalt mikrobryggeri öl", Description = "Öl från lokala mikrobryggerier", Price = 40, IsFoodItem = false, IsDeleted = false },
-            new Product { Id = 14, Name = "Husets röda vin", Description = "Välbalanserat rödvin från husets urval", Price = 60, IsFoodItem = false, IsDeleted = false }
+            new Product { Id = 14, Name = "Husets röda vin", Description = "Välbalanserat rödvin från husets urval", Price = 60, IsFoodItem = false, IsDeleted = false },
+            new Product { Id = 15, Name = "Kaffe mugg", Description = "Isolerad resemugg", Price = 120, IsFoodItem = false, IsDeleted = false },
+            new Product { Id = 16, Name ="Kokbok", Description = "Kokbok som innehåller alla våra goda recept", Price = 99, IsFoodItem = false, IsDeleted = false},
+            new Product { Id = 17, Name = "Såspanna", Description = "Högkvalitativ såspanna perfekt för alla typer av såser", Price = 450, IsFoodItem = false, IsDeleted = false }
         );
 
 
@@ -59,8 +62,12 @@ public static class ProductSeeds
             new ProductCategory { Id = 12, ProductId = 11, CategoryId = 14 },
             new ProductCategory { Id = 13, ProductId = 12, CategoryId = 14 },
             new ProductCategory { Id = 14, ProductId = 13, CategoryId = 15 },
-            new ProductCategory { Id = 15, ProductId = 14, CategoryId = 15 }
-        // ... and so on
+            new ProductCategory { Id = 15, ProductId = 14, CategoryId = 15 },
+            
+            // Categories for merch
+            new ProductCategory { Id = 16, ProductId = 15, CategoryId=18},
+            new ProductCategory { Id = 17, ProductId = 16, CategoryId=18},
+            new ProductCategory { Id = 18, ProductId = 17, CategoryId=18}
         );
 
         modelBuilder.Entity<ProductAllergy>().HasData(
