@@ -1,0 +1,104 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Employees
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject NavigationManager Navigation
+@inject ClientOrderService OrderService
+
+<MudGrid>
+
+    <MudItem xs="12">
+        <MudText Class="p-10 px-5"
+                 Typo="Typo.h4">
+            Anställda
+        </MudText>
+    </MudItem>
+
+    <MudItem>
+        <MudDataGrid Items="@ListOfActiveOrders">
+
+            <Columns>
+                <TemplateColumn Title="AnställningsNr">
+                </TemplateColumn>
+
+                <PropertyColumn Property="x => x.OrderNr" Title="Namn" />
+                <PropertyColumn Property="x => x.DateTimeOfOrder" Title="Orderdatum" Format="yyyy-MM-dd" />
+                <PropertyColumn Property="x => x.DateTimeOfOrder" Title="Ansvarig"/>
+
+                <TemplateColumn Title="Edit">
+                    <CellTemplate>
+                        <MudIconButton 
+                            Size="@Size.Small" 
+                            Icon="@Icons.Material.Outlined.Details" 
+                            />
+                    </CellTemplate>
+                </TemplateColumn>
+
+
+                <TemplateColumn Title="Delete">
+                    <CellTemplate>
+
+                        <MudIconButton Size="@Size.Small"
+                                       Color="Color.Error"
+                                       Icon="@Icons.Material.Outlined.ArrowBack"
+                                       OnClick="@(() => RevertToProcessingOrder(context.Item.OrderNr))" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+    </MudItem>
+
+    <MudItem>
+        @if (Affirmation != null)
+        {
+            <MudAlert Severity="Severity.Success">
+                @Affirmation
+            </MudAlert>
+        }
+    </MudItem>
+</MudGrid>
+
+
+
+@code {
+
+    private List<ActiveOrdersDto> ListOfActiveOrders = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListOfActiveOrders = await OrderService.FetchListOfActiveOrders();
+    }
+
+
+    // Edit and delete
+    private string Affirmation = null;
+    private void RevertToProcessingOrder(int orderId)
+    {
+        Navigation.NavigateTo($"/admin/employees/EditEmployee/{orderId}");
+    }
+
+
+    [Inject] private IDialogService DialogService { get; set; }
+    bool ConfirmRevertToProcessing = false;
+
+    private async void DeleteEmployee(int orderId)
+    {
+        bool? result = await DialogService.ShowMessageBox(
+           "Varning",
+           "Order återaktiveras",
+           yesText: "Delete!", cancelText: "Cancel");
+        ConfirmRevertToProcessing = result == null ? false : true;
+        StateHasChanged();
+
+        if (ConfirmRevertToProcessing == true)
+        {
+            if (await OrderService.UpdateOrderToFinished(2))
+            {
+                Affirmation = "Order är åter inlagd som aktiv";
+                StateHasChanged();
+            }
+
+            else
+                Affirmation = "Något gick fel. Kontakta IT-support.";
+        }
+    }
+}

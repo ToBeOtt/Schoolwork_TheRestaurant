@@ -35,9 +35,9 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             return listOfOrders;
         }
 
-        public async Task<bool> SetStatusToFinished(int orderId)
+        public async Task<bool> UpdateOrderToFinished(int orderId)
         {
-            var apiUrl = "/Order/SetStatusToFinished";
+            var apiUrl = "/Order/UpdateOrderStatus";
             var outcome = await _httpClient.PostAsJsonAsync(apiUrl, orderId);
             
             if (outcome.IsSuccessStatusCode)

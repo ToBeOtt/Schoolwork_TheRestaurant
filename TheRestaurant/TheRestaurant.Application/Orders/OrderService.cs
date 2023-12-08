@@ -56,8 +56,11 @@ namespace TheRestaurant.Application.Orders
         {
             return await _orderRepository.GetPendingStatusId();
         }
-
-
+        private async Task<OrderStatus> GetDeliveredStatusForOrder()
+        {
+            return await _orderRepository.GetDeliveredStatusId();
+        }
+        
         public async Task<List<Order>> GetOrderByOrderStatus(string orderStatus)
         {
             return await _orderRepository.GetOrdersByStatus(orderStatus);
@@ -83,6 +86,25 @@ namespace TheRestaurant.Application.Orders
 
             response.Data = dto;
             return await response.SuccessResponse(response, response.Data);
+        }
+
+        public async Task<ServiceResponse<bool>> UpdateOrderStatus(int orderId)
+        {
+            ServiceResponse<bool> response = new();
+
+            var order = await _orderRepository.GetByIdAsync(orderId);
+
+            //Set new status
+            order.OrderStatus = await GetDeliveredStatusForOrder();
+
+            var result = await _orderRepository.UpdateAsync(order);
+            response.Data = result;
+            if (result)
+                return await response.SuccessResponse(response, response.Data);
+
+            else
+                return await response.ErrorResponse
+                      (response, "Order could not be fetched from database.", _logger);
         }
 
         public async Task<List<Order>> GetAllOrdersAsync()

@@ -6,44 +6,49 @@
 
 <MudTable 
     Items="@ListOfActiveOrders" 
+    Elevation="0"
     Dense=true 
     Hover=true 
     Bordered=false 
-    Striped=false 
-    Elevation="0">
+    Striped=true
+    Class="w-100">
 
     <ToolBarContent>
-        <MudText Typo="Typo.h6">
-            Nya Order
+        <MudText 
+            Class="py-6 px-5"
+            Typo="Typo.h5">
+            Pågående ordrar
             </MudText>
         <MudSpacer />
     </ToolBarContent>
 
     <HeaderContent>
-        <MudTh>Id</MudTh>
+        <MudTh Class="fw-bold">Id</MudTh>
+        <MudTh Class="fw-bold">Beställning gjord</MudTh>
+        <MudTh Class="fw-bold">Ansvarig</MudTh>
         <MudTh></MudTh>
-        <MudTh></MudTh>
-        <MudTh>Status</MudTh>
+       
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.OrderNr</MudTd>
-            <MudTd DataLabel="Id">@context.DateTimeOfOrder.ToShortDateString() / @context.DateTimeOfOrder.ToShortTimeString()</MudTd>
+            <MudTd DataLabel="Id">@context.DateTimeOfOrder.ToShortTimeString()</MudTd>
+             <MudTd>
+                Ruben
+            </MudTd>
+
             <MudTd>
                 <MudSpacer />
-            </MudTd>
-            <MudTd>
-                Visa status här
             </MudTd>
 
             <MudTd>
                 <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary"
-                        OnClick="@((e)=> CheckOutOrder(maxWidth ,context))">Leverera order</MudButton>
+                        OnClick="@((e)=> CheckOutOrder(maxWidth ,context))">Markera som klar</MudButton>
          </MudTd>
      </RowTemplate>
 
  </MudTable>
  @code {
-    private List<ActiveOrdersDto> ListOfActiveOrders;
+    private List<ActiveOrdersDto> ListOfActiveOrders = new();
 
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
 

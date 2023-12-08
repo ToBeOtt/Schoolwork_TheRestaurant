@@ -1,0 +1,66 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject ISnackbar Snackbar
+@inject ClientOrderService OrderService
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Markera order som klar?</MudText>
+    </TitleContent>
+        <DialogContent>
+            <MudTable Items="@ActiveOrder.ProductAndQuantity" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
+                <HeaderContent>
+                    <MudTh>Namn</MudTh>
+                    <MudTh>Antal</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                     <MudTd>@context.ProductName</MudTd>
+                        <MudTd>@context.Quantity</MudTd>
+                    </RowTemplate>
+
+                </MudTable>
+
+        </DialogContent>
+
+        <DialogActions>
+            <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmOrderFinished">Ja</MudButton>
+         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
+     </DialogActions>
+
+ </MudDialog>
+
+
+ @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public ActiveOrdersDto ActiveOrder { get; set; }
+
+    private void Cancel()
+    {
+        Snackbar.Add("Bekräftelse av order avbruten", Severity.Info);
+        MudDialog.Cancel();
+    }
+
+    private bool OrderProcessed;
+
+    private async Task ConfirmOrderFinished()
+    {
+        OrderProcessed = await OrderService.UpdateOrderToFinished(ActiveOrder.OrderNr);
+
+        if (OrderProcessed)
+        {
+            Snackbar.Add($"Order {ActiveOrder.OrderNr} är markerad som klar och levereras till kund.", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(ActiveOrder.OrderNr));
+            StateHasChanged();
+        }
+        else
+        {
+            Snackbar.Add($"Order {ActiveOrder.OrderNr} kunde inte markeras som färdig. Kontakta kassa-personal.", Severity.Error);
+            MudDialog.Close(DialogResult.Ok(ActiveOrder.OrderNr));
+        }
+
+    }
+}

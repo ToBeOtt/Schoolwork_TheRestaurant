@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
-using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Application.Orders;
 using TheRestaurant.Contracts.Requests.Order;
-using TheRestaurant.Presentation.Shared.DTO.Orders;
 using TheRestaurant.Presentation.Shared.Requests.Order;
 namespace TheRestaurant.Presentation.Server.Controllers.Order
 {
@@ -73,6 +70,19 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             }
 
             return Ok(result.Data);
+        }
+
+
+        [HttpPost("UpdateOrderStatus")]
+        public async Task<ActionResult> UpdateOrderStatus([FromBody] int orderId)
+        {
+            var result = await _orderService.UpdateOrderStatus(orderId);
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }

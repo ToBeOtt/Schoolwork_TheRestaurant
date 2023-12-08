@@ -1,5 +1,6 @@
 ﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TheRestaurant.Application.Orders.Interfaces;
 using TheRestaurant.Domain.Entities.Orders;
 
@@ -8,10 +9,14 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
     public class OrderRepository : IOrderRepository
     {
         private readonly RestaurantDbContext _dbContext;
+        private readonly ILogger<OrderRepository> _logger;
 
-        public OrderRepository(RestaurantDbContext dbContext)
+        public OrderRepository(
+            RestaurantDbContext dbContext,
+            ILogger<OrderRepository> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public async Task<Order> CreateAsync(Order order)
@@ -42,10 +47,20 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
             return await _dbContext.Orders.ToListAsync();
         }
 
-        public async Task UpdateAsync(Order order)
+        public async Task<bool> UpdateAsync(Order order)
         {
-            _dbContext.Entry(order).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Orders.Update(order);
+
+            try
+            {
+                var result = await _dbContext.SaveChangesAsync();
+                return result > 0;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return false;
+            }
         }
 
         public async Task DeleteAsync(Order order)
@@ -78,6 +93,14 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
             var orders = await _dbContext.Orders.Where(x => x.OrderStatus.Status == status).ToListAsync();
             return orders;
 
+        }
+
+        public async Task<OrderStatus> GetDeliveredStatusId()
+        {
+            var status = await _dbContext.OrderStatus
+                                   .Where(x => x.Status == "Delivered")
+                                   .SingleOrDefaultAsync();
+            return status;
         }
     }
 }
