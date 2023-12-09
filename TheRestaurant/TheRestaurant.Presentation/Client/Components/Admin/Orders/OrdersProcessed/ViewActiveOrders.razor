@@ -1,0 +1,110 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Client.Components.Admin.Orders.OrdersFinished
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject ClientOrderService OrderService
+@inject IDialogService DialogService
+
+
+<MudTable 
+    Items="@ListOfActiveOrders" 
+    Elevation="0"
+    Dense=true 
+    Hover=true 
+    Bordered=false 
+    Striped=true
+    Class="w-100">
+
+    <ToolBarContent>
+        <MudText 
+            Class="py-6 px-5"
+            Typo="Typo.h5">
+            Pågående ordrar
+            </MudText>
+        <MudSpacer />
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh Class="fw-bold">OrderNr</MudTh>
+        <MudTh Class="fw-bold">Ansvarig</MudTh>
+        <MudTh Class="fw-bold">Ordertid</MudTh>
+        <MudTh Class="fw-bold">Detaljer</MudTh>
+        <MudTh Class="fw-bold">Order klar?</MudTh>
+       
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.OrderNr</MudTd>
+        <MudTd DataLabel="Employee">@context.EmployeeName</MudTd>
+        <MudTd DataLabel="Date">@context.DateTimeOfOrder.ToShortTimeString()</MudTd> 
+            
+        <MudTd>
+            <MudIconButton Class="fw-bold"
+                            Size="@Size.Small"
+                            Color="Color.Success"
+                            Icon="@Icons.Material.Outlined.Info"
+                               OnClick="@((e)=> ViewOrderInfo(
+                                                maxWidth, 
+                                                context.OrderNr,
+                                                context.EmployeeName,
+                                                context.DateTimeOfOrder))">
+                Info
+            </MudIconButton>
+        </MudTd>
+
+        <MudTd>
+            <MudIconButton 
+                Class="fw-bold"
+                Size="@Size.Small"
+                Color="Color.Success"
+                Icon="@Icons.Material.Outlined.ArrowForward"
+                OnClick="@((e)=> CheckOutOrder(maxWidth ,context))">Markera som klar
+            </MudIconButton>
+        </MudTd>
+     </RowTemplate>
+
+ </MudTable>
+ @code {
+    private List<ActiveOrdersDto> ListOfActiveOrders = new();
+
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+         ListOfActiveOrders = await OrderService.FetchListOfActiveOrders();
+         OrderService.OrdersUpdated += OnOrderUpdated;
+    }
+
+    private async void OnOrderUpdated()
+    {
+        ListOfActiveOrders = await OrderService.FetchListOfActiveOrders();
+        StateHasChanged();
+    }
+
+    private async Task CheckOutOrder(DialogOptions options, ActiveOrdersDto order)
+    {
+        var parameters = new DialogParameters
+        {
+            { "ActiveOrder", order }
+        };
+
+        var dialog = await DialogService.ShowAsync<OrderCompleteDialog>("", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private async Task ViewOrderInfo(DialogOptions options, int OrderNr, string EmployeeName, DateTime OrderDate)
+    {
+        var parameters = new DialogParameters
+        {
+            { "DetailsId", OrderNr },
+            { "Responsible", EmployeeName },
+            { "DateOfOrder", OrderDate },
+        };
+
+        var dialog = await DialogService.ShowAsync<OrderDetailsDialog>("", parameters, options);
+        var result = await dialog.Result;
+    }
+}

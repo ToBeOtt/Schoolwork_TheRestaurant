@@ -1,7 +1,8 @@
-﻿@page "/admin/orders/processed"
+﻿@page "/admin/orders/finished"
 
 
 @using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Components.Admin.Orders.OrdersFinished
 @using TheRestaurant.Presentation.Client.Shared.Admin;
 
 <AdminLayout>
@@ -14,7 +15,7 @@
 
                 <MudGrid>
                     <MudGrid Justify="Justify.FlexStart">
-                        <MudText Typo="Typo.h5">här kommer aktiva order som är behandlade att visas... yay</MudText>
+                        <ViewFinishedOrders/>
                     </MudGrid>
                 </MudGrid>
 

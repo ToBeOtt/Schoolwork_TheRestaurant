@@ -3,7 +3,8 @@
     public record ActiveOrdersDto(
        int OrderNr,
        DateTime DateTimeOfOrder,
-       List<ProductAndQuantity> ProductAndQuantity
+       List<ProductAndQuantity> ProductAndQuantity,
+       string EmployeeName
        );
 
     public record ProductAndQuantity(

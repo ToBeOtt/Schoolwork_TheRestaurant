@@ -1,0 +1,132 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Employees
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject NavigationManager Navigation
+@inject ClientOrderService OrderService
+@inject IDialogService DialogService
+
+<MudGrid>
+
+    <MudItem>
+        <MudDataGrid 
+            Dense=true
+            Elevation="0"
+                     Items="@FinishedOrders">
+
+            <ToolBarContent>
+                <MudText Class="py-6 px-5"
+                         Typo="Typo.h5">
+                    Avslutade ordrar
+                </MudText>
+                <MudSpacer />
+            </ToolBarContent>
+
+            <Columns>
+                <PropertyColumn 
+                    Property="x => x.OrderNr" 
+                    Title="OrderNr" 
+                    Class="fw-bold"/>
+                <PropertyColumn 
+                    Property="x => x.EmployeeName" 
+                    Title="Ansvarig" 
+                    Class="fw-bold" />
+                <PropertyColumn 
+                    Property="x => x.DateTimeOfOrder" 
+                    Title="Orderdatum" 
+                    Format="yyyy-MM-dd" 
+                    Class="fw-bold" />
+
+                <TemplateColumn 
+                    Class="fw-bold"
+                    Title="Detaljer">
+                    <CellTemplate>
+                        <MudIconButton 
+                            Size="@Size.Small"
+                            Color="Color.Success"
+                            Icon="@Icons.Material.Outlined.Info"
+                            OnClick="@((e)=> ViewOrderInfo
+                                            (maxWidth, 
+                                            context.Item.OrderNr, 
+                                            context.Item.EmployeeName, 
+                                            context.Item.DateTimeOfOrder))" />
+
+                    </CellTemplate>
+                </TemplateColumn>
+
+
+                <TemplateColumn
+                    Class="fw-bold"
+                    Title="Backa order?">
+                    <CellTemplate>
+
+                        <MudIconButton 
+                            Class="fw-bold"
+                            Size="@Size.Small"
+                            Color="Color.Error"
+                            Icon="@Icons.Material.Outlined.ArrowBack"
+                                       OnClick="@((e)=> RevertToProcessingOrder(maxWidth, context.Item.OrderNr))" />
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+    </MudItem>
+
+    <MudItem>
+        @if (Affirmation != null)
+        {
+            <MudAlert Severity="Severity.Success">
+                @Affirmation
+            </MudAlert>
+        }
+    </MudItem>
+</MudGrid>
+
+
+
+@code {
+
+    private List<FinishedOrderDto> FinishedOrders = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        FinishedOrders = await OrderService.FetchListOfFinishedOrders();
+        OrderService.OrdersUpdated += OnOrderUpdated;
+    }
+
+    private async void OnOrderUpdated()
+    {
+        FinishedOrders = await OrderService.FetchListOfFinishedOrders();
+        StateHasChanged();
+    }
+
+    // Edit and delete
+    private string Affirmation = null;
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
+
+    private async Task ViewOrderInfo(DialogOptions options, int OrderNr, string EmployeeName, DateTime OrderDate)
+    {
+        var parameters = new DialogParameters
+        {
+            { "DetailsId", OrderNr },
+            { "Responsible", EmployeeName },
+            { "DateOfOrder", OrderDate },
+        };
+
+        var dialog = await DialogService.ShowAsync<OrderDetailsDialog>("", parameters, options);
+        var result = await dialog.Result;
+    }
+
+
+    bool ConfirmRevertToProcessing = false;
+
+    private async Task RevertToProcessingOrder(DialogOptions options, int OrderNr)
+    {
+        var parameters = new DialogParameters
+        {
+            { "DetailsId", OrderNr }
+        };
+
+        var dialog = await DialogService.ShowAsync<RevertOrderStatusDialog>("", parameters, options);
+        var result = await dialog.Result;
+    }
+}

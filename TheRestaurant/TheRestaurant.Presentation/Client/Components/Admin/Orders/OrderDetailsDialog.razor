@@ -1,0 +1,109 @@
+﻿@using TheRestaurant.Contracts.Responses.Orders
+@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject ISnackbar Snackbar
+@inject ClientOrderService OrderService
+
+<MudDialog>
+    <TitleContent>
+
+        <MudGrid>
+            <MudItem xs="8">
+                <MudText Class=" mx-5"
+                         Typo="Typo.h6">
+                    Order @DetailsId - (@Responsible)
+                </MudText>
+            </MudItem>
+
+            <MudItem xs="4">
+                <MudText 
+                         Typo="Typo.h6">
+                    @DateOfOrder.ToShortDateString() - @DateOfOrder.ToShortTimeString()
+                </MudText>
+            </MudItem>
+        </MudGrid>
+
+    </TitleContent>
+    <DialogContent>
+        <MudTable 
+            Items="@Order.ProductName" 
+            Hover=true 
+            Bordered=false 
+            Striped=false
+            Elevation="0">
+
+            <HeaderContent>
+                <MudTh>
+                    <MudText 
+                        Class="fw-bold"
+                        Typo="Typo.subtitle1">
+                        Köpta produkter
+                    </MudText>
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context</MudTd>
+            </RowTemplate>
+
+            <FooterContent>
+                <MudText 
+                    Class="pt-8 pb-3 ml-2"
+                    Typo="Typo.h6">
+                        Totalpris: @Order.SumToPay
+                </MudText>
+            </FooterContent>
+
+            </MudTable>
+        </DialogContent>
+
+        <DialogActions>
+            <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmRevertToProcessing">Kvitto</MudButton>
+         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
+     </DialogActions>
+
+ </MudDialog>
+
+
+ @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public int DetailsId { get; set; }
+    [Parameter]
+    public string Responsible { get; set; }
+    [Parameter]
+    public DateTime DateOfOrder { get; set; }
+
+    private GetCustomerOrderDTO Order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Order = await OrderService.FetchOrder(DetailsId);
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private bool OrderProcessed;
+
+    private async Task ConfirmRevertToProcessing()
+    {
+        if (OrderProcessed)
+        {
+            Snackbar.Add($"Order {Order.OrderNr} är aktiv.", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(Order.OrderNr));
+            StateHasChanged();
+        }
+        else
+        {
+            Snackbar.Add($"Order {Order.OrderNr} kunde inte aktiveras. Kontakta IT-support.", Severity.Error);
+            MudDialog.Close(DialogResult.Ok(Order.OrderNr));
+        }
+
+    }
+}
+
