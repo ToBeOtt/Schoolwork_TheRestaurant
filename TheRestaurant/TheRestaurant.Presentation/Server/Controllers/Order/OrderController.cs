@@ -68,15 +68,31 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             {
                 return BadRequest();
             }
-
             return Ok(result.Data);
         }
 
+        [HttpGet("FetchAllFinishedOrders")]
+        public async Task<ActionResult> FetchAllFinishedOrders()
+        {
+            var result = await _orderService.GetListOfFinishedOrders();
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result.Data);
+        }
+        
 
         [HttpPost("UpdateOrderStatus")]
-        public async Task<ActionResult> UpdateOrderStatus([FromBody] int orderId)
+        public async Task<ActionResult> UpdateOrderStatus
+            ([FromBody] ChangeOrderStatusRequest request)
         {
-            var result = await _orderService.UpdateOrderStatus(orderId);
+            UpdateOrderStatusRequest updateRequest = new(
+                Id: request.Id,
+                OrderStatus: request.OrderStatus);
+
+            var result = await _orderService.UpdateOrderStatus(updateRequest);
             if (!result.IsSuccess)
             {
                 return BadRequest();

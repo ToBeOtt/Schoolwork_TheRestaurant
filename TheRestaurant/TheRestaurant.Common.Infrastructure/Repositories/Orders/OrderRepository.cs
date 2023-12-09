@@ -69,22 +69,14 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
             await _dbContext.SaveChangesAsync(); 
         }
 
-        public async Task<OrderStatus> GetPendingStatusId()
-        {
-            var status = await _dbContext.OrderStatus
-                                    .Where(x => x.Status == "Pending")
-                                    .SingleOrDefaultAsync();
-            return status;
-        }
-
-
         public async Task<List<Order>> GetActiveOrders()
         {
             return await _dbContext.Orders
                            .Include(x => x.OrderRows)
                                .ThenInclude(o => o.Product)
                            .Include(x => x.OrderStatus)
-                           .Where(x => x.OrderStatus.Status == "Active" && x.IsDeleted != true)
+                           .Include(x => x.Employee)
+                           .Where(x => x.OrderStatus.Status == "Processing" && x.IsDeleted != true)
                            .ToListAsync();
         }
 
@@ -95,12 +87,21 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
 
         }
 
-        public async Task<OrderStatus> GetDeliveredStatusId()
+        public async Task<List<Order>> GetFinishedOrders()
         {
-            var status = await _dbContext.OrderStatus
-                                   .Where(x => x.Status == "Delivered")
-                                   .SingleOrDefaultAsync();
-            return status;
+            return await _dbContext.Orders
+                          .Include(x => x.OrderRows)
+                            .ThenInclude(o => o.Product)
+                          .Include(x => x.Employee)
+                          .Where(x => x.OrderStatus.Status == "Delivered" && x.IsDeleted != true)
+                          .ToListAsync();
+        }
+
+        public async Task<OrderStatus> GetOrderStatusByName(string statusName)
+        {
+            return await _dbContext.OrderStatus
+                                    .Where(x => x.Status == statusName)
+                                    .SingleOrDefaultAsync();
         }
     }
 }

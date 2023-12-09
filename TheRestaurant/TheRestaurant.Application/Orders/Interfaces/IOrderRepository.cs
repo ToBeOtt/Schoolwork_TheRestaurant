@@ -14,11 +14,12 @@ namespace TheRestaurant.Application.Orders.Interfaces
         Task<Order> GetByIdAsync(int orderId);
         Task<List<Order>> GetAllAsync();
         Task<List<Order>> GetActiveOrders();
+        Task<List<Order>> GetFinishedOrders();
+        
 
 
         // Order-status handling
-        Task<OrderStatus> GetPendingStatusId();
-        Task<OrderStatus> GetDeliveredStatusId();
+        Task<OrderStatus> GetOrderStatusByName(string statusName);
         Task<List<Order>> GetOrdersByStatus(string status);
 
     }

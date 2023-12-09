@@ -1,0 +1,71 @@
+﻿@using TheRestaurant.Contracts.Responses.Orders
+@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject ISnackbar Snackbar
+@inject ClientOrderService OrderService
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Återställa order till aktiv?</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTable Items="@Order.ProductName" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
+            <HeaderContent>
+                <MudTh>Namn</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context</MudTd>
+                </RowTemplate>
+
+            </MudTable>
+        </DialogContent>
+
+        <DialogActions>
+            <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmRevertToProcessing">Ja</MudButton>
+         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
+     </DialogActions>
+
+ </MudDialog>
+
+
+ @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public int DetailsId { get; set; }
+
+    private GetCustomerOrderDTO Order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Order = await OrderService.FetchOrder(DetailsId);
+    }
+
+    private void Cancel()
+    {
+        Snackbar.Add("Återaktivering av order avbruten", Severity.Info);
+        MudDialog.Cancel();
+    }
+
+    private bool OrderProcessed;
+
+    private async Task ConfirmRevertToProcessing()
+    {
+        OrderProcessed = await OrderService.UpdateOrderStatus(DetailsId, "Processing");
+
+        if (OrderProcessed)
+        {
+            Snackbar.Add($"Order {Order.OrderNr} är aktiv.", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(Order.OrderNr));
+            StateHasChanged();
+        }
+        else
+        {
+            Snackbar.Add($"Order {Order.OrderNr} kunde inte aktiveras. Kontakta IT-support.", Severity.Error);
+            MudDialog.Close(DialogResult.Ok(Order.OrderNr));
+        }
+    }
+}
+

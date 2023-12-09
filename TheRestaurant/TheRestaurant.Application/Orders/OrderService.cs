@@ -30,7 +30,7 @@ namespace TheRestaurant.Application.Orders
 
             Order order = new();
             order.OrderDate = DateTime.Now;
-            order.OrderStatus = await GetPendingStatusForOrder();
+            order.OrderStatus = await _orderRepository.GetOrderStatusByName("Pending"); 
             var persistedOrder = await _orderRepository.CreateAsync(order);
             if (persistedOrder == null)
                 return await response.ErrorResponse
@@ -52,15 +52,6 @@ namespace TheRestaurant.Application.Orders
             return await response.SuccessResponse(response, response.Data);
         }
 
-        private async Task<OrderStatus> GetPendingStatusForOrder()
-        {
-            return await _orderRepository.GetPendingStatusId();
-        }
-        private async Task<OrderStatus> GetDeliveredStatusForOrder()
-        {
-            return await _orderRepository.GetDeliveredStatusId();
-        }
-        
         public async Task<List<Order>> GetOrderByOrderStatus(string orderStatus)
         {
             return await _orderRepository.GetOrdersByStatus(orderStatus);
@@ -88,14 +79,17 @@ namespace TheRestaurant.Application.Orders
             return await response.SuccessResponse(response, response.Data);
         }
 
-        public async Task<ServiceResponse<bool>> UpdateOrderStatus(int orderId)
+        public async Task<ServiceResponse<bool>> UpdateOrderStatus(UpdateOrderStatusRequest request)
         {
             ServiceResponse<bool> response = new();
 
-            var order = await _orderRepository.GetByIdAsync(orderId);
+            var order = await _orderRepository.GetByIdAsync(request.Id);
 
             //Set new status
-            order.OrderStatus = await GetDeliveredStatusForOrder();
+            var orderStatus = await _orderRepository.GetOrderStatusByName(request.OrderStatus);
+            order.OrderStatus = orderStatus;
+
+
 
             var result = await _orderRepository.UpdateAsync(order);
             response.Data = result;
@@ -154,7 +148,8 @@ namespace TheRestaurant.Application.Orders
                 ActiveOrdersResponse dto = new ActiveOrdersResponse(
                     OrderNr: item.Id,
                     DateTimeOfOrder: item.OrderDate,
-                    ProductAndQuantity: productAndQuantityList
+                    ProductAndQuantity: productAndQuantityList,
+                    EmployeeName: item.Employee.Alias
                 );
 
                 activeOrdersDtoList.Add(dto);
@@ -163,5 +158,32 @@ namespace TheRestaurant.Application.Orders
             response.Data = activeOrdersDtoList;
             return await response.SuccessResponse(response, response.Data);
         }
+
+        public async Task<ServiceResponse<List<FinishedOrderResponse>>> GetListOfFinishedOrders()
+        {
+            ServiceResponse<List<FinishedOrderResponse>> response = new();
+
+            var finishedOrdersList = await _orderRepository.GetFinishedOrders();
+            if (finishedOrdersList == null)
+                return await response.ErrorResponse
+                      (response, "Orders could not be fetched from database.", _logger);
+
+            List<FinishedOrderResponse> finishedOrdersDtoList = new();
+
+            foreach (var item in finishedOrdersList)
+            {
+                FinishedOrderResponse dto = new(
+                    OrderNr: item.Id,
+                    DateTimeOfOrder: item.OrderDate,
+                    EmployeeName: item.Employee.Alias
+                );
+
+                finishedOrdersDtoList.Add(dto);
+            }
+
+            response.Data = finishedOrdersDtoList;
+            return await response.SuccessResponse(response, response.Data);
+        }
+
     }
 }

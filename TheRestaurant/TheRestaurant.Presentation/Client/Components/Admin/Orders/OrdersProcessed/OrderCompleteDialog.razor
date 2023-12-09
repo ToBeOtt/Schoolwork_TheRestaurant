@@ -48,7 +48,7 @@
 
     private async Task ConfirmOrderFinished()
     {
-        OrderProcessed = await OrderService.UpdateOrderToFinished(ActiveOrder.OrderNr);
+        OrderProcessed = await OrderService.UpdateOrderStatus(ActiveOrder.OrderNr, "Delivered");
 
         if (OrderProcessed)
         {

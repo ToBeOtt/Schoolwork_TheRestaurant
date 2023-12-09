@@ -113,7 +113,7 @@ else if(@OrderExists)
         }
         else
         {
-            var orderDetails = await OrderService.CheckOrderStatus(parsedOrderNr);
+            var orderDetails = await OrderService.FetchOrder(parsedOrderNr);
             if (orderDetails == null)
             {
                 OrderExists = false;
