@@ -38,17 +38,15 @@
 
                 <TemplateColumn 
                     Class="fw-bold"
-                    Title="Detaljer">
+                    Title="Kvitto">
                     <CellTemplate>
                         <MudIconButton 
                             Size="@Size.Small"
                             Color="Color.Success"
-                            Icon="@Icons.Material.Outlined.Info"
-                            OnClick="@((e)=> ViewOrderInfo
+                            Icon="@Icons.Material.Outlined.Receipt"
+                                       OnClick="@((e)=> ViewReceipt
                                             (maxWidth, 
-                                            context.Item.OrderNr, 
-                                            context.Item.EmployeeName, 
-                                            context.Item.DateTimeOfOrder))" />
+                                            context.Item.OrderNr))" />
 
                     </CellTemplate>
                 </TemplateColumn>
@@ -103,16 +101,14 @@
     private string Affirmation = null;
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
 
-    private async Task ViewOrderInfo(DialogOptions options, int OrderNr, string EmployeeName, DateTime OrderDate)
+    private async Task ViewReceipt(DialogOptions options, int OrderNr)
     {
         var parameters = new DialogParameters
         {
-            { "DetailsId", OrderNr },
-            { "Responsible", EmployeeName },
-            { "DateOfOrder", OrderDate },
+            { "DetailsId", OrderNr }
         };
 
-        var dialog = await DialogService.ShowAsync<OrderDetailsDialog>("", parameters, options);
+        var dialog = await DialogService.ShowAsync<ReceiptDialog>("", parameters, options);
         var result = await dialog.Result;
     }
 

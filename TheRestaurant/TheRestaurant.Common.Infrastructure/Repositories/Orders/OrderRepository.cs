@@ -36,6 +36,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
         public async Task<Order> GetByIdAsync(int orderId)
         {
             return await _dbContext.Orders
+                .Include(x => x.Employee)
                 .Include(x => x.OrderRows)
                     .ThenInclude(o => o.Product)
                 .Include(x => x.OrderStatus)

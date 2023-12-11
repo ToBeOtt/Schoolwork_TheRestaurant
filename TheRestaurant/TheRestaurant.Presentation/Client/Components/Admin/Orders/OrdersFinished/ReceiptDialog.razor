@@ -1,0 +1,130 @@
+﻿@using TheRestaurant.Contracts.Requests.Order
+@using TheRestaurant.Contracts.Responses.Orders
+@using TheRestaurant.Presentation.Client.ClientServices
+@using TheRestaurant.Presentation.Shared.DTO.Orders
+@inject ISnackbar Snackbar
+@inject ClientOrderService OrderService
+
+<MudDialog>
+    <TitleContent>
+
+        <MudGrid>
+            <MudItem xs="8">
+                <MudText Class=" mx-5"
+                         Typo="Typo.h6">
+                    Order @DetailsId
+                </MudText>
+            </MudItem>
+
+            <MudItem xs="4">
+                <MudText 
+                         Typo="Typo.h6">
+                    @Receipt.OrderDate.ToShortDateString() - @Receipt.OrderDate.ToShortTimeString()
+                </MudText>
+            </MudItem>
+
+            <MudItem xs="12">
+                <MudText Typo="Typo.h6">
+                    Hanterad av: @Receipt.EmployeeResponsible
+                </MudText>
+            </MudItem>
+
+        </MudGrid>
+
+    </TitleContent>
+    <DialogContent>
+        <MudTable Items="@Receipt.Products"
+                  Hover=true 
+            Bordered=false 
+            Striped=false
+            Elevation="0">
+
+            <HeaderContent>
+                <MudTh>
+                    <MudText 
+                        Class="fw-bold"
+                        Typo="Typo.subtitle1">
+                        Köpta produkter
+                    </MudText>
+                </MudTh>
+                <MudTh>
+                    <MudText Class="fw-bold"
+                             Typo="Typo.subtitle1">
+                        Utan moms
+                    </MudText>
+                </MudTh>
+
+                <MudTh>
+                    <MudText Class="fw-bold"
+                             Typo="Typo.subtitle1">
+                        Med moms
+                    </MudText>
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.ProductName</MudTd>
+                    <MudTd>@context.PriceWithoutVAT</MudTd>
+                    <MudTd>@context.Price</MudTd>
+            </RowTemplate>
+
+            <FooterContent>
+                <MudText 
+                    Class="pt-8 pb-3 ml-2"
+                    Typo="Typo.h6">
+                        Totalpris: @Receipt.Totalprice
+                </MudText>
+            </FooterContent>
+
+            </MudTable>
+        </DialogContent>
+
+        <DialogActions>
+        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmPrintReceipt">Skriv ut</MudButton>
+         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
+     </DialogActions>
+
+ </MudDialog>
+
+
+ @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public int DetailsId { get; set; }
+
+    private GetReceiptResponse Receipt;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Receipt = await OrderService.FetchReceipt(DetailsId);
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private bool YesToReceipt;
+
+    // Mock method to illustrate how a receipt might be fetched and then printed to a printer
+    private async Task ConfirmPrintReceipt()
+    {
+        YesToReceipt = true;
+
+        if (YesToReceipt)
+        {
+            Snackbar.Add("Kvittot skrivs ut..", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(Receipt));
+            StateHasChanged();
+        }
+        else
+        {
+            Snackbar.Add("Kvittot kunde inte skrivas ut. Kontakta IT-support.", Severity.Error);
+            MudDialog.Close(DialogResult.Ok(Receipt));
+        }
+
+    }
+}
+

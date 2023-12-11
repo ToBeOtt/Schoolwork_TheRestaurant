@@ -16,5 +16,9 @@ namespace TheRestaurant.Application.Interfaces.IProduct
         Task<List<Product>> GetAllAsync();
         Task<List<Product>> GetAllEagerLoadedAsync();
         Task<List<string>> GetAllCategoryNames();
+
+        // VATs
+        Task<VAT> GetVATByName(string name);
+        
     }
 }
