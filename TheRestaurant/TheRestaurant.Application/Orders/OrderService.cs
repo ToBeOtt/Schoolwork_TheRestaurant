@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Application.ServiceResponse;
+using System.Linq;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Orders.Interfaces;
 using TheRestaurant.Contracts.Requests.Order;
@@ -185,5 +186,31 @@ namespace TheRestaurant.Application.Orders
             return await response.SuccessResponse(response, response.Data);
         }
 
+        public async Task<ServiceResponse<GetReceiptResponse>> GetReceipt(GetReceiptRequest request)
+        {
+            ServiceResponse<GetReceiptResponse> response = new();
+
+            // Get order and start filling in receipt-dto
+            var order = await _orderRepository.GetByIdAsync(request.Id);
+
+            GetReceiptResponse dto = new(order.Id, order.OrderDate, order.Employee.Alias);
+
+            // Loop through each individual item
+            foreach (var item in order.OrderRows)
+            {
+                var product = new ProductForReceipt(
+                    ProductId: item.ProductId,
+                    ProductName: item.Product.Name,
+                    Price: item.Product.Price,
+                    PriceWithoutVAT: item.Product.PriceBeforeVAT);
+
+                dto.Products.Add(product);
+            }
+            // Add total price-calculation
+            dto.Totalprice = dto.Products.Sum(x => x.Price);
+
+            response.Data = dto;
+            return await response.SuccessResponse(response, response.Data);
+        }
     }
 }

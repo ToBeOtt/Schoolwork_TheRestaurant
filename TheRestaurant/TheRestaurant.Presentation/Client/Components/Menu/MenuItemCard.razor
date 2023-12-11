@@ -110,9 +110,8 @@
         
         else
             FilteredList = DefaultDisplay
-            .Where(x => x.Category
-            .Any(category => category.
-                Contains(value))).
-            ToList();
+           .Where(x => x.Category
+               .Any(category => category.Equals(value, StringComparison.OrdinalIgnoreCase)))
+           .ToList();
     }
 }

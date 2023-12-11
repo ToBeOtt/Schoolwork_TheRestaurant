@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231211070609_VAT")]
+    partial class VAT
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -493,7 +496,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Hamburgare med pommes",
-                            Price = 88.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 79.0,
                             VATId = 1
                         },
@@ -504,7 +507,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Kebabpizza",
-                            Price = 111.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 99.0,
                             VATId = 1
                         },
@@ -515,7 +518,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Grillad lax",
-                            Price = 144.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 129.0,
                             VATId = 1
                         },
@@ -526,7 +529,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Caesarsallad",
-                            Price = 100.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 89.0,
                             VATId = 1
                         },
@@ -537,7 +540,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Mozzarella Sticks",
-                            Price = 55.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 49.0,
                             VATId = 1
                         },
@@ -548,7 +551,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Chokladfondant",
-                            Price = 77.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 69.0,
                             VATId = 1
                         },
@@ -559,7 +562,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Vegetarisk curry",
-                            Price = 122.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 109.0,
                             VATId = 1
                         },
@@ -570,7 +573,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Tom Yum Soppa",
-                            Price = 133.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 119.0,
                             VATId = 1
                         },
@@ -581,7 +584,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Lammkotletter",
-                            Price = 167.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 149.0,
                             VATId = 1
                         },
@@ -592,7 +595,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Blåbärspaj",
-                            Price = 66.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 59.0,
                             VATId = 1
                         },
@@ -603,7 +606,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Cola",
-                            Price = 22.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 20.0,
                             VATId = 1
                         },
@@ -614,7 +617,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Fanta",
-                            Price = 22.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 20.0,
                             VATId = 1
                         },
@@ -625,7 +628,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Lokalt mikrobryggeri öl",
-                            Price = 50.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 40.0,
                             VATId = 3
                         },
@@ -636,7 +639,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Husets röda vin",
-                            Price = 75.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 60.0,
                             VATId = 3
                         },
@@ -647,7 +650,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Kaffe mugg",
-                            Price = 127.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 120.0,
                             VATId = 2
                         },
@@ -658,7 +661,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Kokbok",
-                            Price = 105.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 99.0,
                             VATId = 2
                         },
@@ -669,7 +672,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Såspanna",
-                            Price = 477.0,
+                            Price = 0.0,
                             PriceBeforeVAT = 450.0,
                             VATId = 2
                         });
@@ -996,77 +999,77 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         {
                             Id = 31,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 11, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7362),
+                            OrderDate = new DateTime(2023, 12, 11, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8780),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 4,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 11, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7365),
+                            OrderDate = new DateTime(2023, 12, 11, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8784),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 5,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 11, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7367),
+                            OrderDate = new DateTime(2023, 12, 11, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8786),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 34,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 9, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7370),
+                            OrderDate = new DateTime(2023, 12, 9, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8789),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 10,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 8, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7372),
+                            OrderDate = new DateTime(2023, 12, 8, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8791),
                             OrderStatusId = 3
                         },
                         new
                         {
                             Id = 11,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 7, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7374),
+                            OrderDate = new DateTime(2023, 12, 7, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8793),
                             OrderStatusId = 4
                         },
                         new
                         {
                             Id = 6,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 10, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7377),
+                            OrderDate = new DateTime(2023, 12, 10, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8796),
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 32,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 10, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7379),
+                            OrderDate = new DateTime(2023, 12, 10, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8798),
                             OrderStatusId = 2
                         },
                         new
                         {
                             Id = 33,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 10, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7382),
+                            OrderDate = new DateTime(2023, 12, 10, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8801),
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 1,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 11, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7304),
+                            OrderDate = new DateTime(2023, 12, 11, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8721),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 2,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 10, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7357),
+                            OrderDate = new DateTime(2023, 12, 10, 8, 6, 8, 947, DateTimeKind.Local).AddTicks(8772),
                             OrderStatusId = 3
                         });
                 });

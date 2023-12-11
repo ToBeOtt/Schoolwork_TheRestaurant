@@ -66,5 +66,12 @@ namespace TheRestaurant.Presentation.Client.ClientServices
                 return false;
         }
 
+        public async Task<GetReceiptResponse> FetchReceipt(int id)
+        {
+            var apiUrl = $"/Order/GetReceipt?id={id}";
+            var receipt = await _httpClient.GetFromJsonAsync<GetReceiptResponse>(apiUrl);
+            return receipt;
+        }
+
     }
 }

@@ -20,6 +20,7 @@ namespace Common.Infrastructure.Data
 
         public DbSet<Product> Products { get; set; } = null!;
 
+        public DbSet<VAT> VATs { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<ProductCategory> ProductCategories { get; set; } = null!;
 

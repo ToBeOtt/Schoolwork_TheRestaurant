@@ -100,5 +100,21 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return Ok();
         }
+
+        [HttpGet("GetReceipt")]
+        public async Task<ActionResult> GetReceipt(int id)
+        {
+            GetReceiptRequest request = new(
+                Id: id);
+
+            var result = await _orderService.GetReceipt(request);
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result.Data);
+        }
+
     }
 }
