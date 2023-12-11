@@ -74,6 +74,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         {
             try
             {
+                Console.WriteLine($"Attempting to soft delete product with ID: {id}"); // Log the incoming request
                 var product = await _productService.GetProductById(id);
                 if (product == null)
                 {
