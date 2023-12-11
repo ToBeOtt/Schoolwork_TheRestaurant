@@ -123,6 +123,45 @@ namespace TheRestaurant.Application.Orders
             await _orderRepository.DeleteAsync(order);
         }
 
+        public async Task<ServiceResponse<List<PendingOrdersResponse>>> GetListOfPendingOrders()
+        {
+            ServiceResponse<List<PendingOrdersResponse>> response = new();
+
+            var pendingOrdersList = await _orderRepository.GetPendingOrders();
+            if (pendingOrdersList == null)
+                return await response.ErrorResponse
+                      (response, "Orders could not be fetched from database.", _logger);
+
+            List<PendingOrdersResponse> pendingOrdersDtoList = new();
+
+            foreach (var item in pendingOrdersList)
+            {
+                var productAndQuantityList = item.OrderRows
+                    .GroupBy(orderRow => orderRow.Product.Name)
+                    .Select(group => new ProductAndQuantity
+                    (
+                        ProductName: group.Key,
+                        Quantity: group.Count()
+                    ))
+                    .OrderBy(productAndQuantity => productAndQuantity.ProductName)
+                    .ToList();
+
+                PendingOrdersResponse dto = new PendingOrdersResponse(
+                    OrderNr: item.Id,
+                    DateTimeOfOrder: item.OrderDate,
+                    ProductAndQuantity: productAndQuantityList,
+                    EmployeeName: item.Employee.Alias
+                );
+
+                pendingOrdersDtoList.Add(dto);
+            }
+
+            response.Data = pendingOrdersDtoList;
+            return await response.SuccessResponse(response, response.Data);
+        }
+
+
+
         public async Task<ServiceResponse<List<ActiveOrdersResponse>>> GetListOfActiveOrders()
         {
             ServiceResponse<List<ActiveOrdersResponse>> response = new();
@@ -212,5 +251,7 @@ namespace TheRestaurant.Application.Orders
             response.Data = dto;
             return await response.SuccessResponse(response, response.Data);
         }
+
+      
     }
 }

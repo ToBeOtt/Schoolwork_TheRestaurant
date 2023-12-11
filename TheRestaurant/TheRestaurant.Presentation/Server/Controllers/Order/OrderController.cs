@@ -60,6 +60,18 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             return NoContent();
         }
 
+        //Andreas
+        [HttpGet("FetchAllPendingOrders")]
+        public async Task<ActionResult> FetchAllPendingOrders()
+        {
+            var result = await _orderService.GetListOfPendingOrders();
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+            return Ok(result.Data);
+        }
+
         [HttpGet("FetchAllActiveOrders")]
         public async Task<ActionResult> FetchAllActiveOrders()
         {

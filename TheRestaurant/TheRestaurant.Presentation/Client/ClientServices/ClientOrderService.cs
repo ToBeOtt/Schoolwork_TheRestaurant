@@ -1,7 +1,9 @@
 ﻿using System.Net.Http.Json;
+using TheRestaurant.Contracts.DTOs.OrderDTOs;
 using TheRestaurant.Contracts.Responses.Orders;
 using TheRestaurant.Presentation.Shared.DTO.Orders;
 using TheRestaurant.Presentation.Shared.Requests.Order;
+using static TheRestaurant.Presentation.Client.Pages.Admin.Index.Earnings;
 
 namespace TheRestaurant.Presentation.Client.ClientServices
 {
@@ -32,7 +34,14 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             var apiUrl = $"/Order/CancelOrder/{id}";
             await _httpClient.DeleteAsync(apiUrl);
         }
-       
+        //Andreas Code
+        public async Task<List<PendingOrderDto>> FetchListOfPendingOrders()
+        {
+            var apiUrl = "/Order/FetchAllPendingOrders";
+            var listOfOrders = await _httpClient.GetFromJsonAsync<List<PendingOrderDto>>(apiUrl);
+            return listOfOrders;
+        }
+
         public async Task<List<ActiveOrdersDto>> FetchListOfActiveOrders()
         {
             var apiUrl = "/Order/FetchAllActiveOrders";

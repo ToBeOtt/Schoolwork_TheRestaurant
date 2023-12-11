@@ -1,4 +1,5 @@
-﻿
+﻿@using TheRestaurant.Contracts.DTOs.OrderDTOs;
+
 @* Replace with correct DTO *@
 @using static TheRestaurant.Presentation.Client.Components.Admin.Orders.ViewPendingOrders;
 @inject ISnackbar Snackbar
@@ -10,21 +11,19 @@
         <MudText Typo="Typo.h4">Du är på väg att påbörja hantering av en order</MudText>
     </TitleContent>
     <DialogContent>
-        <MudText Align="Align.Center" Typo="Typo.h5">Är du säker på att vill påbörja hantering av order: <strong>@order.Id</strong></MudText>
-        <MudTable Items="@order.OrderRows" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
+        <MudText Align="Align.Center" Typo="Typo.h5">Är du säker på att vill påbörja hantering av order: <strong>@order.OrderNr</strong></MudText>
+        <MudTable Items="@order.ProductAndQuantity" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
             <ToolBarContent>
 
             </ToolBarContent>
            <HeaderContent>
-               <MudTh>Id</MudTh>
                <MudTh>Namn</MudTh>
                <MudTh>Antal</MudTh>
                <MudTh>Pris</MudTh>
            </HeaderContent>
             <RowTemplate>
-                <MudTd>123</MudTd>
                 <MudTd>@context.ProductName</MudTd>
-                <MudTd>12345</MudTd>
+                <MudTd>@context.Quantity</MudTd>
                 <MudTd>9999</MudTd>
             </RowTemplate>
 
@@ -46,7 +45,7 @@
 
     //Replace with correct DTO
     [Parameter]
-    public MockOrderDTO order { get; set; }
+    public PendingOrderDto order { get; set; }
 
     private void Cancel()
     {
@@ -76,8 +75,8 @@
         //     MudDialog.Close(DialogResult.Ok(allergy.Id));
         // }
        
-            Snackbar.Add($"Hantering av order:{order.Id} påbörjad", Severity.Success);
-            MudDialog.Close(DialogResult.Ok(order.Id));
+            // Snackbar.Add($"Hantering av order:{order.Id} påbörjad", Severity.Success);
+            // MudDialog.Close(DialogResult.Ok(order.Id));
         
         
           
