@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
 using TheRestaurant.Application.Dashboard.Interfaces;
 using TheRestaurant.Contracts.Responses;
+using TheRestaurant.Contracts.Responses.ServiceResponse;
 
 namespace TheRestaurant.Application.Dashboard
 {
-	public class DashboardServices
+    public class DashboardServices
 	{
 		private readonly ILogger<DashboardServices> _logger;
 		private readonly IDashboardRepository _dashboardRepository;

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
+﻿using Microsoft.Extensions.Logging;
 using TheRestaurant.Authentication.Interfaces;
 using TheRestaurant.Authentication.Services.RegistrationServices.DTO;
 using TheRestaurant.Authentication.Services.RoleServices;
+using TheRestaurant.Contracts.Responses.ServiceResponse;
 using TheRestaurant.Domain.Entities.Authentication;
 
 namespace TheRestaurant.Authentication.Services.RegistrationServices

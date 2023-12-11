@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
-using System.Linq;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Orders.Interfaces;
 using TheRestaurant.Contracts.Requests.Order;
 using TheRestaurant.Contracts.Responses.Orders;
+using TheRestaurant.Contracts.Responses.ServiceResponse;
 using TheRestaurant.Domain.Entities.Orders;
 
 namespace TheRestaurant.Application.Orders

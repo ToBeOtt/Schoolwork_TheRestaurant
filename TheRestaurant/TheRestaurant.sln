@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TheRestaurant", "TheRestaur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheRestaurant.Contracts", "TheRestaurant.Contracts\TheRestaurant.Contracts.csproj", "{2873603A-A7A1-439A-87DD-4456DAA9764A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheRestaurant.SharedKernel", "TheRestaurant.SharedKernel\TheRestaurant.SharedKernel.csproj", "{80A2D1EC-C3F0-4964-AF46-655237849CC3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{DE53B216-0DA9-47BF-94A8-45FADA86E569}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheRestaurant.Presentation.Server", "TheRestaurant.Presentation\Server\TheRestaurant.Presentation.Server.csproj", "{5F2692B1-6034-4B4A-AA31-CB54448606E6}"
@@ -53,10 +51,6 @@ Global
 		{2873603A-A7A1-439A-87DD-4456DAA9764A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2873603A-A7A1-439A-87DD-4456DAA9764A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2873603A-A7A1-439A-87DD-4456DAA9764A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80A2D1EC-C3F0-4964-AF46-655237849CC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80A2D1EC-C3F0-4964-AF46-655237849CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80A2D1EC-C3F0-4964-AF46-655237849CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80A2D1EC-C3F0-4964-AF46-655237849CC3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F2692B1-6034-4B4A-AA31-CB54448606E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F2692B1-6034-4B4A-AA31-CB54448606E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F2692B1-6034-4B4A-AA31-CB54448606E6}.Release|Any CPU.ActiveCfg = Release|Any CPU

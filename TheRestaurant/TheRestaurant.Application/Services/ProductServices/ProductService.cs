@@ -1,7 +1,7 @@
-﻿using SharedKernel.Application.ServiceResponse;
-using TheRestaurant.Application.Interfaces.IProduct;
+﻿using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Services.ProductServices.DTO;
 using TheRestaurant.Contracts.Requests.Product;
+using TheRestaurant.Contracts.Responses.ServiceResponse;
 using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Application.Services.ProductServices

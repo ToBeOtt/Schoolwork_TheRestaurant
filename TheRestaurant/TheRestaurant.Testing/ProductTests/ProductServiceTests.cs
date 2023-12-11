@@ -53,6 +53,7 @@ namespace TheRestaurant.Testing.ProductTests
         [Fact]
         public async Task CreateProduct_ShouldCreateProduct_ValidInput()
         {
+
             var createRequest = new CreateProductRequest(
                 Name: "New Product",
                 Price: 10.99,
@@ -61,7 +62,8 @@ namespace TheRestaurant.Testing.ProductTests
                 IsFoodItem: true,
                 IsDeleted: false,
                 SelectedCategoryIds: new List<int>(),
-                SelectedAllergyIds: new List<int>()  
+                SelectedAllergyIds: new List<int>(),
+                VAT: "Alcohol"
             );
 
 

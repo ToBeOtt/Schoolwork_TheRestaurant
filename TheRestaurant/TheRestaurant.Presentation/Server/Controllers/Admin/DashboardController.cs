@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TheRestaurant.Application.Dashboard;
-using TheRestaurant.Application.Employees;
-using TheRestaurant.Presentation.Client.ClientServices;
-using TheRestaurant.Presentation.Shared.Requests;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
-	[ApiController]
+    [ApiController]
     [Route("Dashboard")]
     public class DashboardController : ControllerBase
     {
