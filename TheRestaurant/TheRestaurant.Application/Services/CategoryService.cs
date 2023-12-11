@@ -1,4 +1,4 @@
-﻿using TheRestaurant.Application.Interfaces;
+﻿using TheRestaurant.Application.Interfaces.ICategory;
 using TheRestaurant.Contracts.DTOs;
 using TheRestaurant.Domain.Entities.Menu;
 
@@ -27,6 +27,7 @@ namespace TheRestaurant.Application.Services
             {
                 Id = c.Id,
                 Name = c.Name,
+                IsDeleted = c.IsDeleted,
             }).ToList();
 
             return categoryDtos;
@@ -43,7 +44,8 @@ namespace TheRestaurant.Application.Services
             var categoryDto = new CategoryDto()
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                IsDeleted = category.IsDeleted
             };
 
             return categoryDto;
@@ -51,38 +53,80 @@ namespace TheRestaurant.Application.Services
         }
 
         //Add New Category
-        public async Task AddAsync(CategoryDto categoryDto)
+        public async Task<bool> AddAsync(CategoryDto categoryDto)
         {
-            Category category = new Category()
+            try
             {
-                Id = categoryDto.Id,
-                Name = categoryDto.Name
-            };
-            await _categoryRepository.AddAsync(category);
-            await _categoryRepository.SaveChangesAsync();
+                Category category = new Category()
+                {
+                    Id = categoryDto.Id,
+                    Name = categoryDto.Name,
+                    IsDeleted = categoryDto.IsDeleted
+                };
+                await _categoryRepository.AddAsync(category);
+                await SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
+
+           
         }
 
         //Update the Category
-        public async Task UpdateAsync(CategoryDto categoryDto)
+        public async Task<bool> UpdateAsync(CategoryDto categoryDto)
         {
-            Category category = new Category()
+
+            try
             {
-                Id = categoryDto.Id,
-                Name = categoryDto.Name
-            };
-            await _categoryRepository.UpdateAsync(category);
-            await _categoryRepository.SaveChangesAsync();
+                Category category = new Category()
+                {
+                    Id = categoryDto.Id,
+                    Name = categoryDto.Name,
+                    IsDeleted = categoryDto.IsDeleted
+                };
+                await _categoryRepository.UpdateAsync(category);
+                await SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
         }
 
-        //Delete the Category
-        public async Task DeleteAsync(int id)
+        // Delete By ID
+        public async Task<bool> DeleteAsync(int id)
         {
-            await _categoryRepository.DeleteAsync(id);
+            try
+            {
+                await _categoryRepository.DeleteAsync(id);
+                await SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
+            
         }
 
+        // Exists
         public bool Exists(int id)
         {
             return _categoryRepository.Exists(id);
+        }
+
+
+        // Save Change
+        private async Task SaveChangesAsync()
+        {
+            await _categoryRepository.SaveChangesAsync();
         }
 
     }

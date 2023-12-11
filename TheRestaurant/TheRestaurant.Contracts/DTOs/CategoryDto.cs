@@ -11,7 +11,9 @@ namespace TheRestaurant.Contracts.DTOs
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vänligen ange name")]
+        [MaxLength(20, ErrorMessage = "Tecken är mer än 20 långa.")]
         public string Name { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

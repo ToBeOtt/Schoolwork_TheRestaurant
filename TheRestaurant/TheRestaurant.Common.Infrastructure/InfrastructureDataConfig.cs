@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TheRestaurant.Application.Interfaces;
 using TheRestaurant.Application.Services;
 using TheRestaurant.Application.Employees.Interfaces;
 using TheRestaurant.Application.Interfaces.IAllergy;
@@ -24,6 +23,7 @@ using TheRestaurant.Application.Cart.Interfaces;
 using TheRestaurant.Common.Infrastructure.Repositories.Cart;
 using TheRestaurant.Application.Dashboard.Interfaces;
 using TheRestaurant.Common.Infrastructure.Repositories.Dashboard;
+using TheRestaurant.Application.Interfaces.ICategory;
 
 namespace Common.Infrastructure
 {

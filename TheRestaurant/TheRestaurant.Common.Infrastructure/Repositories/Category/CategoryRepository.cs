@@ -1,6 +1,6 @@
 ﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using TheRestaurant.Application.Interfaces;
+using TheRestaurant.Application.Interfaces.ICategory;
 
 namespace TheRestaurant.Common.Infrastructure.Repositories.Category
 {
@@ -40,14 +40,14 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Category
         public async Task UpdateAsync(Domain.Entities.Menu.Category category)
         {
             _context.Update(category);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
 
         //Delete the Category
         public async Task DeleteAsync(Domain.Entities.Menu.Category category)
         {
             _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -55,7 +55,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Category
             var category = await GetAsync(id);
 
             _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
 
         //Save Change

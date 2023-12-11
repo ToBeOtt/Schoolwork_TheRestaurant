@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheRestaurant.Domain.Entities.Menu;
 
-namespace TheRestaurant.Application.Interfaces
+namespace TheRestaurant.Application.Interfaces.ICategory
 {
     public interface ICategoryRepository
     {
