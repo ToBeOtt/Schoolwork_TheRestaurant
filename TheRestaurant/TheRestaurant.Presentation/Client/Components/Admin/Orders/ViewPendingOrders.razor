@@ -11,18 +11,17 @@
 
 <MudTable Items="@orders" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
 
-@*     <ToolBarContent>
+    <ToolBarContent>
         <MudText Typo="Typo.h6">Nya Order</MudText>
         <MudSpacer />
         <MudSwitch @bind-Checked="@filtering" Label="Aktivera Filtrering!" Color="Color.Primary" />
-    </ToolBarContent> *@
+    </ToolBarContent>
 
     <HeaderContent>
         <MudTh>Id</MudTh>
-@*         <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<PendingOrderDto, object>(x=>x.DateTimeOfOrder)">Datum/Tid</MudTableSortLabel></MudTh>
- *@        <MudTh>Datum/Tid</MudTh>
-        <MudTh></MudTh>
-        <MudTh>Status</MudTh>
+        <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<PendingOrderDto, object>(x=>x.DateTimeOfOrder)">Datum/Tid</MudTableSortLabel></MudTh>
+       <MudTh></MudTh>
+        <MudTh>Kommentar</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.OrderNr</MudTd>
@@ -31,7 +30,7 @@
             <MudSpacer />
         </MudTd>
         <MudTd>
-            Visa status här
+            asdf
         </MudTd>
 
         <MudTd>
@@ -46,7 +45,6 @@
 
  @code {
 
-    //Set correct DTO, few things in code might have to be altered.
     private List<PendingOrderDto> orders;
     private bool filtering = false;
 
@@ -55,8 +53,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-
-        //Call the orders endpoint and get all orders with status pending
         orders = await OrderService.FetchListOfPendingOrders();
         OrderService.OrdersUpdated += OnOrderUpdated;
 
@@ -82,14 +78,8 @@
 
         if (!result.Cancelled)
         {
-            //Get all orders again... and update the state.
-        
-
-            // Example from allergies
-            // allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
-            //StateHasChanged();
-
-            NavigationManager.NavigateTo("/admin/orders/active");
+            
+            OnOrderUpdated();
 
         }
 

@@ -1,9 +1,10 @@
 ﻿@using TheRestaurant.Contracts.DTOs.OrderDTOs;
+@using TheRestaurant.Presentation.Client.ClientServices;
 
-@* Replace with correct DTO *@
-@using static TheRestaurant.Presentation.Client.Components.Admin.Orders.ViewPendingOrders;
 @inject ISnackbar Snackbar
 @inject HttpClient HttpClient
+@inject ClientOrderService OrderService
+@inject RoleService RoleService
 
 
 <MudDialog>
@@ -32,7 +33,7 @@
     </DialogContent>
 
     <DialogActions>
-        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Error" DisableElevation FullWidth OnClick="YesToTakeOrder">Ja</MudButton>
+        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Success" DisableElevation FullWidth OnClick="ConfirmOrderTaken">Ja</MudButton>
          <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
      </DialogActions>
 
@@ -40,10 +41,11 @@
 
 @code {
 
+    private bool OrderProcessed;
+
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
-
-    //Replace with correct DTO
+    
     [Parameter]
     public PendingOrderDto order { get; set; }
 
@@ -55,31 +57,22 @@
     }
 
     //Should be a async method when implemented
-    private void YesToTakeOrder()
+    private async Task ConfirmOrderTaken()
     {
-        //call correct endpoint to update status
+        var test = await RoleService.GetRolesAsync();
+        OrderProcessed = await OrderService.UpdateOrderStatus(order.OrderNr, "Processing");
 
-
-
-        //Example from allergy
-        //HttpResponseMessage response = await HttpClient.DeleteAsync($"/api/allergy/delete/{allergy.Id}");
-
-        // if (response.IsSuccessStatusCode)
-        // {
-        //     Snackbar.Add($"Allergi {allergy.Name} borttagen", Severity.Success);
-        //     MudDialog.Close(DialogResult.Ok(allergy.Id));
-        // }
-        // else
-        // {
-        //     Snackbar.Add("Borttagning av allergi misslyckades", Severity.Error);
-        //     MudDialog.Close(DialogResult.Ok(allergy.Id));
-        // }
-       
-            // Snackbar.Add($"Hantering av order:{order.Id} påbörjad", Severity.Success);
-            // MudDialog.Close(DialogResult.Ok(order.Id));
+        if (OrderProcessed)
+            {
+            Snackbar.Add($"Order {order.OrderNr} är påbörjad.", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(order.OrderNr));
+                StateHasChanged();
+            }
+            else
+            {
+            Snackbar.Add($"Order {order.OrderNr} kunde inte markeras som färdig. Kontakta kassa-personal.", Severity.Error);
+            MudDialog.Close(DialogResult.Ok(order.OrderNr));
+            }
         
-        
-          
-
     }
 }

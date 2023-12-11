@@ -150,7 +150,7 @@ namespace TheRestaurant.Application.Orders
                     OrderNr: item.Id,
                     DateTimeOfOrder: item.OrderDate,
                     ProductAndQuantity: productAndQuantityList,
-                    EmployeeName: item.Employee.Alias
+                    EmployeeName: null
                 );
 
                 pendingOrdersDtoList.Add(dto);

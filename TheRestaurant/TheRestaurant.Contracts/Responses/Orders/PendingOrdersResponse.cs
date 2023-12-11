@@ -9,7 +9,7 @@ namespace TheRestaurant.Contracts.Responses.Orders
     public record PendingOrdersResponse( int OrderNr,
         DateTime DateTimeOfOrder,
         List<ProductAndQuantity> ProductAndQuantity,
-        string EmployeeName
+        string? EmployeeName
         );
     
 }
