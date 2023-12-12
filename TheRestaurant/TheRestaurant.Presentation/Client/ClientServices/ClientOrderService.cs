@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using TheRestaurant.Contracts.DTOs.OrderDTOs;
+using TheRestaurant.Contracts.Requests.Order;
 using TheRestaurant.Contracts.Responses.Orders;
 using TheRestaurant.Presentation.Shared.DTO.Orders;
 using TheRestaurant.Presentation.Shared.Requests.Order;
@@ -34,13 +35,33 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             var apiUrl = $"/Order/CancelOrder/{id}";
             await _httpClient.DeleteAsync(apiUrl);
         }
-        //Andreas Code
+        //Andreas Code Start
         public async Task<List<PendingOrderDto>> FetchListOfPendingOrders()
         {
             var apiUrl = "/Order/FetchAllPendingOrders";
             var listOfOrders = await _httpClient.GetFromJsonAsync<List<PendingOrderDto>>(apiUrl);
             return listOfOrders;
         }
+
+        public async Task<bool> UpdateOrderUser(int orderId, string employeeId)
+        {
+            UpdateOrderUserRequest request = new(Id: orderId, EmployeeId: employeeId);
+            var apiUrl = "/Order/UpdateOrderEmployee";
+            
+            var outcome = await _httpClient.PatchAsJsonAsync(apiUrl, request);
+
+            if (outcome.IsSuccessStatusCode)
+            {
+                OrdersUpdated?.Invoke();
+                return true;
+            }
+
+            else
+                return false;
+
+        }
+
+        //Andreas Code Stop
 
         public async Task<List<ActiveOrdersDto>> FetchListOfActiveOrders()
         {

@@ -57,6 +57,11 @@ namespace TheRestaurant.Application.Orders
         {
             return await _orderRepository.GetOrdersByStatus(orderStatus);
         }
+
+        public async Task<Order> GetOrderById(int id)
+        {
+            return await _orderRepository.GetByIdAsync(id);
+        }
        
 
         public async Task<ServiceResponse<GetCustomerOrderResponse>> GetCustomerOrder(int orderId)
@@ -107,9 +112,9 @@ namespace TheRestaurant.Application.Orders
             return await _orderRepository.GetAllAsync();
         }
 
-        public async Task UpdateOrderAsync(Order order)
+        public async Task<bool> UpdateOrderAsync(Order order)
         {
-            await _orderRepository.UpdateAsync(order);
+            return await _orderRepository.UpdateAsync(order);
         }
 
         public async Task DeleteOrderAsync(int orderId)
@@ -122,6 +127,7 @@ namespace TheRestaurant.Application.Orders
             order.IsDeleted = true;
             await _orderRepository.DeleteAsync(order);
         }
+
 
         public async Task<ServiceResponse<List<PendingOrdersResponse>>> GetListOfPendingOrders()
         {
@@ -159,8 +165,6 @@ namespace TheRestaurant.Application.Orders
             response.Data = pendingOrdersDtoList;
             return await response.SuccessResponse(response, response.Data);
         }
-
-
 
         public async Task<ServiceResponse<List<ActiveOrdersResponse>>> GetListOfActiveOrders()
         {
@@ -252,6 +256,6 @@ namespace TheRestaurant.Application.Orders
             return await response.SuccessResponse(response, response.Data);
         }
 
-      
+       
     }
 }

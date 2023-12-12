@@ -60,7 +60,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             return NoContent();
         }
 
-        //Andreas
+        //Andreas Start
         [HttpGet("FetchAllPendingOrders")]
         public async Task<ActionResult> FetchAllPendingOrders()
         {
@@ -71,6 +71,22 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             }
             return Ok(result.Data);
         }
+        [HttpPatch("UpdateOrderEmployee")]
+        public async Task<ActionResult> UpdateOrderEmployee([FromBody] UpdateOrderUserRequest request)
+        {
+            var order = await _orderService.GetOrderById(request.Id);
+
+            order.EmployeeId = request.EmployeeId.ToString();
+
+            var result = await _orderService.UpdateOrderAsync(order);
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        //Andreas Stop
 
         [HttpGet("FetchAllActiveOrders")]
         public async Task<ActionResult> FetchAllActiveOrders()
