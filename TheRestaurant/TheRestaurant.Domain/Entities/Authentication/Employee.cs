@@ -6,11 +6,9 @@ namespace TheRestaurant.Domain.Entities.Authentication
     {
         public string Alias { get; set; }
         
-        
         public bool IsDeleted { get; set; } = false;
         public DateTime EmploymentStarted { get; set; }
         public DateTime EmploymentEnded { get; set; } 
-
 
         public bool ParentalLeave { get; set; } = false;
         public DateTime ParentalLeaveStarted { get; set; }
@@ -23,7 +21,7 @@ namespace TheRestaurant.Domain.Entities.Authentication
             Email = email;
             Alias = alias;
             EmploymentStarted = DateTime.Now;
-    }
+        }
 
         public Employee LayoffEmployee(Employee employee)
         {
