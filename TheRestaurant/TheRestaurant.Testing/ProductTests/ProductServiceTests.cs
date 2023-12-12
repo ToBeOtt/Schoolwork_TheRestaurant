@@ -60,8 +60,9 @@ namespace TheRestaurant.Testing.ProductTests
         //        MenuPhoto: new byte[0],
         //        IsFoodItem: true,
         //        IsDeleted: false,
-        //        SelectedCategoryIds: new List<int>(),
+
         //        SelectedAllergyIds: new List<int>()  
+        //        SelectedAllergyIds: new List<int>()
         //    );
 
 
