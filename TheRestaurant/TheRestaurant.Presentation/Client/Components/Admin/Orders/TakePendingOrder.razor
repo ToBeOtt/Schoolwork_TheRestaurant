@@ -10,31 +10,35 @@
 
 <MudDialog>
     <TitleContent>
-        <MudText Typo="Typo.h4">Du är på väg att påbörja hantering av en order</MudText>
+        <MudText Align="Align.Center" Typo="Typo.h5">Du är på väg att påbörja hantering av en order</MudText>
     </TitleContent>
     <DialogContent>
         <MudText Align="Align.Center" Typo="Typo.h5">Är du säker på att vill påbörja hantering av order: <strong>@order.OrderNr</strong></MudText>
-        <MudTable Items="@order.ProductAndQuantity" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
-            <ToolBarContent>
+        @if (order.Comment != null)
+        {
+            <MudPaper Class="mb-0 pa-2 mud-secondary" Square Width="100%">
+                 <MudText Color="Color.Primary" Typo="Typo.h6">Kommentar från kund:</MudText>
+                 <MudText Color="Color.Primary" Typo="Typo.body2">@order.Comment</MudText>
+             </MudPaper>
+        }
+        <MudTable Class="mt-0" Items="@order.ProductAndQuantity" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
+             <HeaderContent>
+                 <MudTh>Namn</MudTh>
+                 <MudTh></MudTh>
+                 <MudTh>Antal</MudTh>
+             </HeaderContent>
+             <RowTemplate>
+                 <MudTd>@context.ProductName</MudTd>
+                 <MudTd><MudSpacer /></MudTd>
+                 <MudTd>@context.Quantity</MudTd>
+             </RowTemplate>
 
-            </ToolBarContent>
-           <HeaderContent>
-               <MudTh>Namn</MudTh>
-               <MudTh>Antal</MudTh>
-               <MudTh>Pris</MudTh>
-           </HeaderContent>
-            <RowTemplate>
-                <MudTd>@context.ProductName</MudTd>
-                <MudTd>@context.Quantity</MudTd>
-                <MudTd>9999</MudTd>
-            </RowTemplate>
+         </MudTable>
 
-        </MudTable>
+     </DialogContent>
 
-    </DialogContent>
-
-    <DialogActions>
-        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Success" DisableElevation FullWidth OnClick="ConfirmOrderTaken">Ja</MudButton>
+     <DialogActions>
+         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Success" DisableElevation FullWidth OnClick="ConfirmOrderTaken">Ja</MudButton>
          <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
      </DialogActions>
 
@@ -50,14 +54,14 @@
     [Parameter]
     public PendingOrderDto order { get; set; }
     private string userId;
-    
+
 
     protected override async void OnParametersSet()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        var UserIdClaim = user.Claims.FirstOrDefault(x=> x.Type == "UserId");
+        var UserIdClaim = user.Claims.FirstOrDefault(x => x.Type == "UserId");
         userId = UserIdClaim.Value;
         base.OnParametersSet();
     }
@@ -76,16 +80,16 @@
         OrderProcessed = await OrderService.UpdateOrderStatus(order.OrderNr, "Processing");
 
         if (OrderProcessed)
-            {
+        {
             Snackbar.Add($"Order {order.OrderNr} är påbörjad.", Severity.Success);
             MudDialog.Close(DialogResult.Ok(order.OrderNr));
-                StateHasChanged();
-            }
-            else
-            {
+            StateHasChanged();
+        }
+        else
+        {
             Snackbar.Add($"Order {order.OrderNr} kunde inte påbörjas.", Severity.Error);
             MudDialog.Close(DialogResult.Ok(order.OrderNr));
-            }
-        
+        }
+
     }
 }

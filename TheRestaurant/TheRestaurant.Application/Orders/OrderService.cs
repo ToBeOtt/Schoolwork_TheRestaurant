@@ -31,7 +31,8 @@ namespace TheRestaurant.Application.Orders
 
             Order order = new();
             order.OrderDate = DateTime.Now;
-            order.OrderStatus = await _orderRepository.GetOrderStatusByName("Pending"); 
+            order.OrderStatus = await _orderRepository.GetOrderStatusByName("Pending");
+            order.OrderComment = request.Comment;
             var persistedOrder = await _orderRepository.CreateAsync(order);
             if (persistedOrder == null)
                 return await response.ErrorResponse
@@ -154,6 +155,7 @@ namespace TheRestaurant.Application.Orders
 
                 PendingOrdersResponse dto = new PendingOrdersResponse(
                     OrderNr: item.Id,
+                    Comment: item.OrderComment,
                     DateTimeOfOrder: item.OrderDate,
                     ProductAndQuantity: productAndQuantityList,
                     EmployeeName: null
