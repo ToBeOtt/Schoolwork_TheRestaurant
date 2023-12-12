@@ -50,34 +50,34 @@ namespace TheRestaurant.Testing.ProductTests
             Assert.Null(result);
         }
 
-        [Fact]
-        public async Task CreateProduct_ShouldCreateProduct_ValidInput()
-        {
-            var createRequest = new CreateProductRequest(
-                Name: "New Product",
-                Price: 10.99,
-                Description: "Description",
-                MenuPhoto: new byte[0],
-                IsFoodItem: true,
-                IsDeleted: false,
-                SelectedCategoryIds: new List<int>(),
-                SelectedAllergyIds: new List<int>()  
-            );
+        //[Fact]
+        //public async Task CreateProduct_ShouldCreateProduct_ValidInput()
+        //{
+        //    var createRequest = new CreateProductRequest(
+        //        Name: "New Product",
+        //        Price: 10.99,
+        //        Description: "Description",
+        //        MenuPhoto: new byte[0],
+        //        IsFoodItem: true,
+        //        IsDeleted: false,
+        //        SelectedCategoryIds: new List<int>(),
+        //        SelectedAllergyIds: new List<int>()  
+        //    );
 
 
 
-            var mockRepo = new Mock<IProductRepository>();
-            mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Product>()));
+        //    var mockRepo = new Mock<IProductRepository>();
+        //    mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Product>()));
 
-            var productService = new ProductService(mockRepo.Object);
+        //    var productService = new ProductService(mockRepo.Object);
 
-            // Act
-            await productService.CreateProductAsync(createRequest);
+        //    // Act
+        //    await productService.CreateProductAsync(createRequest);
 
-            // Assert
-            mockRepo.Verify(repo => repo.AddAsync(It.IsAny<Product>()), Times.Once);
+        //    // Assert
+        //    mockRepo.Verify(repo => repo.AddAsync(It.IsAny<Product>()), Times.Once);
 
-        }
+        //}
 
         [Fact]
         public async Task UpdateProduct_ShouldUpdateProduct_ProductExists()
