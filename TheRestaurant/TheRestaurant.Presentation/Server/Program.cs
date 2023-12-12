@@ -3,10 +3,12 @@ using Common.Infrastructure;
 using TheRestaurant.Application;
 using TheRestaurant.Application.Interfaces.IAllergy;
 using TheRestaurant.Application.Interfaces.IProduct;
+using TheRestaurant.Application.Interfaces.IVat;
 using TheRestaurant.Application.Orders;
 using TheRestaurant.Application.Orders.Interfaces;
 using TheRestaurant.Application.Services.AllergyServices;
 using TheRestaurant.Application.Services.ProductServices;
+using TheRestaurant.Application.Services.VatServices;
 using TheRestaurant.Common.Infrastructure.Data;
 using TheRestaurant.Common.Infrastructure.Repositories.Orders;
 using TheRestaurant.Common.Infrastructure.Repositories.Product;
@@ -37,6 +39,7 @@ namespace TheRestaurant.Presentation
             builder.Services.AddTransient<IAllergyService, AllergyService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddTransient<IVatService, VatService>();
 
             // Add OrderService
             builder.Services.AddScoped<OrderService>();
