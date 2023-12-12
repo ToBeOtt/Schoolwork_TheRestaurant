@@ -24,6 +24,8 @@ using TheRestaurant.Common.Infrastructure.Repositories.Cart;
 using TheRestaurant.Application.Dashboard.Interfaces;
 using TheRestaurant.Common.Infrastructure.Repositories.Dashboard;
 using TheRestaurant.Application.Interfaces.ICategory;
+using TheRestaurant.Application.Interfaces.IVat;
+using TheRestaurant.Common.Infrastructure.Repositories.Vat;
 
 namespace Common.Infrastructure
 {
@@ -58,6 +60,7 @@ namespace Common.Infrastructure
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IAllergyRepository, AllergyRepository>();
+            services.AddTransient<IVatRepository, VatRepository>();
 
             // Seeds
             services.AddTransient<UserSeeds>();

@@ -29,11 +29,11 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             {
                 return StatusCode(500, $"Ett fel uppstod när momsen hämtades: {ex.Message}");
             }
-            
+
         }
 
         // Get by id
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetVatById(int id)
         {
             try
@@ -50,7 +50,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
 
                 return StatusCode(500, $"Ett fel uppstod när momsen hämtades: {ex.Message}");
             }
-            
+
         }
 
         // Create 
@@ -71,6 +71,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         }
 
         // Update
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateVat(int id, VatRequest vatRequest)
         {
             try
@@ -90,6 +91,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
         }
 
         // Delete
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVat(int id)
         {
             try
