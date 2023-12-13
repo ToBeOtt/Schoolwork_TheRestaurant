@@ -36,6 +36,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
         public async Task<Order> GetByIdAsync(int orderId)
         {
             return await _dbContext.Orders
+                .Include(x => x.Employee)
                 .Include(x => x.OrderRows)
                     .ThenInclude(o => o.Product)
                 .Include(x => x.OrderStatus)
@@ -68,6 +69,19 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
             _dbContext.Orders.Update(order);
             await _dbContext.SaveChangesAsync(); 
         }
+
+
+        public async Task<List<Order>> GetPendingOrders()
+        {
+            return await _dbContext.Orders
+                          .Include(x => x.OrderRows)
+                              .ThenInclude(o => o.Product)
+                          .Include(x => x.OrderStatus)
+                          .Include(x => x.Employee)
+                          .Where(x => x.OrderStatus.Status == "Pending" && x.IsDeleted != true)
+                          .ToListAsync();
+        }
+
 
         public async Task<List<Order>> GetActiveOrders()
         {
@@ -103,5 +117,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                                     .Where(x => x.Status == statusName)
                                     .SingleOrDefaultAsync();
         }
+
+     
     }
 }

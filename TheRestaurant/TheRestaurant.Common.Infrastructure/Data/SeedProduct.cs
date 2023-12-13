@@ -1,30 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TheRestaurant.Domain.Entities.Menu;
+using TheRestaurant.Domain.Entities.Orders;
 
 public static class ProductSeeds
 {
     public static void SeedProducts(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Product>().HasData(
-            new Product { Id = 1, Name = "Hamburgare med pommes", Description = "Hamburgare med krispiga pommes", Price = 79, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 2, Name = "Kebabpizza", Description = "God kebabpizza med färska grönsaker", Price = 99, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 3, Name = "Grillad lax", Description = "Grillad lax med dill och citronsås", Price = 129, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 4, Name = "Caesarsallad", Description = "Krispig sallad med kyckling och caesardressing", Price = 89, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 5, Name = "Mozzarella Sticks", Description = "Friterade mozzarella sticks med dipp", Price = 49, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 6, Name = "Chokladfondant", Description = "Varm chokladkaka med flytande kärna", Price = 69, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 7, Name = "Vegetarisk curry", Description = "Kryddig vegetarisk curry med ris", Price = 109, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 8, Name = "Tom Yum Soppa", Description = "Syrlig thailändsk soppa med räkor", Price = 119, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 9, Name = "Lammkotletter", Description = "Grillade lammkotletter med rosmarin", Price = 149, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 10, Name = "Blåbärspaj", Description = "Blåbärspaj med vaniljsås", Price = 59, IsFoodItem = true, IsDeleted = false },
-            new Product { Id = 11, Name = "Cola", Description = "Klassisk kolsyrad läsk med unik smak", Price = 20, IsFoodItem = false, IsDeleted = false },
-            new Product { Id = 12, Name = "Fanta", Description = "Fruktig apelsinläsk med kolsyra", Price = 20, IsFoodItem = false, IsDeleted = false },
-            new Product { Id = 13, Name = "Lokalt mikrobryggeri öl", Description = "Öl från lokala mikrobryggerier", Price = 40, IsFoodItem = false, IsDeleted = false },
-            new Product { Id = 14, Name = "Husets röda vin", Description = "Välbalanserat rödvin från husets urval", Price = 60, IsFoodItem = false, IsDeleted = false },
-            new Product { Id = 15, Name = "Kaffe mugg", Description = "Isolerad resemugg", Price = 120, IsFoodItem = false, IsDeleted = false },
-            new Product { Id = 16, Name ="Kokbok", Description = "Kokbok som innehåller alla våra goda recept", Price = 99, IsFoodItem = false, IsDeleted = false},
-            new Product { Id = 17, Name = "Såspanna", Description = "Högkvalitativ såspanna perfekt för alla typer av såser", Price = 450, IsFoodItem = false, IsDeleted = false }
+
+        modelBuilder.Entity<VAT>().HasData(
+            new VAT { Id = 1, Name = "Food", Adjustment = 1.12 },
+            new VAT { Id = 2, Name = "Merchandise", Adjustment = 1.06 },
+            new VAT { Id = 3, Name = "Alcohol", Adjustment = 1.25 }
         );
 
+        modelBuilder.Entity<Product>().HasData(
+            new Product { Id = 1, Name = "Hamburgare med pommes", Description = "Hamburgare med krispiga pommes", PriceBeforeVAT = 79, Price = Math.Round(79 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 2, Name = "Kebabpizza", Description = "God kebabpizza med färska grönsaker", PriceBeforeVAT = 99, Price = Math.Round(99 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 3, Name = "Grillad lax", Description = "Grillad lax med dill och citronsås", PriceBeforeVAT = 129, Price = Math.Round(129 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 4, Name = "Caesarsallad", Description = "Krispig sallad med kyckling och caesardressing", PriceBeforeVAT = 89, Price = Math.Round(89 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 5, Name = "Mozzarella Sticks", Description = "Friterade mozzarella sticks med dipp", PriceBeforeVAT = 49, Price = Math.Round(49 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 6, Name = "Chokladfondant", Description = "Varm chokladkaka med flytande kärna", PriceBeforeVAT = 69, Price = Math.Round(69 * 1.12), IsFoodItem = true, IsDeleted = false , VATId = 1 },
+            new Product { Id = 7, Name = "Vegetarisk curry", Description = "Kryddig vegetarisk curry med ris", PriceBeforeVAT = 109, Price = Math.Round(109 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 8, Name = "Tom Yum Soppa", Description = "Syrlig thailändsk soppa med räkor", PriceBeforeVAT = 119, Price = Math.Round(119 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 9, Name = "Lammkotletter", Description = "Grillade lammkotletter med rosmarin", PriceBeforeVAT = 149, Price = Math.Round(149 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 10, Name = "Blåbärspaj", Description = "Blåbärspaj med vaniljsås", PriceBeforeVAT = 59, Price = Math.Round(59 * 1.12), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 11, Name = "Cola", Description = "Klassisk kolsyrad läsk med unik smak", PriceBeforeVAT = 20, Price = Math.Round(20 * 1.12), IsFoodItem = false, IsDeleted = false, VATId = 1 },
+            new Product { Id = 12, Name = "Fanta", Description = "Fruktig apelsinläsk med kolsyra", PriceBeforeVAT = 20, Price = Math.Round(20 * 1.12), IsFoodItem = false, IsDeleted = false , VATId = 1 },
+            new Product { Id = 13, Name = "Lokalt mikrobryggeri öl", Description = "Öl från lokala mikrobryggerier", PriceBeforeVAT = 40, Price = Math.Round(40 * 1.25), IsFoodItem = false, IsDeleted = false, VATId = 3 },
+            new Product { Id = 14, Name = "Husets röda vin", Description = "Välbalanserat rödvin från husets urval", PriceBeforeVAT = 60, Price = Math.Round(60 * 1.25), IsFoodItem = false, IsDeleted = false, VATId = 3 },
+            new Product { Id = 15, Name = "Kaffe mugg", Description = "Isolerad resemugg", PriceBeforeVAT = 120, Price = Math.Round(120 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2 },
+            new Product { Id = 16, Name ="Kokbok", Description = "Kokbok som innehåller alla våra goda recept", PriceBeforeVAT = 99, Price = Math.Round(99 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2 },
+            new Product { Id = 17, Name = "Såspanna", Description = "Högkvalitativ såspanna perfekt för alla typer av såser", PriceBeforeVAT = 450, Price = Math.Round(450 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2 }
+        );
 
         modelBuilder.Entity<ProductCategory>().HasData(
             // Categories for "Hamburgare med pommes"

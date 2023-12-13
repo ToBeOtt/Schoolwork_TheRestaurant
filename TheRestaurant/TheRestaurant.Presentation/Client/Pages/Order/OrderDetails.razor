@@ -2,33 +2,31 @@
 @using TheRestaurant.Contracts.Responses.Orders
 @using TheRestaurant.Presentation.Client.ClientServices
 @using TheRestaurant.Presentation.Shared.DTO.Orders
-@inject ClientOrderService OrderService
+@inject ClientOrderService OrderService   
 
-@if (!OrderExists)
-{
+
     <MudText Class="py-5"
              Typo="Typo.h5">
         Dina beställningar
     </MudText>
 
-    <MudTextField Class="w-25"
-                  @bind-Value="@OrderNr"
-                  Label="Skriv in beställningsnummer"
-                  Variant="Variant.Outlined">
+    <MudTextField 
+        Class="w-25"
+        @bind-Value="@OrderNr"
+        Label="Skriv in beställningsnummer"
+        Variant="Variant.Outlined">
     </MudTextField>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 py-3 col-md-3 text-right esh-button-actions">
-            <MudButton OnClick="@CheckOrderStatus"
-                       Variant="Variant.Filled"
-                       Color="Color.Primary">
-                Hämta beställning
-            </MudButton>
-        </div>
-    </div>
-}
+        <MudButton 
+            Class="mt-4 mb-12"
+            OnClick="@CheckOrderStatus"
+            Variant="Variant.Filled"
+            Color="Color.Primary">
+            Hämta beställning
+        </MudButton>
 
-else if(@OrderExists)
+
+@if(@OrderExists)
 {
     <MudTable 
         Class="w-50"
@@ -65,7 +63,16 @@ else if(@OrderExists)
                        OnClick="@(() => CancelOrder(@OrderInfo.OrderNr))">
                 Avbryt order
             </MudButton>
-        </MudItem>
+            </MudItem>
+        }
+
+        else
+        {
+            <MudText Class="py-5"
+                     Typo="Typo.h6"
+                      Color="Color.Warning">
+                Ordern är påbörjad och kan tyvärr inte ändras. Kontakta personal om du har frågor kring detta.
+            </MudText>
         }
     </MudGrid>
 
@@ -75,7 +82,7 @@ else if(@OrderExists)
 {
     <MudText Class="py-5"
                 Typo="Typo.h6">
-        Ordern är påbörjad och kan tyvärr inte ändras. Kontakta personal om du har frågor kring detta.
+        Kunde inte hitta order med angivet order-nr. Kontakta personal om du har frågor kring detta.
     </MudText>
 }
 
@@ -114,16 +121,24 @@ else if(@OrderExists)
         else
         {
             var orderDetails = await OrderService.FetchOrder(parsedOrderNr);
+            this.OrderNr = null;
             if (orderDetails == null)
             {
                 OrderExists = false;
                 OrderDoesNotExist = true;
             }
-            else
+
+            else if (orderDetails.Status == "Pending")
             {
                 OrderExists = true;
                 OrderInfo = orderDetails;
                 CanBeModified = OrderInfo.Status == "Pending";
+            }
+            else
+            {
+                OrderExists = true;
+                OrderInfo = orderDetails;
+                CanBeModified = false;
             }
         }
     }

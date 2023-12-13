@@ -1,6 +1,7 @@
 ﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using TheRestaurant.Application.Interfaces.IProduct;
+using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Common.Infrastructure.Repositories.Product
 {
@@ -55,6 +56,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
         public async Task<List<Domain.Entities.Menu.Product>> GetAllEagerLoadedAsync()
         {
             return await _context.Products
+                .Where(p => p.IsDeleted != true)
                 .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
                 .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
                 .ToListAsync();
@@ -63,6 +65,13 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
         public async Task<List<string>> GetAllCategoryNames()
         {
             return await _context.Categories.Select(x => x.Name).ToListAsync();
+        }
+
+        public async Task<VAT> GetVATByName(string name)
+        {
+            return await _context.VATs
+                            .Where(x => x.Name == name)
+                            .SingleOrDefaultAsync();
         }
     }
 }

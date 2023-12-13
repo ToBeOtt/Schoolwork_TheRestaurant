@@ -13,6 +13,7 @@ namespace TheRestaurant.Application.Orders.Interfaces
         // Order-Queries
         Task<Order> GetByIdAsync(int orderId);
         Task<List<Order>> GetAllAsync();
+        Task<List<Order>> GetPendingOrders();
         Task<List<Order>> GetActiveOrders();
         Task<List<Order>> GetFinishedOrders();
         

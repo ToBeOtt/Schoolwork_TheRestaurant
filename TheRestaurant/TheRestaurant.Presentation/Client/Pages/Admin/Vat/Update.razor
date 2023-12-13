@@ -1,0 +1,13 @@
+﻿@page "/admin/vat/edit/{id:int}"
+@using TheRestaurant.Presentation.Client.Components.Admin.Vat;
+@using TheRestaurant.Presentation.Client.Shared.Admin
+
+<AdminLayout>
+    <AdminContent>
+        <UpdateVat Id="@Id"/>
+    </AdminContent>
+</AdminLayout>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+}

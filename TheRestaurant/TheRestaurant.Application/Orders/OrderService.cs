@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Application.ServiceResponse;
+using System.Linq;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Orders.Interfaces;
 using TheRestaurant.Contracts.Requests.Order;
@@ -30,7 +31,8 @@ namespace TheRestaurant.Application.Orders
 
             Order order = new();
             order.OrderDate = DateTime.Now;
-            order.OrderStatus = await _orderRepository.GetOrderStatusByName("Pending"); 
+            order.OrderStatus = await _orderRepository.GetOrderStatusByName("Pending");
+            order.OrderComment = request.Comment;
             var persistedOrder = await _orderRepository.CreateAsync(order);
             if (persistedOrder == null)
                 return await response.ErrorResponse
@@ -55,6 +57,11 @@ namespace TheRestaurant.Application.Orders
         public async Task<List<Order>> GetOrderByOrderStatus(string orderStatus)
         {
             return await _orderRepository.GetOrdersByStatus(orderStatus);
+        }
+
+        public async Task<Order> GetOrderById(int id)
+        {
+            return await _orderRepository.GetByIdAsync(id);
         }
        
 
@@ -106,9 +113,9 @@ namespace TheRestaurant.Application.Orders
             return await _orderRepository.GetAllAsync();
         }
 
-        public async Task UpdateOrderAsync(Order order)
+        public async Task<bool> UpdateOrderAsync(Order order)
         {
-            await _orderRepository.UpdateAsync(order);
+            return await _orderRepository.UpdateAsync(order);
         }
 
         public async Task DeleteOrderAsync(int orderId)
@@ -120,6 +127,45 @@ namespace TheRestaurant.Application.Orders
             }
             order.IsDeleted = true;
             await _orderRepository.DeleteAsync(order);
+        }
+
+
+        public async Task<ServiceResponse<List<PendingOrdersResponse>>> GetListOfPendingOrders()
+        {
+            ServiceResponse<List<PendingOrdersResponse>> response = new();
+
+            var pendingOrdersList = await _orderRepository.GetPendingOrders();
+            if (pendingOrdersList == null)
+                return await response.ErrorResponse
+                      (response, "Orders could not be fetched from database.", _logger);
+
+            List<PendingOrdersResponse> pendingOrdersDtoList = new();
+
+            foreach (var item in pendingOrdersList)
+            {
+                var productAndQuantityList = item.OrderRows
+                    .GroupBy(orderRow => orderRow.Product.Name)
+                    .Select(group => new ProductAndQuantity
+                    (
+                        ProductName: group.Key,
+                        Quantity: group.Count()
+                    ))
+                    .OrderBy(productAndQuantity => productAndQuantity.ProductName)
+                    .ToList();
+
+                PendingOrdersResponse dto = new PendingOrdersResponse(
+                    OrderNr: item.Id,
+                    Comment: item.OrderComment,
+                    DateTimeOfOrder: item.OrderDate,
+                    ProductAndQuantity: productAndQuantityList,
+                    EmployeeName: null
+                );
+
+                pendingOrdersDtoList.Add(dto);
+            }
+
+            response.Data = pendingOrdersDtoList;
+            return await response.SuccessResponse(response, response.Data);
         }
 
         public async Task<ServiceResponse<List<ActiveOrdersResponse>>> GetListOfActiveOrders()
@@ -185,5 +231,33 @@ namespace TheRestaurant.Application.Orders
             return await response.SuccessResponse(response, response.Data);
         }
 
+        public async Task<ServiceResponse<GetReceiptResponse>> GetReceipt(GetReceiptRequest request)
+        {
+            ServiceResponse<GetReceiptResponse> response = new();
+
+            // Get order and start filling in receipt-dto
+            var order = await _orderRepository.GetByIdAsync(request.Id);
+
+            GetReceiptResponse dto = new(order.Id, order.OrderDate, order.Employee.Alias);
+
+            // Loop through each individual item
+            foreach (var item in order.OrderRows)
+            {
+                var product = new ProductForReceipt(
+                    ProductId: item.ProductId,
+                    ProductName: item.Product.Name,
+                    Price: item.Product.Price,
+                    PriceWithoutVAT: item.Product.PriceBeforeVAT);
+
+                dto.Products.Add(product);
+            }
+            // Add total price-calculation
+            dto.Totalprice = dto.Products.Sum(x => x.Price);
+
+            response.Data = dto;
+            return await response.SuccessResponse(response, response.Data);
+        }
+
+       
     }
 }

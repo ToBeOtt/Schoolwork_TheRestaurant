@@ -1,0 +1,53 @@
+﻿@using TheRestaurant.Contracts.DTOs
+@using MudBlazor
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<MudPaper Class="pa-4">
+    <h3>Edit VAT</h3>
+    <EditForm Model="_editVat" OnValidSubmit="HandleValidSubmit">
+        <MudTextField Label="Namn" @bind-Value="_editVat.Name" Required="true" FullWidth="true" />
+        <MudNumericField Label="Justering (%)" @bind-Value="_editVat.Adjustment" FullWidth="true" Min="1" Max="1.5" Step="0.01" Format="0.00" />
+        <div class="mt-2">
+            <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">Update</MudButton>
+            <MudButton Color="Color.Secondary" OnClick="@(() => NavigationManager.NavigateTo("/admin/vat/view"))">Cancel</MudButton>
+        </div>
+    </EditForm>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private VATDto _editVat = new VATDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _editVat = await HttpClient.GetFromJsonAsync<VATDto>($"admin/vat/{Id}");
+        }
+        catch (Exception ex)
+        {
+            var msg = ex.Message;
+            Console.WriteLine();
+
+        }
+
+    }
+    private async Task HandleValidSubmit()
+    {
+        var roundedAdjustment = Math.Round(_editVat.Adjustment, 2);
+        _editVat.Adjustment = roundedAdjustment;
+        var response = await HttpClient.PutAsJsonAsync($"admin/vat/{_editVat.Id}", _editVat);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/admin/vat/view");
+        }
+        else
+        {
+            // Handle errors here
+        }
+    }
+}

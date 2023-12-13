@@ -60,6 +60,34 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
             return NoContent();
         }
 
+        //Andreas Start
+        [HttpGet("FetchAllPendingOrders")]
+        public async Task<ActionResult> FetchAllPendingOrders()
+        {
+            var result = await _orderService.GetListOfPendingOrders();
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+            return Ok(result.Data);
+        }
+        [HttpPatch("UpdateOrderEmployee")]
+        public async Task<ActionResult> UpdateOrderEmployee([FromBody] UpdateOrderUserRequest request)
+        {
+            var order = await _orderService.GetOrderById(request.Id);
+
+            order.EmployeeId = request.EmployeeId.ToString();
+
+            var result = await _orderService.UpdateOrderAsync(order);
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+        //Andreas Stop
+
         [HttpGet("FetchAllActiveOrders")]
         public async Task<ActionResult> FetchAllActiveOrders()
         {
@@ -100,5 +128,21 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return Ok();
         }
+
+        [HttpGet("GetReceipt")]
+        public async Task<ActionResult> GetReceipt(int id)
+        {
+            GetReceiptRequest request = new(
+                Id: id);
+
+            var result = await _orderService.GetReceipt(request);
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result.Data);
+        }
+
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TheRestaurant.Contracts.Requests.Product
+﻿namespace TheRestaurant.Contracts.Requests.Product
 {
     // Need to add Category once implemented
     public record CreateProductRequest(
@@ -15,9 +9,7 @@ namespace TheRestaurant.Contracts.Requests.Product
         bool IsFoodItem,
         bool IsDeleted,
         List<int> SelectedAllergyIds,
-        List<int> SelectedCategoryIds
-
-
-        );
+        List<int> SelectedCategoryIds,
+        string VAT);
 
 }

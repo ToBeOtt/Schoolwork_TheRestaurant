@@ -1,6 +1,6 @@
 ﻿@if (IsVisible)
 {
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+    <div class="modal" tabindex="-1" style="display:block; margin-top: 5rem;" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -27,21 +27,25 @@
     private string ConfirmationMessage { get; set; }
     private Action ConfirmAction { get; set; }
 
-    [Parameter]
-    public EventCallback<int> OnConfirmDelete { get; set; }
+    @code {
+        [Parameter]
+        public int ProductToDeleteId { get; set; }
 
-    public void Show(string message, Action confirmAction)
-    {
-        ConfirmationMessage = message;
-        ConfirmAction = confirmAction;
-        IsVisible = true;
-        StateHasChanged();
-    }
+        [Parameter]
+        public EventCallback<int> OnConfirmDelete { get; set; }
 
-    private void Confirm()
-    {
-        OnConfirmDelete.InvokeAsync();
-        Close();
+        public void Show(string message, int productId)
+        {
+            ConfirmationMessage = message;
+            ProductToDeleteId = productId;
+            IsVisible = true;
+        }
+
+        private void Confirm()
+        {
+            OnConfirmDelete.InvokeAsync(ProductToDeleteId);
+            Close();
+        }
     }
 
     private void Close()

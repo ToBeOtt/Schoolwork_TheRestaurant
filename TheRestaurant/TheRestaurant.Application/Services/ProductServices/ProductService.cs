@@ -16,10 +16,12 @@ namespace TheRestaurant.Application.Services.ProductServices
 
         public async Task<Product> CreateProductAsync(CreateProductRequest request)
         {
+            var VAT = await _productRepository.GetVATByName(request.VAT);
+
             var product = new Product
             {
                 Name = request.Name,
-                Price = request.Price,
+                PriceBeforeVAT = request.Price,
                 Description = request.Description,
                 MenuPhoto = request.MenuPhoto,
                 IsFoodItem = request.IsFoodItem,
@@ -27,6 +29,9 @@ namespace TheRestaurant.Application.Services.ProductServices
                 ProductAllergies = new List<ProductAllergy>(),
                 ProductCategories = new List<ProductCategory>()
             };
+            product.SetPriceWithVAT(product);
+
+
 
             foreach (var allergyId in request.SelectedAllergyIds)
             {
