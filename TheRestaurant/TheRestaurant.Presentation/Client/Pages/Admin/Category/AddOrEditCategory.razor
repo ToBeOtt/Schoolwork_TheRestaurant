@@ -29,8 +29,8 @@
                         </div>
                         <div class="mt-3">
                             <div class="col-md-4">
-                                <a class="btn btn-danger" href="Admin/CategoryList">Cancel</a>
-                                <input type="submit" value="@title" class="btn btn-@btnColor" />
+                                <a class="btn btn-sm btn-danger" href="Admin/CategoryList">Annullera</a>
+                                <input type="submit" value="@title" class="btn btn-sm btn-@btnColor" />
                             </div>
                         </div>
                     </EditForm>
@@ -45,7 +45,7 @@
 
 @code {
 
-    private string title = "Add Category";
+    private string title = "Lägg till kategori";
     private string btnColor = "success";
 
     [Parameter]
@@ -60,7 +60,7 @@
 
         if (categoryId != 0)
         {
-            title = "Edit Category";
+            title = "Redigera kategori";
             btnColor = "warning";
             categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto>($"api/Category/{categoryId}");
         }
