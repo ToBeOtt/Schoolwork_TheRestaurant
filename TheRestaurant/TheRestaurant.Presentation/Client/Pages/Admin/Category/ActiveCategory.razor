@@ -46,6 +46,9 @@
     {
 
         categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto>($"/api/Category/{categoryId}");
+        categoryDto.IsDeleted = false;
+        await HttpClient.PutAsJsonAsync($"/api/Category/{categoryId}", categoryDto);
+        NavigationManager.NavigateTo("/Admin/CategoryList");
     }
 
 
