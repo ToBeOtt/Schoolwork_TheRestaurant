@@ -35,9 +35,9 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Dashboard
 			return result;
 		}
 
-        Task<List<OrderCountResponse>> IDashboardRepository.GetLastDaysOrders(DateTime fromDate)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<List<OrderCountResponse>> IDashboardRepository.GetLastDaysOrders(DateTime fromDate)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

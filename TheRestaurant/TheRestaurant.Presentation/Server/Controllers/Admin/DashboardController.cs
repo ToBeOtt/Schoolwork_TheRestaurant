@@ -22,17 +22,19 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
 		}
 
 
-		[HttpGet("GetWeeklyOrderStatistics")]
-		public async Task<IActionResult> GetWeeklyOrderStatistics()
-		{
-			DateTime fromDate = DateTime.Now;
-			var result = await _dashboardServices.GetWeeklyOrderStats(fromDate);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result.ErrorResponse);
-			}
+        [HttpGet("GetWeeklyOrderStatistics")]
+        public async Task<IActionResult> GetWeeklyOrderStatistics([FromQuery] DateTime? date)
+        {
+            // If no date is provided, use the current date
+            DateTime fromDate = date ?? DateTime.Now;
 
-			return Ok(result.Data);
-		}
-	}
+            var result = await _dashboardServices.GetWeeklyOrderStats(fromDate);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.ErrorResponse);
+            }
+
+            return Ok(result.Data);
+        }
+    }
 }

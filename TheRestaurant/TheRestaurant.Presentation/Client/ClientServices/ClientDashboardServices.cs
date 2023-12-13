@@ -25,8 +25,8 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
 		public async Task<List<OrderCountDto>> GetWeeklyOrderStats(DateTime date)
 		{
-			var apiUrl = "/Dashboard/GetWeeklyOrderStatistics";
-			var listOfWeeklySalesNrs = 
+            var apiUrl = $"/Dashboard/GetWeeklyOrderStatistics?date={date.ToString("yyyy-MM-dd")}";
+            var listOfWeeklySalesNrs = 
 				await _httpClient.GetFromJsonAsync<List<OrderCountDto>>(apiUrl);
 
 			return listOfWeeklySalesNrs;

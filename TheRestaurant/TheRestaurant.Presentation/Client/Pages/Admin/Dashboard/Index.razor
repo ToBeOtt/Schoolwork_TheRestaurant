@@ -8,7 +8,7 @@
     <AdminContent>
         <MudGrid>
 
-@* List-chart for orders *@
+@* List-chart for orders 
             <MudItem xs="12">
                 <MudPaper 
                     Elevation="0"
@@ -17,10 +17,10 @@
                         <OrderListChart />
 
                 </MudPaper>
-            </MudItem>
+            </MudItem>*@
 
 
-@* Donut-chart for products *@
+@* Donut-chart for products 
             <MudItem xs="6">
                 <MudPaper 
                     Elevation="0"
@@ -29,9 +29,9 @@
                     <CategoriesPieChart />
 
                 </MudPaper>
-            </MudItem>
+            </MudItem>*@
 
-@* Pie-chart for Categories *@
+@* Pie-chart for Categories 
             <MudItem xs="6">
                 <MudPaper Elevation="0"
                           Class="d-flex align-center justify-center py-3">
@@ -39,8 +39,16 @@
                     <ProductsDonutChart />
 
                 </MudPaper>
+            </MudItem>*@
+@* Bar chart for Orders *@
+            <MudItem xs="12">
+                <MudPaper Elevation="0"
+                        Class="d-flex align-center justify-center mud-width-full py-3">
+                    <OrderBarChart />
+                </MudPaper>
             </MudItem>
         </MudGrid>
+
 
         
 
