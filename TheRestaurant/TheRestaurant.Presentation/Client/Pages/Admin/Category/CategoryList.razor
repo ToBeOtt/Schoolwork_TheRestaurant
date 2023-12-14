@@ -14,9 +14,9 @@
                 <div class="px-3 mb-5">
 
                     <div class=" d-flex justify-content-between mb-3">
-                        <h3>Category List</h3>
+                        <h3>Kategorier</h3>
 
-                        <a class="btn btn-outline-success" href="/Admin/AddCategory">Create New</a>
+                        <a class="btn btn-outline-success" href="/Admin/AddCategory">Lägg till</a>
                     </div>
 
 
@@ -26,8 +26,9 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Settings</th>
+                                    <th>Namn</th>
+                                    <th>Är Aktiv</th>
+                                    <th>Inställningar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,12 +37,26 @@
                                     <tr>
                                         <td>@item.Id</td>
                                         <td>@item.Name</td>
+                                        @if (item.IsDeleted)
+                                        {
+                                            <td>Nej</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Ja</td>
+                                        }
 
                                         <td>
-                                            <a class="btn btn-outline-warning"
-                                               href="/Admin/EditCategory/@item.Id">Edit</a>
-                                            <a class="btn btn-outline-danger"
-                                               href="/Admin/DeleteCategory/@item.Id">Delete</a>
+                                            <a class="btn btn-sm btn-outline-warning" href="/Admin/EditCategory/@item.Id">Redigera</a>
+                                            @if (item.IsDeleted)
+                                            {
+                                                <a class="btn btn-sm btn-outline-success mx-1" href="/Admin/ActiveCategory/@item.Id">Aktiv</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-sm btn-outline-danger mx-1" href="/Admin/InactiveCategory/@item.Id">Inaktiv</a>
+                                            }
+                                            <a class="btn btn-sm btn-danger d-none" href="/Admin/DeleteCategory/@item.Id">Radera</a>
                                         </td>
                                     </tr>
                                 }

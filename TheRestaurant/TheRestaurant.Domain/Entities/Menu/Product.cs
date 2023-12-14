@@ -17,7 +17,7 @@
         public byte[]? MenuPhoto { get; set; }
         public bool IsDeleted { get; set; }
         public ICollection<ProductCategory> ProductCategories { get; set; }
-        public ICollection<ProductAllergy> ProductAllergies { get; set; }
+        public ICollection<ProductAllergy>? ProductAllergies { get; set; }
         public Product()
         {
             
@@ -25,7 +25,8 @@
 
         public void SetPriceWithVAT(Product product)
         {
-            this.Price = (PriceBeforeVAT * VAT.Adjustment);
+            var calculatedPrice = this.Price = (PriceBeforeVAT * VAT.Adjustment);
+            product.Price = (int)Math.Round(calculatedPrice);
         }
 
     }

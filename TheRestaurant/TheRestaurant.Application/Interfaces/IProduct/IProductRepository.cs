@@ -18,7 +18,7 @@ namespace TheRestaurant.Application.Interfaces.IProduct
         Task<List<string>> GetAllCategoryNames();
 
         // VATs
-        Task<VAT> GetVATByName(string name);
+        Task<VAT> GetVATById(int id);
         
     }
 }

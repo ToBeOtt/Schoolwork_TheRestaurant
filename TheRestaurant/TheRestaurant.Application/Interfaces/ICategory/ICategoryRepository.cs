@@ -11,9 +11,9 @@ namespace TheRestaurant.Application.Interfaces.ICategory
     {
         Task<Category> GetAsync(int id);
         Task<IReadOnlyList<Category>> GetAllAsync();
-        Task AddAsync(Category category);
-        Task UpdateAsync(Category category);
-        Task DeleteAsync(int id);
+        Task<Category> AddAsync(Category category);
+        Task<Category> UpdateAsync(Category category);
+        Task<Category> DeleteAsync(int id);
         Task SaveChangesAsync();
         bool Exists(int id);
     }
