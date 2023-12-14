@@ -36,6 +36,18 @@
                     Format="yyyy-MM-dd" 
                     Class="fw-bold" />
 
+
+                <TemplateColumn Class="fw-bold"
+                                Title="Kommentar">
+                    <CellTemplate>
+                        @if(context.Item.OrderComment != null)
+                        {
+                            <MudExpansionPanel Text="Se Kommentar">
+                                @context.Item.OrderComment
+                            </MudExpansionPanel>
+                        }
+                    </CellTemplate>
+                </TemplateColumn>
                 <TemplateColumn 
                     Class="fw-bold"
                     Title="Kvitto">

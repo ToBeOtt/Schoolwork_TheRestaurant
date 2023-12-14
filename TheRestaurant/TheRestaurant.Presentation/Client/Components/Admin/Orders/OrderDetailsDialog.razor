@@ -16,8 +16,7 @@
             </MudItem>
 
             <MudItem xs="4">
-                <MudText 
-                         Typo="Typo.h6">
+                <MudText Typo="Typo.h6">
                     @DateOfOrder.ToShortDateString() - @DateOfOrder.ToShortTimeString()
                 </MudText>
             </MudItem>
@@ -25,18 +24,22 @@
 
     </TitleContent>
     <DialogContent>
-        <MudTable 
-            Items="@Order.ProductName" 
-            Hover=true 
-            Bordered=false 
-            Striped=false
-            Elevation="0">
+        @if (OrderComment != null)
+        {
+            <CascadingValue Value="@OrderComment">
+                <OrderComment />
+            </CascadingValue>
+        }
+        <MudTable Items="@Order.ProductName"
+                  Hover=true
+                  Bordered=false
+                  Striped=false
+                  Elevation="0">
 
             <HeaderContent>
                 <MudTh>
-                    <MudText 
-                        Class="fw-bold"
-                        Typo="Typo.subtitle1">
+                    <MudText Class="fw-bold"
+                             Typo="Typo.subtitle1">
                         Köpta produkter
                     </MudText>
                 </MudTh>
@@ -46,18 +49,17 @@
             </RowTemplate>
 
             <FooterContent>
-                <MudText 
-                    Class="pt-8 pb-3 ml-2"
-                    Typo="Typo.h6">
-                        Totalpris: @Order.SumToPay
+                <MudText Class="pt-8 pb-3 ml-2"
+                         Typo="Typo.h6">
+                    Totalpris: @Order.SumToPay
                 </MudText>
             </FooterContent>
 
-            </MudTable>
-        </DialogContent>
+        </MudTable>
+    </DialogContent>
 
-        <DialogActions>
-            <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmRevertToProcessing">Kvitto</MudButton>
+    <DialogActions>
+        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmRevertToProcessing">Kvitto</MudButton>
          <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
      </DialogActions>
 
@@ -75,6 +77,8 @@
     public string Responsible { get; set; }
     [Parameter]
     public DateTime DateOfOrder { get; set; }
+    [Parameter]
+    public string? OrderComment { get; set; }
 
     private GetCustomerOrderDTO Order;
 

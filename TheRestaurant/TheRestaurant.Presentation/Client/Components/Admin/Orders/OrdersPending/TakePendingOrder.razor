@@ -16,10 +16,9 @@
         <MudText Align="Align.Center" Typo="Typo.h5">Är du säker på att vill påbörja hantering av order: <strong>@order.OrderNr</strong></MudText>
         @if (order.Comment != null)
         {
-            <MudPaper Class="mb-0 pa-2 mud-secondary" Square Width="100%">
-                 <MudText Color="Color.Primary" Typo="Typo.h6">Kommentar från kund:</MudText>
-                 <MudText Color="Color.Primary" Typo="Typo.body2">@order.Comment</MudText>
-             </MudPaper>
+            <CascadingValue Value="@order.Comment">
+                <OrderComment />
+            </CascadingValue>
         }
         <MudTable Class="mt-0" Items="@order.ProductAndQuantity" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
              <HeaderContent>
