@@ -258,6 +258,42 @@ namespace TheRestaurant.Application.Orders
             return await response.SuccessResponse(response, response.Data);
         }
 
-       
+        public async Task<ServiceResponse<List<ProductSaleCountDto>>> GetProductSaleCounts()
+        {
+            ServiceResponse<List<ProductSaleCountDto>> response = new();
+
+            try
+            {
+                var productSaleCounts = await _orderRepository.GetProductSaleCount();
+                response.Data = productSaleCounts;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching product sale counts");
+                return await response.ErrorResponse(response, "Failed to fetch product sale counts", _logger);
+            }
+
+            return await response.SuccessResponse(response, response.Data);
+        }
+        public async Task<ServiceResponse<List<OrderCountByHourDto>>> GetOrderStatsByHour()
+        {
+            ServiceResponse<List<OrderCountByHourDto>> response = new();
+
+            try
+            {
+                var orderStats = await _orderRepository.GetOrderStatsByHour();
+                response.Data = orderStats;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle the exception
+                return await response.ErrorResponse(response, "Failed to fetch order stats", _logger);
+            }
+
+            return await response.SuccessResponse(response, response.Data);
+        }
+
+
+
     }
 }

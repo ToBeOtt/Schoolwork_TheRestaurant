@@ -40,11 +40,19 @@
 
                 </MudPaper>
             </MudItem>*@
+            <MudItem xs="6">
+                <MudPaper Elevation="0"
+                          Class="d-flex align-center justify-center py-3">
+
+                    <ProductBarChart />
+
+                </MudPaper>
+            </MudItem>
 @* Bar chart for Orders *@
-            <MudItem xs="12">
+            <MudItem xs="6">
                 <MudPaper Elevation="0"
                         Class="d-flex align-center justify-center mud-width-full py-3">
-                    <OrderBarChart />
+                    <OrderLineChart />
                 </MudPaper>
             </MudItem>
         </MudGrid>

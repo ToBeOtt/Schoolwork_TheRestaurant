@@ -1,0 +1,44 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@inject ClientDashboardServices DashboardServices
+
+<MudChart ChartType="ChartType.Bar" 
+ChartSeries="@Series" 
+XAxisLabels="@XAxisLabels" 
+Width="100%" 
+Height="350px">
+
+</MudChart>
+
+@* Snygga till data och displayingen*@
+
+@code {
+    public List<ChartSeries> Series = new List<ChartSeries>();
+    public string[] XAxisLabels = { "9", "12", "13", "14", "15", "16", "17", "18", "19" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadChartData();
+    }
+
+    private async Task LoadChartData()
+    {
+
+        var orderStats = await DashboardServices.GetOrderStatsByHour();
+
+        Series.Clear();
+
+
+        // Create a ChartSeries for each hour
+        Series.Add(new ChartSeries
+                {
+                    Name = "Orders",
+                    Data = new double[] { orderStats[0].OrderCount, orderStats[1].OrderCount 
+                    // for 
+                    // { TODO forloop through OrderCount on data
+            
+                    // }
+    }
+                });
+    }
+}
+

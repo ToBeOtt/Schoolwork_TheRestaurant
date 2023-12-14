@@ -31,7 +31,9 @@ namespace TheRestaurant.Presentation.Client
 
             // All services for client
             builder.Services.AddClientServices(builder.Configuration);
-            
+            builder.Services.AddScoped<ClientDashboardServices>();
+
+
             // For using local storage with authentication
             builder.Services.AddBlazoredLocalStorage();
 

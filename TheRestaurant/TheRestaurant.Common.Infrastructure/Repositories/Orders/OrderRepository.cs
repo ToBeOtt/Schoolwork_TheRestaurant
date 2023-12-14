@@ -118,6 +118,26 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                                     .SingleOrDefaultAsync();
         }
 
-     
+        public async Task<List<ProductSaleCountDto>> GetProductSaleCount()
+        {
+            var productSaleCounts = await _dbContext.OrderRows
+                .Where(or => or.ProductId != 0)
+                .Include(or => or.Product) // Ensure Product data is included
+                .GroupBy(or => or.Product.Name)
+                .Select(group => new ProductSaleCountDto(group.Key, group.Count()))
+                .ToListAsync();
+
+            return productSaleCounts;
+        }
+        public async Task<List<OrderCountByHourDto>> GetOrderStatsByHour()
+        {
+            return await _dbContext.Orders
+                .GroupBy(order => order.OrderDate.Hour)
+                .Select(group => new OrderCountByHourDto(group.Key, group.Count()))
+                .ToListAsync();
+        }
+
+
+
     }
 }
