@@ -1,4 +1,4 @@
-﻿@page "/Admin/DeleteCategory/{CategoryId:int}"
+﻿@page "/Admin/ActiveCategory/{CategoryId:int}"
 
 @using TheRestaurant.Contracts.DTOs;
 @using MudBlazor
@@ -7,6 +7,7 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager;
 
+
 <AdminLayout>
     <AdminContent>
         <MudGrid Spacing="2" Justify="Justify.Center">
@@ -14,13 +15,13 @@
             <MudItem xs="12">
 
                 <div class="px-3">
-                    <h3 class="mb-5">Radera kategori</h3>
+                    <h3 class="mb-5">Activa kategori</h3>
 
-                    <h5>Är du säker på att du vill radera "@categoryDto.Name" kategori? </h5>
+                    <h5>Är du säker på att du vill aktivera "@categoryDto.Name" kategori? </h5>
 
                     <div class="w-100 ">
                         <a class="btn btn-sm btn-success" href="Admin/CategoryList">Nej</a>
-                        <a class="btn btn-sm btn-danger" onclick="@Delete">Ja</a>
+                        <a class="btn btn-sm btn-danger" onclick="@Active">Ja</a>
                     </div>
 
                 </div>
@@ -32,6 +33,9 @@
 </AdminLayout>
 
 
+
+
+
 @code {
     [Parameter]
     public int categoryId { get; set; }
@@ -41,15 +45,17 @@
     protected override async Task OnInitializedAsync()
     {
 
-        categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto> ($"/api/Category/{categoryId}");
-    }
-
-    protected async Task Delete()
-    {
-        await HttpClient.DeleteAsync($"/api/Category/{categoryId}");
+        categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto>($"/api/Category/{categoryId}");
+        categoryDto.IsDeleted = false;
+        await HttpClient.PutAsJsonAsync($"/api/Category/{categoryId}", categoryDto);
         NavigationManager.NavigateTo("/Admin/CategoryList");
     }
 
 
-
+    protected async Task Active()
+    {
+        categoryDto.IsDeleted = false;
+        await HttpClient.PutAsJsonAsync($"/api/Category/{categoryId}", categoryDto);
+        NavigationManager.NavigateTo("/Admin/CategoryList");
+    }
 }

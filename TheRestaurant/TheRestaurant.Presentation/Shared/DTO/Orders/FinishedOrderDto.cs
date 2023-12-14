@@ -2,6 +2,7 @@
 {
     public record FinishedOrderDto(
        int OrderNr,
+       string? OrderComment,
        DateTime DateTimeOfOrder,
        string EmployeeName
        );

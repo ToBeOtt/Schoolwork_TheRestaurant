@@ -16,6 +16,7 @@ namespace TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validat
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Pris kan inte vara negativt")]
         public double Price { get; set; }
+        public double PriceBeforeVat { get; set; }
         [Required]
         public bool IsFoodItem { get; set; }
 
@@ -28,6 +29,9 @@ namespace TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validat
         public List<int> SelectedCategoryIds { get; set; }
 
         public List<int> SelectedAllergyIds { get; set; }
+
+        [Required(ErrorMessage = "Du måste välja moms")]
+        public int VatId { get; set; }
     }
 
 }

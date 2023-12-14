@@ -193,6 +193,7 @@ namespace TheRestaurant.Application.Orders
 
                 ActiveOrdersResponse dto = new ActiveOrdersResponse(
                     OrderNr: item.Id,
+                    OrderComment: item.OrderComment,
                     DateTimeOfOrder: item.OrderDate,
                     ProductAndQuantity: productAndQuantityList,
                     EmployeeName: item.Employee.Alias
@@ -220,6 +221,7 @@ namespace TheRestaurant.Application.Orders
             {
                 FinishedOrderResponse dto = new(
                     OrderNr: item.Id,
+                    OrderComment: item.OrderComment,
                     DateTimeOfOrder: item.OrderDate,
                     EmployeeName: item.Employee.Alias
                 );

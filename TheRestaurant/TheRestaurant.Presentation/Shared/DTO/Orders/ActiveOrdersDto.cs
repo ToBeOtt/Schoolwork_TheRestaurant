@@ -2,6 +2,7 @@
 {
     public record ActiveOrdersDto(
        int OrderNr,
+       string? OrderComment,
        DateTime DateTimeOfOrder,
        List<ProductAndQuantity> ProductAndQuantity,
        string EmployeeName

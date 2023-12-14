@@ -67,10 +67,10 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
             return await _context.Categories.Select(x => x.Name).ToListAsync();
         }
 
-        public async Task<VAT> GetVATByName(string name)
+        public async Task<VAT> GetVATById(int id)
         {
             return await _context.VATs
-                            .Where(x => x.Name == name)
+                            .Where(x => x.Id == id)
                             .SingleOrDefaultAsync();
         }
     }

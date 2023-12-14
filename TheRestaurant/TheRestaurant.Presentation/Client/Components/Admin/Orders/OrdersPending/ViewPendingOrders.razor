@@ -18,10 +18,10 @@
     </ToolBarContent>
 
     <HeaderContent>
-        <MudTh>Id</MudTh>
-        <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<PendingOrderDto, object>(x=>x.DateTimeOfOrder)">Datum/Tid</MudTableSortLabel></MudTh>
+        <MudTh Class="fw-bold">Id</MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<PendingOrderDto, object>(x=>x.DateTimeOfOrder)">Datum/Tid</MudTableSortLabel></MudTh>
        <MudTh></MudTh>
-        <MudTh>Kommentar</MudTh>
+        <MudTh Class="fw-bold">Kommentar</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.OrderNr</MudTd>

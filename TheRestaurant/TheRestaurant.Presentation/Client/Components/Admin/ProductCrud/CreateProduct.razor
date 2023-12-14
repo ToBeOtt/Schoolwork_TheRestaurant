@@ -1,18 +1,16 @@
 ﻿@using System.Text.Json;
+@using TheRestaurant.Contracts.DTOs;
 @using TheRestaurant.Contracts.Requests.Product;
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-
-
 @if(Error == true)
 {
     <p>@ErrorMessage</p>
 }
-
-<MudGrid>
+<MudGrid Class="mb-16">
     <MudItem xs="12" md="8" lg="6">
         <MudPaper Class="pa-4">
             <h3>Skapa ny produkt</h3>
@@ -38,6 +36,13 @@
                     }
                 </MudSelect>
 
+                <MudSelect Label="Moms" T="int" @bind-Value="_createProduct.VatId">
+                    @foreach (var vat in vats)
+                    {
+                        <MudSelectItem Value="@vat.Id">@vat.Name - @vat.Adjustment</MudSelectItem>
+                    }
+                </MudSelect>
+
                 <MudCheckBox Label="Mat/dryck?" @bind-Checked="_createProduct.IsFoodItem" />
                 <div class="form-group">
                     <label for="menuPhoto">Produkt bild</label>
@@ -56,30 +61,32 @@
 
 @code {
     private readonly ProductValidation _createProduct = new ProductValidation();
-    private List<AllergyDto> allergies = new List<AllergyDto>();
-    private List<CategoryDto> categories = new List<CategoryDto>();
+    private List<DTO.AllergyDto> allergies = new List<DTO.AllergyDto>();
+    private List<DTO.CategoryDto> categories = new List<DTO.CategoryDto>();
+    private List<VATDto> vats = new List<VATDto>();
     private bool Error;
     private string ErrorMessage;
 
     protected override async Task OnInitializedAsync()
     {
-        allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("api/allergy");
-        categories = await HttpClient.GetFromJsonAsync<List<CategoryDto>>("api/category");
+        allergies = await HttpClient.GetFromJsonAsync<List<DTO.AllergyDto>>("api/allergy");
+        categories = await HttpClient.GetFromJsonAsync<List<DTO.CategoryDto>>("api/category");
+        vats = await HttpClient.GetFromJsonAsync<List<VATDto>>("admin/vat");
     }
 
     private async Task HandleValidSubmit()
     {
         var request = new CreateProductRequest(
             Name: _createProduct.Name,
-            Price: _createProduct.Price,
+            PriceBeforeVat: _createProduct.Price,
             Description: _createProduct.Description,
             MenuPhoto: _createProduct.MenuPhoto,
             IsFoodItem: _createProduct.IsFoodItem,
             IsDeleted: _createProduct.IsDeleted,
             SelectedAllergyIds: _createProduct.SelectedAllergyIds,
             SelectedCategoryIds: _createProduct.SelectedCategoryIds,
-            VAT: "Alcohol"
-        );
+            VATId: _createProduct.VatId
+    );
 
         var apiUrl = "/admin/products/create";
 

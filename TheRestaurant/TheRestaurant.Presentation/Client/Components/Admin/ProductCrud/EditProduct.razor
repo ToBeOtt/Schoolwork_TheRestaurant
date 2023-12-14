@@ -1,4 +1,5 @@
-﻿@using TheRestaurant.Contracts.Requests.Product;
+﻿@using TheRestaurant.Contracts.DTOs;
+@using TheRestaurant.Contracts.Requests.Product;
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.DTO;
 @using TheRestaurant.Presentation.Client.Components.Admin.ProductCrud.Validation;
 @inject HttpClient HttpClient
@@ -15,7 +16,7 @@
         <DataAnnotationsValidator />
 
         <MudTextField Label="Namn" @bind-Value="_editProduct.Name" FullWidth />
-        <MudNumericField Label="Pris" @bind-Value="_editProduct.Price" FullWidth />
+        <MudNumericField Label="Pris före moms" @bind-Value="_editProduct.PriceBeforeVat" FullWidth />
         <MudTextField Label="Beskrivning" @bind-Value="_editProduct.Description" FullWidth Multiline />
 
         <MudCheckBox Label="Mat/dryck?" @bind-Checked="_editProduct.IsFoodItem" />
@@ -35,6 +36,15 @@
                 <MudSelectItem Value="@allergy.Id.ToString()" Selected="@(_editProduct.SelectedAllergyIds.Contains(allergy.Id))">@allergy.Name</MudSelectItem>
             }
         </MudSelect>
+
+        <MudSelect Label="Moms" T="int" @bind-Value="_editProduct.VatId">
+            @foreach (var vat in vats)
+            {
+                <MudSelectItem Value="@vat.Id">@vat.Name - @vat.Adjustment</MudSelectItem>
+            }
+        </MudSelect>
+
+
 
         <InputFile OnChange="HandlePhotoUpload" />
         @if (_editProduct.MenuPhoto != null)
@@ -59,8 +69,9 @@
     private bool Error;
     private string ErrorMessage;
     private ProductValidation _editProduct = new ProductValidation();
-    private List<AllergyDto> allergies = new List<AllergyDto>();
-    private List<CategoryDto> categories = new List<CategoryDto>();
+    private List<DTO.AllergyDto> allergies = new List<DTO.AllergyDto>();
+    private List<DTO.CategoryDto> categories = new List<DTO.CategoryDto>();
+    private List<VATDto> vats = new List<VATDto>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,15 +80,18 @@
         {
             _editProduct.Name = product.Name;
             _editProduct.Price = product.Price;
+            _editProduct.PriceBeforeVat = product.PriceBeforeVat;
             _editProduct.Description = product.Description;
             _editProduct.IsFoodItem = product.IsFoodItem;
             _editProduct.MenuPhoto = product.MenuPhoto;
 
             _editProduct.SelectedAllergyIds = product.Allergies.Select(a => a.Id).ToList();
             _editProduct.SelectedCategoryIds = product.Categories.Select(c => c.Id).ToList();
+            _editProduct.VatId = product.VatId;
 
-            categories = await HttpClient.GetFromJsonAsync<List<CategoryDto>>("api/category");
-            allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("api/allergy");
+            categories = await HttpClient.GetFromJsonAsync<List<DTO.CategoryDto>>("api/category");
+            allergies = await HttpClient.GetFromJsonAsync<List<DTO.AllergyDto>>("api/allergy");
+            vats = await HttpClient.GetFromJsonAsync<List<VATDto>>("admin/vat");
         }
         else
         {
@@ -90,14 +104,15 @@
     {
         var request = new EditProductRequest(
             Name: _editProduct.Name,
-            Price: _editProduct.Price,
+            PriceBeforeVat: _editProduct.PriceBeforeVat,
             Description: _editProduct.Description,
             MenuPhoto: _editProduct.MenuPhoto,
             IsFoodItem: _editProduct.IsFoodItem,
             IsDeleted: _editProduct.IsDeleted,
             SelectedAllergyIds: _editProduct.SelectedAllergyIds,
-            SelectedCategoryIds: _editProduct.SelectedCategoryIds
-        // Include other fields
+            SelectedCategoryIds: _editProduct.SelectedCategoryIds,
+            VatId: _editProduct.VatId
+        
         );
 
         var apiUrl = $"/admin/products/edit/{Id}";

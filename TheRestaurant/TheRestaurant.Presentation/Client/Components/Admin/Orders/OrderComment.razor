@@ -1,0 +1,11 @@
+﻿
+
+<MudPaper Class="mb-0 pa-2 mud-secondary" Square Width="100%">
+     <MudText Color="Color.Primary" Typo="Typo.h6">Kommentar från kund:</MudText>
+     <MudText Color="Color.Primary" Typo="Typo.body2">@Comment</MudText>
+ </MudPaper>
+
+@code {
+    [CascadingParameter]
+    public string Comment { get; set; }
+}

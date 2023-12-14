@@ -17,6 +17,7 @@
                     <MudCardContent>
                         <MudText Typo="Typo.h5" Color="Color.Primary">@product.Name</MudText>
                         <MudText Typo="Typo.body2" Color="Color.Primary">Pris: @product.Price</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Primary">Pris före moms: @product.PriceBeforeVat</MudText>
                         <MudText Typo="Typo.body2" Color="Color.Primary">@product.Description</MudText>
                         <MudText Typo="Typo.body2" Color="Color.Primary" Style="margin-top: 15px"><b>Allergies:</b> @string.Join(", ", product.Allergies.Select(a => a.Name))</MudText>
                         <MudText Typo="Typo.body2" Color="Color.Primary" Style="margin-top: 15px"><b>Categories:</b> @string.Join(", ", product.Categories.Select(c => c.Name))</MudText>
