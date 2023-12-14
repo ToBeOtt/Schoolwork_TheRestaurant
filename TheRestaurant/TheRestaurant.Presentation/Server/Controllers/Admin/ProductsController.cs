@@ -43,12 +43,14 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
                 return NotFound();
             }
 
+
             var productDto = new ProductDto
             {
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
+                PriceBeforeVat = product.PriceBeforeVAT,
                 MenuPhoto = product.MenuPhoto,
                 IsDeleted = product.IsDeleted,
                 IsFoodItem = product.IsFoodItem,
@@ -58,6 +60,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
                 Categories = product.ProductCategories
                     .Select(pc => new CategoryDto { Id = pc.CategoryId, Name = pc.Category.Name })
                     .ToList(),
+                VatId = product.VATId
             };
 
             return Ok(productDto);

@@ -8,13 +8,14 @@ namespace TheRestaurant.Contracts.Requests.Product
 {
     public record EditProductRequest(
         string Name,
-        double Price,
+        double PriceBeforeVat,
         string Description,
         byte[] MenuPhoto,
         bool IsFoodItem,
         bool IsDeleted,
         List<int> SelectedAllergyIds,
-        List<int> SelectedCategoryIds
+        List<int> SelectedCategoryIds,
+        int VatId
         );
 
 }
