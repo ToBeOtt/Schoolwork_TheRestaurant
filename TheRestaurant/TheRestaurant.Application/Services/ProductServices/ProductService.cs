@@ -1,4 +1,5 @@
-﻿using SharedKernel.Application.ServiceResponse;
+﻿using System;
+using SharedKernel.Application.ServiceResponse;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Services.ProductServices.DTO;
 using TheRestaurant.Contracts.Requests.Product;
@@ -16,27 +17,32 @@ namespace TheRestaurant.Application.Services.ProductServices
 
         public async Task<Product> CreateProductAsync(CreateProductRequest request)
         {
-            var VAT = await _productRepository.GetVATByName(request.VAT);
+            var VAT = await _productRepository.GetVATById(request.VATId);
 
             var product = new Product
             {
                 Name = request.Name,
-                PriceBeforeVAT = request.Price,
+                PriceBeforeVAT = request.PriceBeforeVat,
                 Description = request.Description,
                 MenuPhoto = request.MenuPhoto,
                 IsFoodItem = request.IsFoodItem,
                 IsDeleted = request.IsDeleted,
                 ProductAllergies = new List<ProductAllergy>(),
-                ProductCategories = new List<ProductCategory>()
+                ProductCategories = new List<ProductCategory>(),
+                VATId = request.VATId,
+                VAT = VAT,
             };
             product.SetPriceWithVAT(product);
 
 
-
-            foreach (var allergyId in request.SelectedAllergyIds)
+            if (request.SelectedAllergyIds != null)
             {
-                product.ProductAllergies.Add(new ProductAllergy { AllergyId = allergyId });
+                foreach (var allergyId in request.SelectedAllergyIds)
+                {
+                    product.ProductAllergies.Add(new ProductAllergy { AllergyId = allergyId });
+                }
             }
+
 
             foreach (var categoryId in request.SelectedCategoryIds)
             {
@@ -110,7 +116,7 @@ namespace TheRestaurant.Application.Services.ProductServices
             productToUpdate.Name = request.Name;
             productToUpdate.Description = request.Description;
             productToUpdate.MenuPhoto = request.MenuPhoto;
-            productToUpdate.Price = request.Price;
+            productToUpdate.PriceBeforeVAT = request.PriceBeforeVat;
             productToUpdate.IsFoodItem = request.IsFoodItem;
             productToUpdate.IsDeleted = request.IsDeleted;
             productToUpdate.ProductCategories = new List<ProductCategory>();
@@ -125,6 +131,14 @@ namespace TheRestaurant.Application.Services.ProductServices
             {
                 productToUpdate.ProductCategories.Add(new ProductCategory { CategoryId = categoryId });
             }
+
+            // Fetch VAT information
+            var VAT = await _productRepository.GetVATById(request.VatId);
+
+            // Set the new price with VAT
+            productToUpdate.VATId = VAT.Id;
+            productToUpdate.VAT = VAT;
+            productToUpdate.SetPriceWithVAT(productToUpdate);
 
             await _productRepository.UpdateAsync(productToUpdate);
 
