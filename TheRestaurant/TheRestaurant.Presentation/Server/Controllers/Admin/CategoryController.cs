@@ -10,6 +10,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
     [Route("api/Category")]
     [ApiController]
+    [Authorize(Roles = "admin,manager")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
