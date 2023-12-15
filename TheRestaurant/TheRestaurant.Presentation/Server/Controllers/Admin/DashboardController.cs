@@ -44,18 +44,18 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
             return Ok(result.Data);
         }
 
-        [HttpGet("GetOrderStatsByHour")]
-        public async Task<ActionResult<ServiceResponse<List<OrderCountByHourDto>>>> GetOrderStatsByHour()
+        [HttpGet("GetOrderStatsByUserChosenDate")]
+        public async Task<ActionResult<ServiceResponse<List<OrderCountByHourDto>>>> GetOrderStatsByUserChosenDate([FromQuery] DateTime selectedDate)
         {
-            var response = await _orderService.GetOrderStatsByHour();
+            System.Diagnostics.Debugger.Break();
+
+            var response = await _orderService.GetOrderStatsByUserChosenDate(selectedDate);
             if (!response.IsSuccess)
             {
                 return BadRequest(response.ErrorMessage);
             }
             return Ok(response);
         }
-
-
 
         [HttpGet("GetProductSaleCount")]
         public async Task<ActionResult<ServiceResponse<List<ProductSaleCountDto>>>> GetProductSaleCount()

@@ -19,7 +19,7 @@ namespace TheRestaurant.Application.Orders.Interfaces
         Task<List<Order>> GetFinishedOrders();
         Task<List<ProductSaleCountDto>> GetProductSaleCount();
 
-        Task<List<OrderCountByHourDto>> GetOrderStatsByHour();
+        Task<List<OrderCountByHourDto>> GetOrderStatsByDatePicked(DateTime selectedDate);
 
 
 

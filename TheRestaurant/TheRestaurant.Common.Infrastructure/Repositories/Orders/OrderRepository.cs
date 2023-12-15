@@ -129,15 +129,13 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
 
             return productSaleCounts;
         }
-        public async Task<List<OrderCountByHourDto>> GetOrderStatsByHour()
+        public async Task<List<OrderCountByHourDto>> GetOrderStatsByDatePicked(DateTime selectedDate)
         {
             return await _dbContext.Orders
+                .Where(order => order.OrderDate.Date == selectedDate.Date)
                 .GroupBy(order => order.OrderDate.Hour)
                 .Select(group => new OrderCountByHourDto(group.Key, group.Count()))
                 .ToListAsync();
         }
-
-
-
     }
 }

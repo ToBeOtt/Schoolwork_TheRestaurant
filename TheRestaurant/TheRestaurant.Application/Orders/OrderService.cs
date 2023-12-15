@@ -277,13 +277,13 @@ namespace TheRestaurant.Application.Orders
 
             return await response.SuccessResponse(response, response.Data);
         }
-        public async Task<ServiceResponse<List<OrderCountByHourDto>>> GetOrderStatsByHour()
+        public async Task<ServiceResponse<List<OrderCountByHourDto>>> GetOrderStatsByUserChosenDate(DateTime selectedDate)
         {
-            ServiceResponse<List<OrderCountByHourDto>> response = new();
+            ServiceResponse<List<OrderCountByHourDto>> response = new ServiceResponse<List<OrderCountByHourDto>>();
 
             try
             {
-                var orderStats = await _orderRepository.GetOrderStatsByHour();
+                var orderStats = await _orderRepository.GetOrderStatsByDatePicked(selectedDate);
                 response.Data = orderStats;
             }
             catch (Exception ex)
