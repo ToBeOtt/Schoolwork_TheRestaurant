@@ -13,7 +13,7 @@ Height="350px">
 
 @code {
     public List<ChartSeries> Series = new List<ChartSeries>();
-    public string[] XAxisLabels = { "9", "12", "13", "14", "15", "16", "17", "18", "19" };
+    public string[] XAxisLabels = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "19", "20", "21", "22", "23", "00" };
 
     protected override async Task OnInitializedAsync()
     {
@@ -26,19 +26,42 @@ Height="350px">
         var orderStats = await DashboardServices.GetOrderStatsByHour();
 
         Series.Clear();
+        int listCount = orderStats.Count;
+        double[] Data = new double[24];
 
+        // for (int i = 0; i < 23; i++)
+        // {
+        //     // if (orderStats.Where(x => x.Hour == i)) 
+        //     if(orderStats.Any(stat => stat.Hour == i))
+        //     {
+        //         orderStats.FirstOrDefault(stat => stat.Hour == i);
+        //         Data[i] = orderStats[i].OrderCount;  
+        //     }
+        //     else
+        //     {
+        //         Data[i] = 0;
+        //     }
+        // }
+        for (int i = 0; i < 23; i++)
+        {
+            var stat = orderStats.FirstOrDefault(stat => stat.Hour == i);
 
-        // Create a ChartSeries for each hour
+            if (stat != null)
+            {
+                int index = orderStats.IndexOf(stat);
+                Data[i-1] = orderStats[index].OrderCount;
+            }
+            else
+            {
+                Data[i] = 0;
+            }
+        }
+
         Series.Add(new ChartSeries
-                {
-                    Name = "Orders",
-                    Data = new double[] { orderStats[0].OrderCount, orderStats[1].OrderCount 
-                    // for 
-                    // { TODO forloop through OrderCount on data
-            
-                    // }
-    }
-                });
+            {
+                Name = "Orders",
+                Data = Data
+            });
     }
 }
 

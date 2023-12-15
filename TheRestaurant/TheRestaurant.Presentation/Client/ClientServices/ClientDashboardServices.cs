@@ -43,7 +43,6 @@ namespace TheRestaurant.Presentation.Client.ClientServices
                 if (responseWrapper != null && responseWrapper.IsSuccess)
                 {
                     var data = responseWrapper.Data;
-                    Console.WriteLine("Data from service:", data);
                     return data;
                 }
                 else
