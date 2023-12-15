@@ -30,32 +30,26 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Category
 
 
         //Add New Category
-        public async Task AddAsync(Domain.Entities.Menu.Category category)
+        public async Task<Domain.Entities.Menu.Category> AddAsync(Domain.Entities.Menu.Category category)
         {
             await _context.AddAsync(category);
-            await _context.SaveChangesAsync();
+            return category;
         }
 
         //Update the Category
-        public async Task UpdateAsync(Domain.Entities.Menu.Category category)
+        public async Task<Domain.Entities.Menu.Category> UpdateAsync(Domain.Entities.Menu.Category category)
         {
             _context.Update(category);
-            //await _context.SaveChangesAsync();
+            return category;
         }
 
-        //Delete the Category
-        public async Task DeleteAsync(Domain.Entities.Menu.Category category)
-        {
-            _context.Categories.Remove(category);
-            //await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
+        //Delete the Category By Id
+        public async Task<Domain.Entities.Menu.Category> DeleteAsync(int id)
         {
             var category = await GetAsync(id);
 
             _context.Categories.Remove(category);
-            //await _context.SaveChangesAsync();
+            return category;
         }
 
         //Save Change

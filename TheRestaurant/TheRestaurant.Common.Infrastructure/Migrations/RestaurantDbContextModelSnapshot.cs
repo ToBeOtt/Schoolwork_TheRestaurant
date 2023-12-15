@@ -442,6 +442,30 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Id = 18,
                             IsDeleted = false,
                             Name = "Merch"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            IsDeleted = false,
+                            Name = "Kokbok"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            IsDeleted = false,
+                            Name = "T-shirt"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            IsDeleted = false,
+                            Name = "Kaffe mugg"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            IsDeleted = false,
+                            Name = "Såspanna"
                         });
                 });
 
@@ -940,7 +964,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VAT");
+                    b.ToTable("VATs");
 
                     b.HasData(
                         new
@@ -977,6 +1001,9 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("OrderComment")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -996,77 +1023,77 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         {
                             Id = 31,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 11, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7362),
+                            OrderDate = new DateTime(2023, 12, 15, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7824),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 4,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 11, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7365),
+                            OrderDate = new DateTime(2023, 12, 15, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7828),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 5,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 11, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7367),
+                            OrderDate = new DateTime(2023, 12, 15, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7829),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 34,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 9, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7370),
+                            OrderDate = new DateTime(2023, 12, 13, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7831),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 10,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 8, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7372),
+                            OrderDate = new DateTime(2023, 12, 12, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7833),
                             OrderStatusId = 3
                         },
                         new
                         {
                             Id = 11,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 7, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7374),
+                            OrderDate = new DateTime(2023, 12, 11, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7834),
                             OrderStatusId = 4
                         },
                         new
                         {
                             Id = 6,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 10, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7377),
+                            OrderDate = new DateTime(2023, 12, 14, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7836),
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 32,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 10, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7379),
+                            OrderDate = new DateTime(2023, 12, 14, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7838),
                             OrderStatusId = 2
                         },
                         new
                         {
                             Id = 33,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 10, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7382),
+                            OrderDate = new DateTime(2023, 12, 14, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7839),
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 1,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 11, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7304),
+                            OrderDate = new DateTime(2023, 12, 15, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7769),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 2,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 10, 8, 58, 26, 911, DateTimeKind.Local).AddTicks(7357),
+                            OrderDate = new DateTime(2023, 12, 14, 9, 52, 19, 761, DateTimeKind.Local).AddTicks(7818),
                             OrderStatusId = 3
                         });
                 });

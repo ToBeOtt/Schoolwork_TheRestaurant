@@ -24,9 +24,9 @@ namespace TheRestaurant.Application.Dashboard
 		{
 			ServiceResponse<List<OrderCountResponse>> response = new();
 
-			var result = await _dashboardRepository.GetLastDaysOrders(fromDate);
+            var result = await _dashboardRepository.GetLastDaysOrderCounts(fromDate);
 
-			response.Data = result;
+            response.Data = result;
 
             return await response.SuccessResponse(response, response.Data);
 		}

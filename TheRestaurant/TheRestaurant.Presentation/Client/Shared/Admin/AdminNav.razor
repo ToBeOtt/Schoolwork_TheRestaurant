@@ -32,6 +32,7 @@
             <MudNavLink Href="admin/product/view" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa produkter</MudNavLink>
             <MudNavLink Href="admin/product/create" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
         </MudNavGroup>
+                    
 
         @* Categories *@
         <MudNavGroup Title="Kategorier" Icon="@Icons.Material.Filled.Folder" Expanded="false">
@@ -41,6 +42,9 @@
 
         @* Allergies *@
         <MudNavLink Icon="@Icons.Material.Filled.HealthAndSafety" Href="/admin/allergy/view" ActiveClass="active-link">Allergier</MudNavLink>
+
+        @*VAT*@
+        <MudNavLink Icon="@Icons.Material.Filled.Percent" Href="/admin/vat/view" ActiveClass="active-link">Moms</MudNavLink>
 
         @* Emloyees *@
         <MudNavLink Href="/admin/employees/Index" Icon="@Icons.Material.Filled.People" ActiveClass="active-link">Anställda</MudNavLink>

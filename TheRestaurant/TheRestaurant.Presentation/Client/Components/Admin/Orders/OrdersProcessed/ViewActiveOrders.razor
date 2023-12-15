@@ -5,72 +5,80 @@
 @inject IDialogService DialogService
 
 
-<MudTable 
-    Items="@ListOfActiveOrders" 
-    Elevation="0"
-    Dense=true 
-    Hover=true 
-    Bordered=false 
-    Striped=true
-    Class="w-100">
+<MudTable Items="@ListOfActiveOrders"
+          Elevation="0"
+          Dense=true
+          Hover=true
+          Bordered=false
+          Striped=true
+          Class="w-100">
 
     <ToolBarContent>
-        <MudText 
-            Class="py-6 px-5"
-            Typo="Typo.h5">
+        <MudText Class="py-6 px-5"
+                 Typo="Typo.h5">
             Pågående ordrar
-            </MudText>
+        </MudText>
         <MudSpacer />
     </ToolBarContent>
 
     <HeaderContent>
         <MudTh Class="fw-bold">OrderNr</MudTh>
         <MudTh Class="fw-bold">Ansvarig</MudTh>
+        <MudTh Class="fw-bold">Kommentar</MudTh>
         <MudTh Class="fw-bold">Ordertid</MudTh>
         <MudTh Class="fw-bold">Detaljer</MudTh>
         <MudTh Class="fw-bold">Order klar?</MudTh>
-       
+
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.OrderNr</MudTd>
         <MudTd DataLabel="Employee">@context.EmployeeName</MudTd>
-        <MudTd DataLabel="Date">@context.DateTimeOfOrder.ToShortTimeString()</MudTd> 
-            
+        <MudTd DataLabel="Comment">
+            @if (@context.OrderComment != null)
+            {
+                <MudExpansionPanel Text="Se Kommentar">
+                    @context.OrderComment
+                </MudExpansionPanel>
+            }
+        </MudTd>
+        <MudTd DataLabel="Date">@context.DateTimeOfOrder.ToShortTimeString()</MudTd>
+
         <MudTd>
             <MudIconButton Class="fw-bold"
-                            Size="@Size.Small"
-                            Color="Color.Success"
-                            Icon="@Icons.Material.Outlined.Info"
-                               OnClick="@((e)=> ViewOrderInfo(
-                                                maxWidth, 
+                           Size="@Size.Small"
+                           Color="Color.Success"
+                           Icon="@Icons.Material.Outlined.Info"
+                           OnClick="@((e)=> ViewOrderInfo(
+                                                maxWidth,
                                                 context.OrderNr,
                                                 context.EmployeeName,
-                                                context.DateTimeOfOrder))">
+                                                context.DateTimeOfOrder,
+                                                context.OrderComment))">
                 Info
             </MudIconButton>
         </MudTd>
 
         <MudTd>
-            <MudIconButton 
-                Class="fw-bold"
-                Size="@Size.Small"
-                Color="Color.Success"
-                Icon="@Icons.Material.Outlined.ArrowForward"
-                OnClick="@((e)=> CheckOutOrder(maxWidth ,context))">Markera som klar
+            <MudIconButton Class="fw-bold"
+                           Size="@Size.Small"
+                           Color="Color.Success"
+                           Icon="@Icons.Material.Outlined.ArrowForward"
+                           OnClick="@((e)=> CheckOutOrder(maxWidth ,context))">
+                Markera som klar
             </MudIconButton>
         </MudTd>
-     </RowTemplate>
+    </RowTemplate>
 
- </MudTable>
- @code {
+</MudTable>
+@code {
     private List<ActiveOrdersDto> ListOfActiveOrders = new();
 
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
-         ListOfActiveOrders = await OrderService.FetchListOfActiveOrders();
-         OrderService.OrdersUpdated += OnOrderUpdated;
+        ListOfActiveOrders = await OrderService.FetchListOfActiveOrders();
+        OrderService.OrdersUpdated += OnOrderUpdated;
     }
 
     private async void OnOrderUpdated()
@@ -95,13 +103,14 @@
         }
     }
 
-    private async Task ViewOrderInfo(DialogOptions options, int OrderNr, string EmployeeName, DateTime OrderDate)
+    private async Task ViewOrderInfo(DialogOptions options, int OrderNr, string EmployeeName, DateTime OrderDate, string? OrderComment)
     {
         var parameters = new DialogParameters
         {
             { "DetailsId", OrderNr },
             { "Responsible", EmployeeName },
             { "DateOfOrder", OrderDate },
+            { "OrderComment", OrderComment}
         };
 
         var dialog = await DialogService.ShowAsync<OrderDetailsDialog>("", parameters, options);

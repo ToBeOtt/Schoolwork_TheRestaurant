@@ -1,15 +1,14 @@
 ﻿namespace TheRestaurant.Contracts.Requests.Product
 {
-    // Need to add Category once implemented
     public record CreateProductRequest(
         string Name,
-        double Price,
+        double PriceBeforeVat,
         string Description,
         byte[] MenuPhoto,
         bool IsFoodItem,
         bool IsDeleted,
-        List<int> SelectedAllergyIds,
+        List<int>? SelectedAllergyIds,
         List<int> SelectedCategoryIds,
-        string VAT);
+        int VATId);
 
 }

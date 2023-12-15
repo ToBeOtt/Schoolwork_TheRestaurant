@@ -1,0 +1,55 @@
+﻿@using MudBlazor
+@using TheRestaurant.Contracts.DTOs;
+@using TheRestaurant.Contracts.Requests.Vat;
+@using TheRestaurant.Presentation.Client.Shared.Admin
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+
+<MudGrid>
+    <MudItem xs="12" md="8" lg="6">
+        <MudPaper Class="pa-4">
+            <h3>Skapa ny moms</h3>
+            <EditForm Model="_createVat" OnValidSubmit="HandleValidSubmit">
+                <MudTextField Label="Namn" @bind-Value="_createVat.Name" Required="true" FullWidth="true" />
+                <MudNumericField Label="Justering (%)" @bind-Value="_createVat.Adjustment" FullWidth="true" Min="1" Max="1.5" Step="0.01" Format="0.00"/>
+
+                <div class="mt-2">
+                    <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled">Lägg till</MudButton>
+                    <MudButton Color="Color.Secondary" OnClick="NavigateToView">Avbryt</MudButton>
+                </div>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+    private VATDto _createVat = new VATDto();
+
+    private async Task HandleValidSubmit()
+    {
+        var roundedAdjustment = Math.Round(_createVat.Adjustment, 2);
+        var request = new VatRequest(
+            Name: _createVat.Name,
+            Adjustment: roundedAdjustment
+        );
+        var apiUrl = "/admin/vat";
+        var response = await HttpClient.PostAsJsonAsync(apiUrl, request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("admin/vat/view");
+        }
+        else
+        {
+            Console.WriteLine("A error occured when trying to create a new VAT");
+        }
+    }
+
+    private void NavigateToView()
+    {
+        // Navigate back to the VAT list view
+        NavigationManager.NavigateTo("/admin/vatlist");
+    }
+}

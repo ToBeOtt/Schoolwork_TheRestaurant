@@ -30,7 +30,8 @@ namespace TheRestaurant.Application.Orders
 
             Order order = new();
             order.OrderDate = DateTime.Now;
-            order.OrderStatus = await _orderRepository.GetOrderStatusByName("Pending"); 
+            order.OrderStatus = await _orderRepository.GetOrderStatusByName("Pending");
+            order.OrderComment = request.Comment;
             var persistedOrder = await _orderRepository.CreateAsync(order);
             if (persistedOrder == null)
                 return await response.ErrorResponse
@@ -55,6 +56,11 @@ namespace TheRestaurant.Application.Orders
         public async Task<List<Order>> GetOrderByOrderStatus(string orderStatus)
         {
             return await _orderRepository.GetOrdersByStatus(orderStatus);
+        }
+
+        public async Task<Order> GetOrderById(int id)
+        {
+            return await _orderRepository.GetByIdAsync(id);
         }
        
 
@@ -106,9 +112,9 @@ namespace TheRestaurant.Application.Orders
             return await _orderRepository.GetAllAsync();
         }
 
-        public async Task UpdateOrderAsync(Order order)
+        public async Task<bool> UpdateOrderAsync(Order order)
         {
-            await _orderRepository.UpdateAsync(order);
+            return await _orderRepository.UpdateAsync(order);
         }
 
         public async Task DeleteOrderAsync(int orderId)
@@ -120,6 +126,45 @@ namespace TheRestaurant.Application.Orders
             }
             order.IsDeleted = true;
             await _orderRepository.DeleteAsync(order);
+        }
+
+
+        public async Task<ServiceResponse<List<PendingOrdersResponse>>> GetListOfPendingOrders()
+        {
+            ServiceResponse<List<PendingOrdersResponse>> response = new();
+
+            var pendingOrdersList = await _orderRepository.GetPendingOrders();
+            if (pendingOrdersList == null)
+                return await response.ErrorResponse
+                      (response, "Orders could not be fetched from database.", _logger);
+
+            List<PendingOrdersResponse> pendingOrdersDtoList = new();
+
+            foreach (var item in pendingOrdersList)
+            {
+                var productAndQuantityList = item.OrderRows
+                    .GroupBy(orderRow => orderRow.Product.Name)
+                    .Select(group => new ProductAndQuantity
+                    (
+                        ProductName: group.Key,
+                        Quantity: group.Count()
+                    ))
+                    .OrderBy(productAndQuantity => productAndQuantity.ProductName)
+                    .ToList();
+
+                PendingOrdersResponse dto = new PendingOrdersResponse(
+                    OrderNr: item.Id,
+                    Comment: item.OrderComment,
+                    DateTimeOfOrder: item.OrderDate,
+                    ProductAndQuantity: productAndQuantityList,
+                    EmployeeName: null
+                );
+
+                pendingOrdersDtoList.Add(dto);
+            }
+
+            response.Data = pendingOrdersDtoList;
+            return await response.SuccessResponse(response, response.Data);
         }
 
         public async Task<ServiceResponse<List<ActiveOrdersResponse>>> GetListOfActiveOrders()
@@ -147,6 +192,7 @@ namespace TheRestaurant.Application.Orders
 
                 ActiveOrdersResponse dto = new ActiveOrdersResponse(
                     OrderNr: item.Id,
+                    OrderComment: item.OrderComment,
                     DateTimeOfOrder: item.OrderDate,
                     ProductAndQuantity: productAndQuantityList,
                     EmployeeName: item.Employee.Alias
@@ -174,6 +220,7 @@ namespace TheRestaurant.Application.Orders
             {
                 FinishedOrderResponse dto = new(
                     OrderNr: item.Id,
+                    OrderComment: item.OrderComment,
                     DateTimeOfOrder: item.OrderDate,
                     EmployeeName: item.Employee.Alias
                 );
@@ -211,5 +258,43 @@ namespace TheRestaurant.Application.Orders
             response.Data = dto;
             return await response.SuccessResponse(response, response.Data);
         }
+
+        public async Task<ServiceResponse<List<ProductSaleCountDto>>> GetProductSaleCounts()
+        {
+            ServiceResponse<List<ProductSaleCountDto>> response = new();
+
+            try
+            {
+                var productSaleCounts = await _orderRepository.GetProductSaleCount();
+                response.Data = productSaleCounts;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching product sale counts");
+                return await response.ErrorResponse(response, "Failed to fetch product sale counts", _logger);
+            }
+
+            return await response.SuccessResponse(response, response.Data);
+        }
+        public async Task<ServiceResponse<List<OrderCountByHourDto>>> GetOrderStatsByHour()
+        {
+            ServiceResponse<List<OrderCountByHourDto>> response = new();
+
+            try
+            {
+                var orderStats = await _orderRepository.GetOrderStatsByHour();
+                response.Data = orderStats;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle the exception
+                return await response.ErrorResponse(response, "Failed to fetch order stats", _logger);
+            }
+
+            return await response.SuccessResponse(response, response.Data);
+        }
+
+
+
     }
 }

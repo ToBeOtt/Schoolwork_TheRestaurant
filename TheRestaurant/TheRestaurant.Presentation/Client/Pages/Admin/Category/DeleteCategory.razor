@@ -14,13 +14,13 @@
             <MudItem xs="12">
 
                 <div class="px-3">
-                    <h3 class="mb-5">Delete Category</h3>
+                    <h3 class="mb-5">Radera kategori</h3>
 
-                    <h5>Do you want to remove Category "@categoryDto.Name" ?</h5>
+                    <h5>Är du säker på att du vill radera "@categoryDto.Name" kategori? </h5>
 
                     <div class="w-100 ">
-                        <a class="btn btn-success" href="Admin/CategoryList">Cancel</a>
-                        <a class="btn btn-danger" onclick="@Delete">Delete</a>
+                        <a class="btn btn-sm btn-success" href="Admin/CategoryList">Nej</a>
+                        <a class="btn btn-sm btn-danger" onclick="@Delete">Ja</a>
                     </div>
 
                 </div>
@@ -41,8 +41,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto>
-                ($"/api/Category/{categoryId}");
+        categoryDto = await HttpClient.GetFromJsonAsync<CategoryDto> ($"/api/Category/{categoryId}");
     }
 
     protected async Task Delete()

@@ -2,6 +2,7 @@
 {
 	public record OrderCountDto(
          string OrderDate,
-         double OrderCount
+         double OrderCount,
+         DateTime Date
         );
 }

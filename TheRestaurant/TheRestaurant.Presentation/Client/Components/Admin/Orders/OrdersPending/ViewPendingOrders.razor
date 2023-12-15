@@ -1,0 +1,114 @@
+﻿@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject ClientOrderService OrderService
+@inject IDialogService DialogService
+
+
+@using TheRestaurant.Contracts.DTOs
+@using TheRestaurant.Contracts.DTOs.OrderDTOs;
+@using TheRestaurant.Presentation.Client.ClientServices;
+
+
+<MudTable Items="@orders" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Nya Order</MudText>
+        <MudSpacer />
+        <MudSwitch @bind-Checked="@filtering" Label="Aktivera Filtrering!" Color="Color.Primary" />
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh Class="fw-bold">Id</MudTh>
+        <MudTh Class="fw-bold"><MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<PendingOrderDto, object>(x=>x.DateTimeOfOrder)">Datum/Tid</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+        <MudTh Class="fw-bold">Kommentar</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.OrderNr</MudTd>
+        <MudTd DataLabel="Id">@context.DateTimeOfOrder.ToShortDateString() / @context.DateTimeOfOrder.ToShortTimeString()</MudTd>
+        <MudTd>
+            <MudSpacer />
+        </MudTd>
+        <MudTd>
+            @context.Comment
+        </MudTd>
+
+        <MudTd>
+
+            <MudButtonGroup Variant="Variant.Filled" OverrideStyles="false">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary"
+                            OnClick="@((e)=> TakeOrder(maxWidth ,context))">Hantera</MudButton>
+                 <MudButton Variant="Variant.Filled" Color="Color.Warning"
+                           OnClick="@((e)=> DeleteOrder(maxWidth ,context))">Ta bort</MudButton>
+             </MudButtonGroup>
+
+         </MudTd>
+     </RowTemplate>
+
+ </MudTable>
+
+
+
+ @code {
+
+    private List<PendingOrderDto> orders;
+    private bool filtering = false;
+
+
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await OrderService.FetchListOfPendingOrders();
+        OrderService.OrdersUpdated += OnOrderUpdated;
+
+    }
+
+    private async void OnOrderUpdated()
+    {
+        orders = await OrderService.FetchListOfPendingOrders();
+        StateHasChanged();
+    }
+
+
+    private async Task TakeOrder(DialogOptions options, PendingOrderDto order)
+    {
+
+        var parameters = new DialogParameters<TakePendingOrder>
+        {
+            { x => x.order, order}
+        };
+
+        var dialog = await DialogService.ShowAsync<TakePendingOrder>("", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+
+            OnOrderUpdated();
+
+        }
+
+    }
+
+    private async Task DeleteOrder(DialogOptions options, PendingOrderDto order)
+    {
+
+        var parameters = new DialogParameters<OrderDeleteDialog>
+        {
+            { x => x.order, order}
+        };
+
+        var dialog = await DialogService.ShowAsync<OrderDeleteDialog>("", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+
+            OnOrderUpdated();
+
+        }
+
+    }
+
+ }

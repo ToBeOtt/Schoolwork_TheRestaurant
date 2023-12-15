@@ -1,0 +1,32 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@inject ClientDashboardServices DashboardServices
+
+<MudChart ChartType=
+    "ChartType.Donut" Width="300px" 
+    Height="300px" 
+    InputData="@saleCounts" @bind-SelectedIndex="index"
+    InputLabels="@productNames">
+    <CustomGraphics>
+        <text class="donut-inner-text" x="47%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="2">Totalt sålda produkter</text>
+        <text class="donut-inner-text" x="47%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="5">@saleCounts.Sum().ToString()</text>
+    </CustomGraphics>
+</MudChart>
+<MudText Typo="Typo.h6">Antal @productNames[@index] sålda: @saleCounts[@index]</MudText>
+
+@code {
+    private int index = -1;
+    private double[] saleCounts;
+    private string[] productNames;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var productSaleCounts = await DashboardServices.GetProductSaleCountAsync();
+        PopulateChartData(productSaleCounts);
+    }
+
+    private void PopulateChartData(List<ProductSaleCountDto> productSaleCounts)
+    {
+        saleCounts = productSaleCounts.Select(p => (double)p.SaleCount).ToArray();
+        productNames = productSaleCounts.Select(p => p.ProductName).ToArray();
+    }
+}

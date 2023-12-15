@@ -1,4 +1,5 @@
-﻿using TheRestaurant.Domain.Entities.Orders;
+﻿using SharedKernel.Application.ServiceResponse;
+using TheRestaurant.Domain.Entities.Orders;
 
 namespace TheRestaurant.Application.Orders.Interfaces
 {
@@ -13,9 +14,14 @@ namespace TheRestaurant.Application.Orders.Interfaces
         // Order-Queries
         Task<Order> GetByIdAsync(int orderId);
         Task<List<Order>> GetAllAsync();
+        Task<List<Order>> GetPendingOrders();
         Task<List<Order>> GetActiveOrders();
         Task<List<Order>> GetFinishedOrders();
-        
+        Task<List<ProductSaleCountDto>> GetProductSaleCount();
+
+        Task<List<OrderCountByHourDto>> GetOrderStatsByHour();
+
+
 
 
         // Order-status handling

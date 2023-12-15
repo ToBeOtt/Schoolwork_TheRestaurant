@@ -70,6 +70,19 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
             await _dbContext.SaveChangesAsync(); 
         }
 
+
+        public async Task<List<Order>> GetPendingOrders()
+        {
+            return await _dbContext.Orders
+                          .Include(x => x.OrderRows)
+                              .ThenInclude(o => o.Product)
+                          .Include(x => x.OrderStatus)
+                          .Include(x => x.Employee)
+                          .Where(x => x.OrderStatus.Status == "Pending" && x.IsDeleted != true)
+                          .ToListAsync();
+        }
+
+
         public async Task<List<Order>> GetActiveOrders()
         {
             return await _dbContext.Orders
@@ -104,5 +117,27 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                                     .Where(x => x.Status == statusName)
                                     .SingleOrDefaultAsync();
         }
+
+        public async Task<List<ProductSaleCountDto>> GetProductSaleCount()
+        {
+            var productSaleCounts = await _dbContext.OrderRows
+                .Where(or => or.ProductId != 0)
+                .Include(or => or.Product) // Ensure Product data is included
+                .GroupBy(or => or.Product.Name)
+                .Select(group => new ProductSaleCountDto(group.Key, group.Count()))
+                .ToListAsync();
+
+            return productSaleCounts;
+        }
+        public async Task<List<OrderCountByHourDto>> GetOrderStatsByHour()
+        {
+            return await _dbContext.Orders
+                .GroupBy(order => order.OrderDate.Hour)
+                .Select(group => new OrderCountByHourDto(group.Key, group.Count()))
+                .ToListAsync();
+        }
+
+
+
     }
 }

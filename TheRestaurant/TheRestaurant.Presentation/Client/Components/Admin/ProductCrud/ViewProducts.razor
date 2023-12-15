@@ -60,31 +60,47 @@
         NavigationManager.NavigateTo($"/admin/product/view/{id}");
     }
 
-    private int productToDeleteId;
+
     private void ShowConfirmation(int id)
     {
-        productToDeleteId = id;
-        deleteProductConfirmation.Show("Är du säker att du vill ta radera den här produkten?", () => DeleteProduct(id));
+        deleteProductConfirmation.Show("Confirmation message", id);
+    }
+
+    private async Task ConfirmDeleteProduct(int id)
+    {
+        await DeleteProduct(id);
     }
 
     private async Task DeleteProduct(int id)
     {
-        id = productToDeleteId;
-        var apiUrl = $"/admin/product/delete/{id}";
+        var apiUrl = $"/admin/products/delete/{id}";
 
-        var request = new HttpRequestMessage(HttpMethod.Put, apiUrl);
-        var response = await HttpClient.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            products = await HttpClient.GetFromJsonAsync<List<ProductDto>>("admin/products");
-        }
+            var request = new HttpRequestMessage(HttpMethod.Put, apiUrl);
+            var response = await HttpClient.SendAsync(request);
 
-        else
+            if (response.IsSuccessStatusCode)
+            {
+                products = await HttpClient.GetFromJsonAsync<List<ProductDto>>("admin/products");
+            }
+
+            else
+            {
+                Error = true;
+                ErrorMessage = "Det gick inte att registrera informationen";
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Failed to delete product. Response content: {responseContent}");
+            }
+        }
+        catch (Exception ex)
         {
             Error = true;
-            ErrorMessage = "Det gick inte att registrera informationen";
+            ErrorMessage = $"An exception occurred: {ex.Message}";
+            Console.WriteLine($"An exception occurred: {ex}");
         }
+        
+        
     }
 }
 

@@ -23,7 +23,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Dashboard
 		public async Task<List<OrderCountResponse>> GetLastDaysOrderCounts(DateTime fromDate)
 		{
             var result = await _context.Orders
-					.Where(o => o.OrderDate >= fromDate.AddDays(-6) && o.OrderDate <= fromDate)
+					.Where(o => o.OrderDate >= fromDate.AddDays(-1) && o.OrderDate <= fromDate)
 					.GroupBy(o => o.OrderDate.Date)
 					.OrderBy(g => g.Key)
 					.Select(g => new OrderCountResponse(
@@ -35,9 +35,9 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Dashboard
 			return result;
 		}
 
-        Task<List<OrderCountResponse>> IDashboardRepository.GetLastDaysOrders(DateTime fromDate)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<List<OrderCountResponse>> IDashboardRepository.GetLastDaysOrders(DateTime fromDate)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

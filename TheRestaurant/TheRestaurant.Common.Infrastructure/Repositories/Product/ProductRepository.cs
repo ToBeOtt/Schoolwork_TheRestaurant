@@ -56,6 +56,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
         public async Task<List<Domain.Entities.Menu.Product>> GetAllEagerLoadedAsync()
         {
             return await _context.Products
+                .Where(p => p.IsDeleted != true)
                 .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
                 .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
                 .ToListAsync();
@@ -66,10 +67,10 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
             return await _context.Categories.Select(x => x.Name).ToListAsync();
         }
 
-        public async Task<VAT> GetVATByName(string name)
+        public async Task<VAT> GetVATById(int id)
         {
             return await _context.VATs
-                            .Where(x => x.Name == name)
+                            .Where(x => x.Id == id)
                             .SingleOrDefaultAsync();
         }
     }
