@@ -20,7 +20,7 @@
     <HeaderContent>
         <MudTh Class="fw-bold">Id</MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<PendingOrderDto, object>(x=>x.DateTimeOfOrder)">Datum/Tid</MudTableSortLabel></MudTh>
-       <MudTh></MudTh>
+        <MudTh></MudTh>
         <MudTh Class="fw-bold">Kommentar</MudTh>
     </HeaderContent>
     <RowTemplate>
@@ -34,8 +34,14 @@
         </MudTd>
 
         <MudTd>
-            <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary"
-                        OnClick="@((e)=> TakeOrder(maxWidth ,context))">Hantera order</MudButton>
+
+            <MudButtonGroup Variant="Variant.Filled" OverrideStyles="false">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary"
+                            OnClick="@((e)=> TakeOrder(maxWidth ,context))">Hantera</MudButton>
+                 <MudButton Variant="Variant.Filled" Color="Color.Warning"
+                           OnClick="@((e)=> DeleteOrder(maxWidth ,context))">Ta bort</MudButton>
+             </MudButtonGroup>
+
          </MudTd>
      </RowTemplate>
 
@@ -78,7 +84,27 @@
 
         if (!result.Cancelled)
         {
-            
+
+            OnOrderUpdated();
+
+        }
+
+    }
+
+    private async Task DeleteOrder(DialogOptions options, PendingOrderDto order)
+    {
+
+        var parameters = new DialogParameters<OrderDeleteDialog>
+        {
+            { x => x.order, order}
+        };
+
+        var dialog = await DialogService.ShowAsync<OrderDeleteDialog>("", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+
             OnOrderUpdated();
 
         }
