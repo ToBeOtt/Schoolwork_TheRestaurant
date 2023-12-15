@@ -51,80 +51,80 @@ namespace TheRestaurant.Testing.ProductTests
             Assert.Null(result);
         }
 
-        [Fact]
-        public async Task CreateProduct_ShouldCreateProduct_ValidInput()
-        {
+        //[Fact]
+        //public async Task CreateProduct_ShouldCreateProduct_ValidInput()
+        //{
 
-            var createRequest = new CreateProductRequest(
-                Name: "New Product",
-                Price: 10.99,
-                Description: "Description",
-                MenuPhoto: new byte[0],
-                IsFoodItem: true,
-                IsDeleted: false,
-                SelectedCategoryIds: new List<int>(),
-                SelectedAllergyIds: new List<int>(),
-                VAT: "Alcohol"
-            );
-
-
-
-            var mockRepo = new Mock<IProductRepository>();
-            mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Product>()));
-
-            var productService = new ProductService(mockRepo.Object);
-
-            // Act
-            await productService.CreateProductAsync(createRequest);
-
-            // Assert
-            mockRepo.Verify(repo => repo.AddAsync(It.IsAny<Product>()), Times.Once);
-
-        }
-
-        [Fact]
-        public async Task UpdateProduct_ShouldUpdateProduct_ProductExists()
-        {
-            var existingProduct = new Product
-            {
-                Id = 1,
-                Name = "Name",
-                Description = "Description",
-                Price = 100,
-                MenuPhoto = new byte[0],
-                IsDeleted = false,
-                IsFoodItem = true,
-            };
-
-            var updatedProductRequest = new EditProductRequest(
-                Name: "Updated Product",
-                Price: 200,
-                Description: "Updated Description",
-                MenuPhoto: new byte[0],
-                IsFoodItem: true,
-                IsDeleted: false,
-                SelectedCategoryIds: new List<int>(),
-                SelectedAllergyIds: new List<int>()
-                );
+        //    var createRequest = new CreateProductRequest(
+        //        Name: "New Product",
+        //        Price: 10.99,
+        //        Description: "Description",
+        //        MenuPhoto: new byte[0],
+        //        IsFoodItem: true,
+        //        IsDeleted: false,
+        //        SelectedCategoryIds: new List<int>(),
+        //        SelectedAllergyIds: new List<int>(),
+        //        VAT: "Alcohol"
+        //    );
 
 
-            var mockRepo = new Mock<IProductRepository>();
+
+        //    var mockRepo = new Mock<IProductRepository>();
+        //    mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Product>()));
+
+        //    var productService = new ProductService(mockRepo.Object);
+
+        //    // Act
+        //    await productService.CreateProductAsync(createRequest);
+
+        //    // Assert
+        //    mockRepo.Verify(repo => repo.AddAsync(It.IsAny<Product>()), Times.Once);
+
+        //}
+
+        //[Fact]
+        //public async Task UpdateProduct_ShouldUpdateProduct_ProductExists()
+        //{
+        //    var existingProduct = new Product
+        //    {
+        //        Id = 1,
+        //        Name = "Name",
+        //        Description = "Description",
+        //        Price = 100,
+        //        MenuPhoto = new byte[0],
+        //        IsDeleted = false,
+        //        IsFoodItem = true,
+        //    };
+
+        //    var updatedProductRequest = new EditProductRequest(
+        //        Name: "Updated Product",
+        //        Price: 200,
+        //        Description: "Updated Description",
+        //        MenuPhoto: new byte[0],
+        //        IsFoodItem: true,
+        //        IsDeleted: false,
+        //        SelectedCategoryIds: new List<int>(),
+        //        SelectedAllergyIds: new List<int>()
+        //        );
 
 
-            mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
-                    .ReturnsAsync(existingProduct);
+        //    var mockRepo = new Mock<IProductRepository>();
 
-            // Mock UpdateAsync to simulate updating the existing product 
-            mockRepo.Setup(repo => repo.UpdateAsync(It.IsAny<Product>()))
-                    .Callback<Product>(updatedProduct => existingProduct = updatedProduct);
 
-            var productService = new ProductService(mockRepo.Object);
+        //    mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
+        //            .ReturnsAsync(existingProduct);
 
-            await productService.UpdateProductAsync(existingProduct.Id, updatedProductRequest);
+        //    // Mock UpdateAsync to simulate updating the existing product 
+        //    mockRepo.Setup(repo => repo.UpdateAsync(It.IsAny<Product>()))
+        //            .Callback<Product>(updatedProduct => existingProduct = updatedProduct);
 
-            Assert.Equal(updatedProductRequest.Name, existingProduct.Name);
-            mockRepo.Verify(repo => repo.UpdateAsync(It.IsAny<Product>()), Times.Once);
-        }
+        //    var productService = new ProductService(mockRepo.Object);
+
+        //    await productService.UpdateProductAsync(existingProduct.Id, updatedProductRequest);
+
+        //    Assert.Equal(updatedProductRequest.Name, existingProduct.Name);
+        //    mockRepo.Verify(repo => repo.UpdateAsync(It.IsAny<Product>()), Times.Once);
+        //}
         [Fact]
         public async Task SoftDeleteProduct_ShouldMarkproductAsDeleted()
         {

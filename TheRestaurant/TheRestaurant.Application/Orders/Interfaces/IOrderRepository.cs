@@ -1,5 +1,4 @@
-﻿using SharedKernel.Application.ServiceResponse;
-using TheRestaurant.Domain.Entities.Orders;
+﻿using TheRestaurant.Domain.Entities.Orders;
 
 namespace TheRestaurant.Application.Orders.Interfaces
 {

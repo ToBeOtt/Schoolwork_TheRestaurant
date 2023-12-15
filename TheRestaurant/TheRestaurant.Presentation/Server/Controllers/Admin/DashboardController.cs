@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SharedKernel.Application.ServiceResponse;
 using TheRestaurant.Application.Dashboard;
-using TheRestaurant.Application.Employees;
 using TheRestaurant.Application.Orders;
-using TheRestaurant.Application.Orders.Interfaces;
-using TheRestaurant.Presentation.Client.ClientServices;
-using TheRestaurant.Presentation.Shared.Requests;
+using TheRestaurant.Contracts.Responses.ServiceResponse;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
