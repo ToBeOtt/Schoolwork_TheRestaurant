@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
 using TheRestaurant.Application.Cart.Interfaces;
 using TheRestaurant.Contracts.Responses;
+using TheRestaurant.Contracts.Responses.ServiceResponse;
 
 namespace TheRestaurant.Application.Cart
 {

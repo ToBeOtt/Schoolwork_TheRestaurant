@@ -1,11 +1,11 @@
-﻿using SharedKernel.Application.ServiceResponse;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheRestaurant.Application.Services.ProductServices.DTO;
 using TheRestaurant.Contracts.Requests.Product;
+using TheRestaurant.Contracts.Responses.ServiceResponse;
 using TheRestaurant.Domain.Entities.Menu;
 
 namespace TheRestaurant.Application.Interfaces.IProduct

@@ -97,10 +97,10 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             return totalPriceToPay;
         }
 
-        public void ClearCart()
+        public async Task ClearCart()
         {
             _localStorage.RemoveItemAsync("CartItems");
-            _navigationManager.NavigateTo("/Cart");
+            await UpdateCartService();
         }
 
         public async Task<bool> DeleteCartItem(int itemToRemove)

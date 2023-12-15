@@ -21,7 +21,6 @@
     <ProjectReference Include="..\..\TheRestaurant.Authentication\TheRestaurant.Authentication.csproj" />
     <ProjectReference Include="..\..\TheRestaurant.Common.Infrastructure\TheRestaurant.Common.Infrastructure.csproj" />
     <ProjectReference Include="..\..\TheRestaurant.Contracts\TheRestaurant.Contracts.csproj" />
-    <ProjectReference Include="..\..\TheRestaurant.SharedKernel\TheRestaurant.SharedKernel.csproj" />
     <ProjectReference Include="..\Client\TheRestaurant.Presentation.Client.csproj" />
     <ProjectReference Include="..\Shared\TheRestaurant.Presentation.Shared.csproj" />
   </ItemGroup>

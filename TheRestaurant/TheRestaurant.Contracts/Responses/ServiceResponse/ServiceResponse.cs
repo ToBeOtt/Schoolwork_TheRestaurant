@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace SharedKernel.Application.ServiceResponse
+namespace TheRestaurant.Contracts.Responses.ServiceResponse
 {
     public class ServiceResponse<T>
     {
         public bool IsSuccess { get; set; } = true;
         public T? Data { get; set; }
-        public string? ErrorMessage{ get; set; }
+        public string? ErrorMessage { get; set; }
 
         public virtual async Task<ServiceResponse<T>> ErrorResponse
-            (ServiceResponse<T> response, string message, ILogger logger, string? logMessage = null) 
+            (ServiceResponse<T> response, string message, ILogger logger, string? logMessage = null)
         {
             response.IsSuccess = false;
             response.ErrorMessage = message;
@@ -25,11 +25,11 @@ namespace SharedKernel.Application.ServiceResponse
          (ServiceResponse<T> response, T data = default)
         {
             response.IsSuccess = true;
-            if(response.Data == null)
+            if (response.Data == null)
             {
                 response.Data = data;
             }
-           
+
             return response;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
 using TheRestaurant.Authentication.Interfaces;
+using TheRestaurant.Contracts.Responses.ServiceResponse;
 using static TheRestaurant.Authentication.Services.AuthenticationServices.DTO.AuthenticationDTO;
 
 namespace TheRestaurant.Authentication.Services.AuthenticationServices

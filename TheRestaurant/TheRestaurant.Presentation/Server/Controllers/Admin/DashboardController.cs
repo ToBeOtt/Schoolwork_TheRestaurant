@@ -10,7 +10,7 @@ using TheRestaurant.Presentation.Shared.Requests;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
-	[ApiController]
+    [ApiController]
     [Route("Dashboard")]
     public class DashboardController : ControllerBase
     {
