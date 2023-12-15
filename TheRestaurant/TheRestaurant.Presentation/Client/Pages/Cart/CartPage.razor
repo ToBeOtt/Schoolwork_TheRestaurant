@@ -111,7 +111,7 @@
 
  
 
-    @code {
+@code {
     private List<CartDto> CartItems = new();
 
     private List<AggregatedCartDto> AggregatedCartItemsList = new();
@@ -151,9 +151,12 @@
         }
     }
 
-    private void ActivateClearCart()
+    private async Task ActivateClearCart()
     {
-        CartService.ClearCart();
+        await CartService.ClearCart();
+        AggregatedCartItemsList = null;
+        StateHasChanged();
+
     }
 
     private bool OrderIsMade;
