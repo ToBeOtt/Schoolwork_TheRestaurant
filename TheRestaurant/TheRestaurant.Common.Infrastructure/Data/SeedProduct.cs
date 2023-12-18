@@ -30,7 +30,10 @@ public static class ProductSeeds
             new Product { Id = 14, Name = "Husets röda vin", Description = "Välbalanserat rödvin från husets urval", PriceBeforeVAT = 60, Price = Math.Round(60 * 1.25), IsFoodItem = false, IsDeleted = false, VATId = 3 },
             new Product { Id = 15, Name = "Kaffe mugg", Description = "Isolerad resemugg", PriceBeforeVAT = 120, Price = Math.Round(120 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2 },
             new Product { Id = 16, Name ="Kokbok", Description = "Kokbok som innehåller alla våra goda recept", PriceBeforeVAT = 99, Price = Math.Round(99 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2 },
-            new Product { Id = 17, Name = "Såspanna", Description = "Högkvalitativ såspanna perfekt för alla typer av såser", PriceBeforeVAT = 450, Price = Math.Round(450 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2 }
+            new Product { Id = 17, Name = "Såspanna", Description = "Högkvalitativ såspanna perfekt för alla typer av såser", PriceBeforeVAT = 450, Price = Math.Round(450 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2 },
+            new Product { Id = 18, Name = "Svart T-shirt", Description = "Elegant svart T-shirt i högkvalitativt material", PriceBeforeVAT = 200, Price = Math.Round(200 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2, },
+            new Product { Id = 19, Name = "Vit T-shirt", Description = "Klassisk vit T-shirt i mjukt och bekvämt material", PriceBeforeVAT = 200, Price = Math.Round(200 * 1.06), IsFoodItem = false, IsDeleted = false, VATId = 2 }
+
         );
 
         modelBuilder.Entity<ProductCategory>().HasData(
@@ -74,7 +77,9 @@ public static class ProductSeeds
             // Categories for merch
             new ProductCategory { Id = 16, ProductId = 15, CategoryId=18},
             new ProductCategory { Id = 17, ProductId = 16, CategoryId=18},
-            new ProductCategory { Id = 18, ProductId = 17, CategoryId=18}
+            new ProductCategory { Id = 18, ProductId = 17, CategoryId=18},
+            new ProductCategory { Id = 19, ProductId = 18, CategoryId=20},
+            new ProductCategory { Id = 20, ProductId = 19, CategoryId=20}
         );
 
         modelBuilder.Entity<ProductAllergy>().HasData(
