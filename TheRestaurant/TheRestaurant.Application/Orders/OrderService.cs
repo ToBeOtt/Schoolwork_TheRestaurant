@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using TheRestaurant.Application.Interfaces.IOrderStatus;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Orders.Interfaces;
 using TheRestaurant.Contracts.Requests.Order;
@@ -14,15 +15,18 @@ namespace TheRestaurant.Application.Orders
         private readonly ILogger<OrderService> _logger;
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IOrderStatusRepository _orderStatusRepository;
 
         public OrderService(
             ILogger<OrderService> logger,
             IOrderRepository orderRepository,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IOrderStatusRepository orderStatusRepository)
         {
             _logger = logger;
             _orderRepository = orderRepository;
             _productRepository = productRepository;
+            _orderStatusRepository = orderStatusRepository;
         }
         public async Task<ServiceResponse<int>> CreateOrderAsync(CreateOrderRequest request)
         {
@@ -30,7 +34,7 @@ namespace TheRestaurant.Application.Orders
 
             Order order = new();
             order.OrderDate = DateTime.Now;
-            order.OrderStatus = await _orderRepository.GetOrderStatusByName("Pending");
+            order.OrderStatus = await _orderStatusRepository.GetAsync("Pending");
             order.OrderComment = request.Comment;
             var persistedOrder = await _orderRepository.CreateAsync(order);
             if (persistedOrder == null)
@@ -92,7 +96,7 @@ namespace TheRestaurant.Application.Orders
             var order = await _orderRepository.GetByIdAsync(request.Id);
 
             //Set new status
-            var orderStatus = await _orderRepository.GetOrderStatusByName(request.OrderStatus);
+            var orderStatus = await _orderStatusRepository.GetAsync(request.OrderStatus);
             order.OrderStatus = orderStatus;
 
 

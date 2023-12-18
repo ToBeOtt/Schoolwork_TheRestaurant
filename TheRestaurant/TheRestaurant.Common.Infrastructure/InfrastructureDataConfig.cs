@@ -26,6 +26,8 @@ using TheRestaurant.Common.Infrastructure.Repositories.Dashboard;
 using TheRestaurant.Application.Interfaces.ICategory;
 using TheRestaurant.Application.Interfaces.IVat;
 using TheRestaurant.Common.Infrastructure.Repositories.Vat;
+using TheRestaurant.Application.Interfaces.IOrderStatus;
+using TheRestaurant.Common.Infrastructure.Repositories.OrderStatus;
 
 namespace Common.Infrastructure
 {
@@ -54,6 +56,7 @@ namespace Common.Infrastructure
             services.AddTransient<IRegistrationRepository, RegistrationRepository>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
 
+            services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
             services.AddTransient<ICartRepository, CartRepository>();
             services.AddTransient<IDashboardRepository, DashboardRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
