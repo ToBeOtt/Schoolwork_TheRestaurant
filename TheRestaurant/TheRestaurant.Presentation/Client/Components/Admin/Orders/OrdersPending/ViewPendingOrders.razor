@@ -12,16 +12,13 @@
 <MudTable Items="@orders" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
 
     <ToolBarContent>
-        <MudText 
-            Class="py-6 px-5"
-            Typo="Typo.h5">Nya Ordrar
-        </MudText>
+        <MudText Typo="Typo.h6">Nya Order</MudText>
         <MudSpacer />
         <MudSwitch @bind-Checked="@filtering" Label="Aktivera Filtrering!" Color="Color.Primary" />
     </ToolBarContent>
 
     <HeaderContent>
-        <MudTh Class="fw-bold">OrderNr</MudTh>
+        <MudTh Class="fw-bold">Id</MudTh>
         <MudTh Class="fw-bold"><MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<PendingOrderDto, object>(x=>x.DateTimeOfOrder)">Datum/Tid</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
         <MudTh Class="fw-bold">Kommentar</MudTh>

@@ -13,7 +13,7 @@
 <MudTable Items="@allergies" Dense=true Hover=true Bordered=false Striped=false Elevation="0" Loading=@loading>
 
     <ToolBarContent>
-        <MudText Typo="Typo.h5">Allergier</MudText>
+        <MudText Typo="Typo.h6">Allergi Typer</MudText>
 
         <MudSpacer />
 
@@ -24,11 +24,9 @@
 
     <HeaderContent>
 
-        <MudTh Class="fw-bold">Id</MudTh>
-        <MudTh Class="fw-bold"> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<AllergyDto, object>(x=>x.Name)">Namn</MudTableSortLabel></MudTh>
+        <MudTh>Id</MudTh>
+        <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<AllergyDto, object>(x=>x.Name)">Namn</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
-
-        <MudTh Class="fw-bold">Synlighet</MudTh>
         <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<AllergyDto, object>(x=>x.IsDeleted)">Synlighet</MudTableSortLabel></MudTh>
 
         @if (IsManager)

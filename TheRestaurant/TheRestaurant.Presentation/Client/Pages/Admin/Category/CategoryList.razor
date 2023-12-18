@@ -4,119 +4,30 @@
 @using TheRestaurant.Presentation.Client.Components;
 @using TheRestaurant.Presentation.Client.Shared.Admin
 @inject HttpClient HttpClient
-@inject NavigationManager Navigation
 
 <AdminLayout>
     <AdminContent>
         <MudGrid Spacing="2" Justify="Justify.Center">
 
             <MudItem xs="12">
-                
+
+                <div class="px-3 mb-5">
+
+                    <div class=" d-flex justify-content-between mb-3">
+                        <h3>Kategorier</h3>
+
+                        <a class="btn btn-outline-success" href="/Admin/AddCategory">Lägg till</a>
+                    </div>
+
+
                     @if (categories != null)
                     {
-                    <MudTable 
-                        Items="@categories"
-                        Dense=true
-                        Hover=true
-                        Bordered=false
-                        Striped=false
-                        Elevation="0">
-
-                        <ToolBarContent>
-
-                            <MudItem xs="6">
-                                <MudText Class="py-6 px-5"
-                                            Typo="Typo.h5">
-                                    Moms
-                                </MudText>
-                            </MudItem>
-
-                        </ToolBarContent>
-
-                        <HeaderContent>
-
-                            <MudTh Class="fw-bold">Id</MudTh>
-                            <MudTh Class="fw-bold">Namn</MudTh>
-                            <MudTh Class="fw-bold">Aktiv</MudTh>
-                            <MudTh>
-                                <MudButton 
-                                    Variant="Variant.Filled"
-                                    Color="Color.Secondary" 
-                                    OnClick="() => AddCategory()">Ny kategori
-                                </MudButton>
-                             </MudTh>
-
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Id">@context.Id</MudTd>
-                            <MudTd DataLabel="Namn">@context.Name</MudTd>
-
-                            @if (context.IsDeleted)
-                            {
-                                <MudTd DataLabel="unactive">
-                                    <MudIcon
-                                        Icon="@Icons.Material.Filled.Close"
-                                        Color="Color.Error"/>
-                                </MudTd>
-                            }
-                            else
-                            {
-                                <MudTd DataLabel="active">
-                                    <MudIcon 
-                                        Icon="@Icons.Material.Filled.Check"
-                                        Color="Color.Success" />
-                                </MudTd>
-                            }
-                                
-                            <MudTd>
-                                <MudButtonGroup Variant="Variant.Filled"
-                                                Color="Color.Primary"
-                                                        DisableElevation>
-                                    <MudTooltip Text="Redigera kategori">
-                                        <MudIconButton Icon="@Icons.Material.Filled.EditNote"
-                                            Variant="Variant.Filled"
-                                            Color="Color.Primary"
-                                            DisableElevation
-                                            OnClick="() => EditCategory(context.Id)" />
-                                     </MudTooltip>
-                                     @if (context.IsDeleted)
-                                     {
-                                          <MudTooltip Text="Aktivera kategori">
-                                            <MudIconButton 
-                                                Icon="@Icons.Material.Filled.Upgrade"
-                                                Variant="Variant.Filled"
-                                                Color="Color.Primary"
-                                                DisableElevation
-                                                OnClick="() => DeactivateCategory(context.Id)" />
-                                         </MudTooltip>
-                                    }
-                                    else
-                                    {
-                                        <MudTooltip Text="Inaktivera kategori">
-                                            <MudIconButton 
-                                                Icon="@Icons.Material.Filled.Delete"
-                                                Variant="Variant.Filled"
-                                                Color="Color.Primary"
-                                            
-                                                DisableElevation
-                                                OnClick="() => ActivateCategory(context.Id)" />
-                                        </MudTooltip>
-                                    }
-
-
-                                </MudButtonGroup>
-                            </MudTd>
-
-                         </RowTemplate>
-                     </MudTable>
-
-
-                       @*  <table class="table table-bordered">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>Id</th>
                                     <th>Namn</th>
-                                    <th>Aktiv?</th>
+                                    <th>Är Aktiv</th>
                                     <th>Inställningar</th>
                                 </tr>
                             </thead>
@@ -136,39 +47,21 @@
                                         }
 
                                         <td>
-                                        <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
-                                         <MudIconButton 
-                                             Icon="@Icons.Material.Filled.EditNote" 
-                                             Variant="Variant.Filled" 
-                                             Color="Color.Primary"
-                                             OnClick="@((e) => EditCategory(item.Id))"
-                                             DisableElevation
-                                             />
+                                            <a class="btn btn-sm btn-outline-warning" href="/Admin/EditCategory/@item.Id">Redigera</a>
                                             @if (item.IsDeleted)
                                             {
-                                                <MudIconButton 
-                                                    Icon="@Icons.Material.Outlined.Upgrade"
-                                                    Variant="Variant.Filled"
-                                                    Color="Color.Primary"
-                                                    OnClick="@((e) => ActivateCategory(item.Id))"
-                                                    DisableElevation />
+                                                <a class="btn btn-sm btn-outline-success mx-1" href="/Admin/ActiveCategory/@item.Id">Aktiv</a>
                                             }
                                             else
                                             {
-                                                <MudIconButton 
-                                                    Icon="@Icons.Material.Filled.Delete"
-                                                    Variant="Variant.Filled"
-                                                    Color="Color.Primary"
-                                                    OnClick="@((e) => DeactivateCategory(item.Id))"
-                                                    DisableElevation />
+                                                <a class="btn btn-sm btn-outline-danger mx-1" href="/Admin/InactiveCategory/@item.Id">Inaktiv</a>
                                             }
-                                        </MudButtonGroup>
-                                        
+                                            <a class="btn btn-sm btn-danger d-none" href="/Admin/DeleteCategory/@item.Id">Radera</a>
                                         </td>
                                     </tr>
                                 }
                             </tbody>
-                        </table> *@
+                        </table>
                     }
                     else
                     {
@@ -177,6 +70,7 @@
                         </div>
                     }
 
+                </div>
                 <br />
                 <br />
 
@@ -194,25 +88,5 @@
         categories = await HttpClient.GetFromJsonAsync<CategoryDto[]>("api/Category");
     }
 
-
-    private async Task ActivateCategory(int id)
-    {
-        Navigation.NavigateTo($"/Admin/ActiveCategory/{id}");
-    }
-    
-    private async Task DeactivateCategory(int id)
-    {
-        Navigation.NavigateTo($"/Admin/InactiveCategory/{id}");
-    }
-   
-    private async Task EditCategory(int id)
-    {
-        Navigation.NavigateTo($"Admin/EditCategory/{id}");
-    }
-
-    private async Task AddCategory()
-    {
-        Navigation.NavigateTo("Admin/AddCategory");
-    }
 }
 
