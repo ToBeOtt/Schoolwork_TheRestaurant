@@ -39,7 +39,7 @@
 
     private async void AllergyUpdate()
     {
-        var request = new AllergyRequest(Name: allergy.Name);
+        var request = new AllergyRequest(Name: allergy.Name, IsDeleted: allergy.IsDeleted);
         HttpResponseMessage response = await HttpClient.PutAsJsonAsync($"/api/allergy/edit/{allergy.Id}", request);
 
         if (response.IsSuccessStatusCode)
