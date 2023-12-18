@@ -9,48 +9,75 @@
         <MudGrid Spacing="2" Justify="Justify.Center">
 
             <MudItem xs="12">
-
-                <div class="px-3 mb-5">
-
-                    <div class="d-flex justify-content-between mb-3">
-                        <h3>Moms Lista</h3>
-
-                        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="NavigateToCreateVat">Create New</MudButton>
-                    </div>
-
+  
                     @if (vats != null && vats.Count > 0)
                     {
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Namn</th>
-                                    <th>Adjustment</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var vat in vats)
-                                {
-                                    <tr>
-                                        <td>@vat.Id</td>
-                                        <td>@vat.Name</td>
-                                        <td>@vat.Adjustment</td>
-                                        <td>
-                                            <MudButton Color="Color.Secondary" Variant="Variant.Outlined" OnClick="() => NavigateToEditVat(vat.Id)">Edit</MudButton>
-                                            <MudButton Color="Color.Secondary" Variant="Variant.Outlined" OnClick="() => DeleteVat(vat.Id)">Radera</MudButton>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                    <MudTable 
+                        Items="@vats"
+                        Dense=true 
+                        Hover=true 
+                        Bordered=false 
+                        Striped=false 
+                        Elevation="0" 
+                        >
+
+                        <ToolBarContent>
+                            <MudText Class="py-6 px-5"
+                                        Typo="Typo.h5">
+                                Moms
+                            </MudText> 
+                        </ToolBarContent>
+
+                        <HeaderContent>
+
+                            <MudTh Class="fw-bold">Id</MudTh>
+                            <MudTh Class="fw-bold">Varor</MudTh>
+                            <MudTh Class="fw-bold">Momssats</MudTh>
+                            <MudTh>
+                                <MudButton Variant="Variant.Filled"
+                                           Color="Color.Secondary"
+                                           OnClick="() => NavigateToCreateVat()">
+                                    Ny moms
+                                </MudButton>
+                            </MudTh>
+                            
+
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Id">@context.Id</MudTd>
+                            <MudTd DataLabel="Namn">@context.Name</MudTd>
+                            <MudTd DataLabel="Adjustment">@context.Adjustment</MudTd>
+                            <MudTd>
+                                <MudButtonGroup 
+                                    Variant="Variant.Filled" 
+                                    Color="Color.Primary" 
+                                    DisableElevation>
+
+                                    <MudIconButton 
+                                        Icon="@Icons.Material.Filled.EditNote" 
+                                        Variant="Variant.Filled" 
+                                        Color="Color.Primary" 
+                                        DisableElevation
+                                        OnClick="() => NavigateToEditVat(context.Id)" />
+
+                                    <MudIconButton 
+                                        Icon="@Icons.Material.Filled.Delete" 
+                                        Variant="Variant.Filled" 
+                                        Color="Color.Primary" 
+                                        DisableElevation
+                                        OnClick="() => DeleteVat(context.Id)" />
+
+                                </MudButtonGroup>
+                                </MudTd>
+         
+                        </RowTemplate>
+                    </MudTable>
                     }
+
                     else
                     {
                         <MudText Typo="Typo.body1">Hittade ingen moms</MudText>
                     }
-
-                </div>
 
             </MudItem>
 
@@ -84,11 +111,6 @@
             vats = await HttpClient.GetFromJsonAsync<List<VATDto>>("admin/vat");
             StateHasChanged();
         }
-        else
-        {
-            
-        }
-
     }
 
 

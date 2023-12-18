@@ -13,32 +13,17 @@
         <MudNavLink Href="/Admin/Dashboard/index" Icon="@Icons.Material.Filled.Dashboard" ActiveClass="active-link">Dashboard</MudNavLink>
 
         @*  Order *@
-        <MudNavGroup Title="Ordrar" Icon="@Icons.Material.Filled.Receipt" Expanded="true">
-            @*
-            <MudNavGroup Title="Ej påbörjade" Icon="@Icons.Material.Filled.AdminPanelSettings" Expanded="false">
-                <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.Edit" ActiveClass="active-link">Ändra order</MudNavLink>
-                <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever" ActiveClass="active-link">Ta bort</MudNavLink>
-            </MudNavGroup>
-            *@
-
+        <MudNavGroup Title="Ordrar" Icon="@Icons.Material.Filled.Receipt" Expanded="false">
             <MudNavLink Href="/admin/orders/pending" Icon="@Icons.Material.Filled.PendingActions" ActiveClass="active-link">Nya</MudNavLink>
             <MudNavLink Href="/admin/orders/active" Icon="@Icons.Material.Filled.Autorenew" ActiveClass="active-link">Pågående</MudNavLink>
             <MudNavLink Href="/admin/orders/finished" Icon="@Icons.Material.Filled.Done" ActiveClass="active-link">Avslutade</MudNavLink>
-           @* <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever" ActiveClass="active-link">Ta bort</MudNavLink> *@
         </MudNavGroup>
 
         @*Products*@
-        <MudNavGroup Title="Produkter" Icon="@Icons.Material.Filled.ViewList" Expanded="false">
-            <MudNavLink Href="admin/product/view" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa produkter</MudNavLink>
-            <MudNavLink Href="admin/product/create" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
-        </MudNavGroup>
+        <MudNavLink Icon="@Icons.Material.Filled.ViewList" Href="admin/product/view" ActiveClass="active-link">Produkter</MudNavLink>
                     
-
         @* Categories *@
-        <MudNavGroup Title="Kategorier" Icon="@Icons.Material.Filled.Folder" Expanded="false">
-            <MudNavLink Href="/Admin/CategoryList" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa kategorier</MudNavLink>
-            <MudNavLink Href="/Admin/AddCategory" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
-        </MudNavGroup>
+        <MudNavLink Icon="@Icons.Material.Filled.Folder" Href="/Admin/CategoryList" ActiveClass="active-link">Kategorier</MudNavLink>
 
         @* Allergies *@
         <MudNavLink Icon="@Icons.Material.Filled.HealthAndSafety" Href="/admin/allergy/view" ActiveClass="active-link">Allergier</MudNavLink>
@@ -48,10 +33,6 @@
 
         @* Emloyees *@
         <MudNavLink Href="/admin/employees/Index" Icon="@Icons.Material.Filled.People" ActiveClass="active-link">Anställda</MudNavLink>
-
-        @* Receipts *@
-        <MudNavLink Href="/billing" Icon="@Icons.Material.Filled.Receipt" ActiveClass="active-link">Kvitton</MudNavLink>
-
 
 
     </MudNavMenu>
