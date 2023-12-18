@@ -27,4 +27,8 @@
     <ProjectReference Include="..\TheRestaurant.Domain\TheRestaurant.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UnitTests\TheRestaurant.Application.UnitTests\" />
+  </ItemGroup>
+
 </Project>
