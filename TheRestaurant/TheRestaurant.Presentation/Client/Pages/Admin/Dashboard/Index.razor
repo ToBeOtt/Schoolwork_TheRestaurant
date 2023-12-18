@@ -8,39 +8,32 @@
     <AdminContent>
         <MudGrid>
 
-@* List-chart for orders 
+List-chart for orders 
             <MudItem xs="12">
                 <MudPaper 
                     Elevation="0"
                     Class="d-flex align-center justify-center mud-width-full py-3">
-
-                        <OrderListChart />
-
+                    <OrderChartByDate />
                 </MudPaper>
-            </MudItem>*@
-
+            </MudItem> 
+Produkter sålda.
             <MudItem xs="6">
                 <MudPaper Elevation="0"
                           Class="d-flex align-center justify-center py-3">
-
                     <ProductDonutChart />
-
                 </MudPaper>
-            </MudItem>
-@* Bar chart for Orders *@
+            </MudItem> 
+
+Välj en dag att för att se hur många ordrar som lades den dagen samt vilka tider de lades.
             <MudItem xs="12">
                 <MudPaper Elevation="0"
                         Class="d-flex align-center justify-center mud-width-full py-3">
-                    <OrderLineChart />
+                    <OrderChartByDay />
                 </MudPaper>
-            </MudItem>
+            </MudItem> 
         </MudGrid>
 
 
-        
-
-        
-   
     </AdminContent>
 </AdminLayout>
 

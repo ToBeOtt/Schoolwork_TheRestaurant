@@ -1,0 +1,43 @@
+﻿@using TheRestaurant.Presentation.Client.ClientServices
+@inject ClientDashboardServices DashboardService
+
+<div>
+    <MudDatePicker @bind-Date="orderStartDate" Label="Start Date" ValueChanged="(date) => orderStartDate = date" MinDate="minDate" />
+    <MudDatePicker @bind-Date="orderEndDate" Label="End Date" ValueChanged="(date) => orderEndDate = date" MaxDate="maxDate" />
+    <MudButton OnClick="ReloadChart">Reload Chart</MudButton>
+    <MudChart 
+        ChartType="ChartType.Bar"
+        ChartSeries="@Series"
+        XAxisLabels="@XAxisLabels"
+        Width="100%"
+        Height="350px">
+    </MudChart>
+</div>
+@code {
+    private DateTime? orderStartDate;
+    private DateTime? orderEndDate;
+    DateTime minDate = DateTime.Today.AddMonths(-1);
+    DateTime maxDate = DateTime.Today.AddDays(1);
+
+    public List<ChartSeries> Series = new List<ChartSeries>();
+
+    public string[] XAxisLabels { get; set; }
+
+    protected async Task ReloadChart()
+    {
+        var data = await DashboardService.GetOrderStatsByDateRange(orderStartDate.Value, orderEndDate.Value);
+
+        // Map the data to the Series and XAxisLabels properties
+        Series = new List<ChartSeries>
+        {
+            new ChartSeries
+            {
+                Name = "Orders",
+                Data = data.Select(d => d.OrderCount).ToArray()
+            }
+        };
+
+        XAxisLabels = data.Select(d => $"{d.Date.ToString("MM-dd")}\n({d.OrderCount})").ToArray();
+    }
+}
+

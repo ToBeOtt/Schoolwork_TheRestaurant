@@ -55,6 +55,7 @@ namespace TheRestaurant.Application.Services.AllergyServices
             var allergyToUpdate = await GetAllergyById(id);
 
             allergyToUpdate.Name = request.Name;
+            allergyToUpdate.IsDeleted = request.IsDeleted;
 
             await _allergyRepository.UpdateAsync(allergyToUpdate);
             return allergyToUpdate;

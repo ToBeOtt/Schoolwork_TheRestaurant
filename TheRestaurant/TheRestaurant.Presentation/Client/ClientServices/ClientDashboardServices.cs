@@ -77,6 +77,32 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             }
         }
 
+        public async Task<List<OrderCountDto>> GetOrderStatsByDateRange(DateTime orderStartDate, DateTime orderEndDate)
+        {
+            try
+            {
+                string formattedStartDate = orderStartDate.ToString("yyyy-MM-dd");
+                string formattedEndDate = orderEndDate.ToString("yyyy-MM-dd");
+                string requestUri = $"Dashboard/GetOrderStatsByDateRange?startDate={formattedStartDate}&endDate={formattedEndDate}";
+
+
+                var responseWrapper = await _httpClient.GetFromJsonAsync<ApiResponse<List<OrderCountDto>>>(requestUri);
+                if (responseWrapper != null && responseWrapper.IsSuccess)
+                {
+                    var data = responseWrapper.Data;
+                    return data;
+                }
+                else
+                {
+                    // Handle error or return an empty list
+                    return new List<OrderCountDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<OrderCountDto>();
+            }
+        }
 
 
     }
