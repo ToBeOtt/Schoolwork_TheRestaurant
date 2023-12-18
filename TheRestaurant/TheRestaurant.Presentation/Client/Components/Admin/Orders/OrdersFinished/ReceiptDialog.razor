@@ -1,4 +1,4 @@
-﻿@using TheRestaurant.Contracts.Requests.Order
+﻿﻿@using TheRestaurant.Contracts.Requests.Order
 @using TheRestaurant.Contracts.Responses.Orders
 @using TheRestaurant.Presentation.Client.ClientServices
 @using TheRestaurant.Presentation.Shared.DTO.Orders
@@ -17,8 +17,7 @@
             </MudItem>
 
             <MudItem xs="4">
-                <MudText 
-                         Typo="Typo.h6">
+                <MudText Typo="Typo.h6">
                     @Receipt.OrderDate.ToShortDateString() - @Receipt.OrderDate.ToShortTimeString()
                 </MudText>
             </MudItem>
@@ -34,51 +33,116 @@
     </TitleContent>
     <DialogContent>
         <MudTable Items="@Receipt.Products"
-                  Hover=true 
-            Bordered=false 
-            Striped=false
-            Elevation="0">
+                  Hover=true
+                  Bordered=false
+                  Striped=false
+                  Elevation="0"
+                  Dense="true">
+
+
 
             <HeaderContent>
                 <MudTh>
-                    <MudText 
-                        Class="fw-bold"
-                        Typo="Typo.subtitle1">
+                    <MudText Class="fw-bold"
+                             Typo="Typo.subtitle1">
                         Köpta produkter
                     </MudText>
                 </MudTh>
                 <MudTh>
                     <MudText Class="fw-bold"
+                             Align="Align.End"
                              Typo="Typo.subtitle1">
-                        Utan moms
+                        Pris
                     </MudText>
                 </MudTh>
 
-                <MudTh>
-                    <MudText Class="fw-bold"
-                             Typo="Typo.subtitle1">
-                        Med moms
-                    </MudText>
-                </MudTh>
+                @*   <MudTh>
+                <MudText Class="fw-bold"
+                Align="Align.End"
+                Typo="Typo.subtitle1">
+                Varav Moms
+                </MudText>
+                </MudTh> *@
             </HeaderContent>
             <RowTemplate>
-                <MudTd>@context.ProductName</MudTd>
-                    <MudTd>@context.PriceWithoutVAT</MudTd>
-                    <MudTd>@context.Price</MudTd>
+                <MudTd>
+                    <MudText>
+                        @context.ProductName
+                    </MudText>
+                </MudTd>
+                <MudTd>
+                    <MudText Align="Align.End">
+                        @context.Price @Currency
+                    </MudText>
+                </MudTd>
+                @*  <MudTd>
+                <MudText Align="Align.End">
+                @VatDiffrence(context.Price, context.PriceWithoutVAT) @Currency
+                </MudText>
+                </MudTd> *@
             </RowTemplate>
 
             <FooterContent>
-                <MudText 
-                    Class="pt-8 pb-3 ml-2"
-                    Typo="Typo.h6">
-                        Totalpris: @Receipt.Totalprice
-                </MudText>
+
             </FooterContent>
 
-            </MudTable>
-        </DialogContent>
 
-        <DialogActions>
+        </MudTable>
+
+
+        <MudStack Spacing="1" AlignItems="AlignItems.Center">
+            <MudText Class="fw-bold"
+                     Typo="Typo.h6">
+                Total: @Receipt.Totalprice @Currency
+            </MudText>
+            <MudText Typo="Typo.caption">
+                Exkl moms: @(Receipt.Totalprice - AddUpVat()) @Currency
+            </MudText>
+            <MudText Typo="Typo.caption">
+                moms:@AddUpVat().ToString() @Currency
+            </MudText>
+        </MudStack>
+
+        <MudTable Items="@DistinctVats()"
+                    Square
+                   Elevation="0"
+                   Dense="true">
+             <HeaderContent>
+                 <MudTh />
+                 <MudTh>
+                     <MudText Typo="Typo.caption">
+                         Momssats
+                     </MudText>
+                 </MudTh>
+                 <MudTh>
+                     <MudText Typo="Typo.caption">
+                         Moms
+                     </MudText>
+                 </MudTh>
+             </HeaderContent>
+             <RowTemplate>
+                 <MudTd>
+                     <MudSpacer />
+                 </MudTd>
+                 <MudTd>
+                     <MudText Typo="Typo.caption">
+                         @((context.Key-1).ToString("P2"))
+                    </MudText>
+                </MudTd>
+                <MudTd>
+                    <MudText Typo="Typo.caption">
+                        @context.Value @Currency
+                    </MudText>
+                </MudTd>
+
+            </RowTemplate>
+        </MudTable>
+
+
+
+    </DialogContent>
+
+    <DialogActions>
         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmPrintReceipt">Skriv ut</MudButton>
          <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
      </DialogActions>
@@ -95,16 +159,59 @@
     public int DetailsId { get; set; }
 
     private GetReceiptResponse Receipt;
+    private string Currency = "kr";
+
 
     protected override async Task OnInitializedAsync()
     {
         Receipt = await OrderService.FetchReceipt(DetailsId);
+
     }
 
     private void Cancel()
     {
         MudDialog.Cancel();
     }
+
+    private double VatDiffrence(double price, double priceWithoutVat)
+    {
+        double diffrence = price - priceWithoutVat;
+
+        return Math.Round(diffrence, 2);
+    }
+
+    private double AddUpVat()
+    {
+        double vatTotal = 0;
+
+        foreach (var product in Receipt.Products)
+        {
+            vatTotal += product.Price - product.PriceWithoutVAT;
+        }
+
+        return Math.Round(vatTotal, 2);
+    }
+
+    private Dictionary<double, double> DistinctVats()
+    {
+        Dictionary<double, double> VatsAmount = new();
+
+        var groupedByVAT = Receipt.Products
+            .GroupBy(p => p.VAT)
+            .Select(group => new
+            {
+                VAT = group.Key,
+                TotalPrice = group.Sum(p => p.Price - p.PriceWithoutVAT)
+            });
+
+        foreach (var group in groupedByVAT)
+        {
+            VatsAmount[group.VAT] = Math.Round(group.TotalPrice, 2);
+        }
+
+        return VatsAmount;
+    }
+
 
     private bool YesToReceipt;
 
@@ -127,4 +234,3 @@
 
     }
 }
-

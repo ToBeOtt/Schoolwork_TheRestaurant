@@ -253,7 +253,8 @@ namespace TheRestaurant.Application.Orders
                     ProductId: item.ProductId,
                     ProductName: item.Product.Name,
                     Price: item.Product.Price,
-                    PriceWithoutVAT: item.Product.PriceBeforeVAT);
+                    PriceWithoutVAT: item.Product.PriceBeforeVAT,
+                    VAT: item.Product.VAT.Adjustment);
 
                 dto.Products.Add(product);
             }
