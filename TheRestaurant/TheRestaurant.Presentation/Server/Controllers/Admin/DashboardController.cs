@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using TheRestaurant.Application.Dashboard;
 using TheRestaurant.Application.Orders;
 using TheRestaurant.Contracts.Responses.ServiceResponse;
+using TheRestaurant.Presentation.Shared.DTO.Dashboard;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
@@ -24,25 +27,24 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
 		}
 
 
-        [HttpGet("GetWeeklyOrderStatistics")]
-        public async Task<IActionResult> GetWeeklyOrderStatistics([FromQuery] DateTime? date)
+        [HttpGet("GetOrderStatsByDateRange")]
+        public async Task<ActionResult<ServiceResponse<List<OrderCountDto>>>> GetOrderStatsByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
-            // If no date is provided, use the current date
-            DateTime fromDate = date ?? DateTime.Now;
-
-            var result = await _dashboardServices.GetWeeklyOrderStats(fromDate);
-            if (!result.IsSuccess)
+            _logger.LogInformation($"Received URL: {Request.GetDisplayUrl()}");
+            _logger.LogInformation($"Received start date: {startDate}");
+            _logger.LogInformation($"Received end date: {endDate}");
+            var response = await _orderService.GetOrderStatsByDateRange(startDate, endDate);
+            if (!response.IsSuccess)
             {
-                return BadRequest(result.ErrorResponse);
+                return BadRequest(response.ErrorMessage);
             }
-
-            return Ok(result.Data);
+            return Ok(response);
         }
+
 
         [HttpGet("GetOrderStatsByUserChosenDate")]
         public async Task<ActionResult<ServiceResponse<List<OrderCountByHourDto>>>> GetOrderStatsByUserChosenDate([FromQuery] DateTime selectedDate)
         {
-            System.Diagnostics.Debugger.Break();
 
             var response = await _orderService.GetOrderStatsByUserChosenDate(selectedDate);
             if (!response.IsSuccess)
