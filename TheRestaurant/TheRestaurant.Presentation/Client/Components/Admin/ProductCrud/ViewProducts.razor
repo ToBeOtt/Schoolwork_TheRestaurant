@@ -3,6 +3,7 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
+
 @if (Error == true)
 {
     <p>@ErrorMessage</p>
@@ -10,9 +11,30 @@
 
 @if (products != null)
 {
+   
+
     <MudGrid Justify="Justify.FlexStart">
+        
+        <MudItem xs="9">
+            <MudText Class="py-6 px-5"
+                     Typo="Typo.h5">
+                Produkter
+            </MudText>
+        </MudItem>
+
+        <MudItem xs="3">
+            <MudTooltip Text="Lägg till produkt">
+                <MudIconButton Class="mx-10 my-6"
+                               Size="@Size.Medium"
+                               Color="Color.Tertiary"
+                               Icon="@Icons.Material.Outlined.Add"
+                               OnClick="@NavigateToAddProduct" />
+            </MudTooltip>
+        </MudItem>
         @foreach (var product in products)
         {
+           
+
             <MudItem xs="12" sm="6" md="4" lg="4">
                 <MudCard Class="mud-secondary" Style="margin: 15px;">
                     <MudCardMedia Image="@GetImageSource(product.MenuPhoto)" Style="height: 150px; object-fit: cover;" />
@@ -48,6 +70,11 @@
     protected override async Task OnInitializedAsync()
     {
         products = await HttpClient.GetFromJsonAsync<List<ProductDto>>("/admin/products");
+    }
+
+    private void NavigateToAddProduct()
+    {
+        NavigationManager.NavigateTo("/admin/product/create");
     }
 
     private void NavigateToEditProduct(int id)

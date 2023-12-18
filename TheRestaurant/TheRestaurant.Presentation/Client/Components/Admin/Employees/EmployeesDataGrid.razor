@@ -5,15 +5,28 @@
 
 <MudGrid>
 
-    <MudItem xs="12">
+    <MudItem xs="9">
         <MudText Class="p-10 px-5"
-                 Typo="Typo.h4">
+                 Typo="Typo.h5">
             Anställda
         </MudText>
     </MudItem>
 
+    <MudItem xs="3">
+        <MudTooltip Text="Lägg till anställd">
+            <MudIconButton 
+                Class="mx-10"
+                Size="@Size.Medium"
+                Color="Color.Tertiary"
+                Icon="@Icons.Material.Outlined.Add"
+                OnClick="@AddEmployee" />
+            </MudTooltip>
+        </MudItem>
+      
     <MudItem>
-        <MudDataGrid Items="@FilteredEmployees">
+        <MudDataGrid 
+            Elevation="0"
+            Items="@FilteredEmployees">
             <ToolBarContent>
                 <MudSelect 
                     Class="m-10 pb-10"
@@ -28,23 +41,24 @@
                 </MudSelect>
             </ToolBarContent>
             <Columns>
-                <TemplateColumn Title="AnställningsNr">
+                <TemplateColumn Class="fw-bold" Title="AnställningsNr">
                     <CellTemplate>
                         @($"{context.Item.Id.Substring(0, Math.Min(10, context.Item.Id.Length))} ...")
                     </CellTemplate>
                 </TemplateColumn>
 
-                <PropertyColumn Property="x => x.Alias" Title="Namn" />
-                <PropertyColumn Property="x => x.Email" Title="Epost" />
-                <PropertyColumn Property="x => x.HireDate" Title="Anställningsdatum" Format="yyyy-MM-dd" />
+                <PropertyColumn Class="fw-bold" Property="x => x.Alias" Title="Namn" />
+                <PropertyColumn Class="fw-bold" Property="x => x.Email" Title="Epost" />
+                <PropertyColumn Class="fw-bold" Property="x => x.HireDate" Title="Anställningsdatum" Format="yyyy-MM-dd" />
 
                 <TemplateColumn Title="Edit">
                     <CellTemplate>
                         <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => EditEmployee(context.Item.Id))" />
                     </CellTemplate>
                 </TemplateColumn>
+
                 
-                
+
                 <TemplateColumn Title="Delete">
                     <CellTemplate>
                         @if (!context.Item.IsDeleted)
@@ -53,19 +67,13 @@
                         }
                     </CellTemplate>
                 </TemplateColumn>
+
+              
+
             </Columns>
         </MudDataGrid>
     </MudItem>
 
-    <MudItem Class="justify-content-center"
-             xs="12">
-        <MudIconButton 
-            Class="mx-10"
-            Size="@Size.Large"
-            Color="Color.Tertiary"
-            Icon="@Icons.Material.Outlined.Add"
-            OnClick="@AddEmployee" />
-    </MudItem>
 
     <MudItem>
         @if (Affirmation != null)
