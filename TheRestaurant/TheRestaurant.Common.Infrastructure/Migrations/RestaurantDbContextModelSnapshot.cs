@@ -263,68 +263,68 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Allergies");
+                    b.ToTable("Allergies", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             IsDeleted = false,
-                            Name = "Jordnötter"
+                            Name = "Peanuts"
                         },
                         new
                         {
                             Id = 2,
                             IsDeleted = false,
-                            Name = "Skaldjur"
+                            Name = "Shellfish"
                         },
                         new
                         {
                             Id = 3,
                             IsDeleted = false,
-                            Name = "Mjölk"
+                            Name = "Milk"
                         },
                         new
                         {
                             Id = 4,
                             IsDeleted = false,
-                            Name = "Ägg"
+                            Name = "Eggs"
                         },
                         new
                         {
                             Id = 5,
                             IsDeleted = false,
-                            Name = "Fisk"
+                            Name = "Fish"
                         },
                         new
                         {
                             Id = 6,
                             IsDeleted = false,
-                            Name = "Nötter"
+                            Name = "Tree nuts"
                         },
                         new
                         {
                             Id = 7,
                             IsDeleted = false,
-                            Name = "Vete"
+                            Name = "Wheat"
                         },
                         new
                         {
                             Id = 8,
                             IsDeleted = false,
-                            Name = "Soja"
+                            Name = "Soy"
                         },
                         new
                         {
                             Id = 9,
                             IsDeleted = false,
-                            Name = "Sesamfrö "
+                            Name = "Sesame"
                         },
                         new
                         {
                             Id = 10,
                             IsDeleted = false,
-                            Name = "Sulfit"
+                            Name = "Sulfites"
                         });
                 });
 
@@ -345,7 +345,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -520,7 +520,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("VATId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -530,7 +530,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Hamburgare med pommes",
-                            Price = 88.480000000000004,
+                            Price = 88.0,
                             PriceBeforeVAT = 79.0,
                             VATId = 1
                         },
@@ -541,7 +541,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Kebabpizza",
-                            Price = 110.88,
+                            Price = 111.0,
                             PriceBeforeVAT = 99.0,
                             VATId = 1
                         },
@@ -552,7 +552,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Grillad lax",
-                            Price = 144.47999999999999,
+                            Price = 144.0,
                             PriceBeforeVAT = 129.0,
                             VATId = 1
                         },
@@ -563,7 +563,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Caesarsallad",
-                            Price = 99.680000000000007,
+                            Price = 100.0,
                             PriceBeforeVAT = 89.0,
                             VATId = 1
                         },
@@ -574,7 +574,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Mozzarella Sticks",
-                            Price = 54.880000000000003,
+                            Price = 55.0,
                             PriceBeforeVAT = 49.0,
                             VATId = 1
                         },
@@ -585,7 +585,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Chokladfondant",
-                            Price = 77.280000000000001,
+                            Price = 77.0,
                             PriceBeforeVAT = 69.0,
                             VATId = 1
                         },
@@ -596,7 +596,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Vegetarisk curry",
-                            Price = 122.08,
+                            Price = 122.0,
                             PriceBeforeVAT = 109.0,
                             VATId = 1
                         },
@@ -607,7 +607,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Tom Yum Soppa",
-                            Price = 133.28,
+                            Price = 133.0,
                             PriceBeforeVAT = 119.0,
                             VATId = 1
                         },
@@ -618,7 +618,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Lammkotletter",
-                            Price = 166.88,
+                            Price = 167.0,
                             PriceBeforeVAT = 149.0,
                             VATId = 1
                         },
@@ -629,7 +629,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = true,
                             Name = "Blåbärspaj",
-                            Price = 66.079999999999998,
+                            Price = 66.0,
                             PriceBeforeVAT = 59.0,
                             VATId = 1
                         },
@@ -640,7 +640,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Cola",
-                            Price = 22.399999999999999,
+                            Price = 22.0,
                             PriceBeforeVAT = 20.0,
                             VATId = 1
                         },
@@ -651,7 +651,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Fanta",
-                            Price = 22.399999999999999,
+                            Price = 22.0,
                             PriceBeforeVAT = 20.0,
                             VATId = 1
                         },
@@ -684,7 +684,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Kaffe mugg",
-                            Price = 150.0,
+                            Price = 127.0,
                             PriceBeforeVAT = 120.0,
                             VATId = 2
                         },
@@ -695,7 +695,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Kokbok",
-                            Price = 104.94,
+                            Price = 105.0,
                             PriceBeforeVAT = 99.0,
                             VATId = 2
                         },
@@ -706,7 +706,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             IsDeleted = false,
                             IsFoodItem = false,
                             Name = "Såspanna",
-                            Price = 562.5,
+                            Price = 477.0,
                             PriceBeforeVAT = 450.0,
                             VATId = 2
                         },
@@ -754,7 +754,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductAllergies");
+                    b.ToTable("ProductAllergies", (string)null);
 
                     b.HasData(
                         new
@@ -869,7 +869,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
 
                     b.HasData(
                         new
@@ -1014,7 +1014,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VATs");
+                    b.ToTable("VATs", (string)null);
 
                     b.HasData(
                         new
@@ -1022,28 +1022,21 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Id = 1,
                             Adjustment = 1.1200000000000001,
                             IsDeleted = false,
-                            Name = "Mat"
+                            Name = "Food"
                         },
                         new
                         {
                             Id = 2,
                             Adjustment = 1.0600000000000001,
                             IsDeleted = false,
-                            Name = "Böcker"
+                            Name = "Merchandise"
                         },
                         new
                         {
                             Id = 3,
                             Adjustment = 1.25,
                             IsDeleted = false,
-                            Name = "Alkohol"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Adjustment = 1.25,
-                            IsDeleted = false,
-                            Name = "Produkter/Kläder"
+                            Name = "Alcohol"
                         });
                 });
 
@@ -1076,106 +1069,84 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("OrderStatusId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 31,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 18, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7961),
-
+                            OrderDate = new DateTime(2023, 12, 18, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(914),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 4,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 18, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7966),
-
+                            OrderDate = new DateTime(2023, 12, 18, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(917),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 5,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 18, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7968),
-
+                            OrderDate = new DateTime(2023, 12, 18, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(918),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 34,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 16, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7970),
-
+                            OrderDate = new DateTime(2023, 12, 16, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(920),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 10,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 15, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7973),
-
+                            OrderDate = new DateTime(2023, 12, 15, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(921),
                             OrderStatusId = 3
                         },
                         new
                         {
                             Id = 11,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 14, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7975),
-
+                            OrderDate = new DateTime(2023, 12, 14, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(923),
                             OrderStatusId = 4
                         },
                         new
                         {
                             Id = 6,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 17, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7977),
-
+                            OrderDate = new DateTime(2023, 12, 17, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(925),
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 32,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 17, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7980),
-
+                            OrderDate = new DateTime(2023, 12, 17, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(926),
                             OrderStatusId = 2
                         },
                         new
                         {
                             Id = 33,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 17, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7982),
-
+                            OrderDate = new DateTime(2023, 12, 17, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(928),
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 1,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 18, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7914),
-
+                            OrderDate = new DateTime(2023, 12, 18, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(868),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 2,
                             IsDeleted = false,
-
-                            OrderDate = new DateTime(2023, 12, 17, 16, 14, 17, 625, DateTimeKind.Local).AddTicks(7954),
-
+                            OrderDate = new DateTime(2023, 12, 17, 16, 6, 22, 537, DateTimeKind.Local).AddTicks(905),
                             OrderStatusId = 3
                         });
                 });
@@ -1200,7 +1171,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderRows");
+                    b.ToTable("OrderRows", (string)null);
 
                     b.HasData(
                         new
@@ -1360,7 +1331,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("OrderStatus", (string)null);
 
                     b.HasData(
                         new
