@@ -1,11 +1,15 @@
 ﻿@using TheRestaurant.Presentation.Client.ClientServices
 @inject ClientDashboardServices DashboardServices
 
+<MudDatePicker Date="@selectedDate" Label="Date" DateChanged="OnDateChange" />
+<MudButton OnClick="LoadChartData">Load Chart Data</MudButton>
+<p>Selected Date: @selectedDate?.ToString("yyyy-MM-dd")</p>
+
 <MudChart ChartType="ChartType.Bar" 
 ChartSeries="@Series" 
 XAxisLabels="@XAxisLabels" 
 Width="100%" 
-Height="350px">
+Height="700px">
 
 </MudChart>
 
@@ -14,54 +18,62 @@ Height="350px">
 @code {
     public List<ChartSeries> Series = new List<ChartSeries>();
     public string[] XAxisLabels = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "19", "20", "21", "22", "23", "00" };
+    private DateTime? selectedDate;
 
-    protected override async Task OnInitializedAsync()
+    private void OnDateChange(DateTime? date)
     {
-        await LoadChartData();
+        selectedDate = date;
+        StateHasChanged();
     }
-
     private async Task LoadChartData()
     {
-
-        var orderStats = await DashboardServices.GetOrderStatsByHour();
-
-        Series.Clear();
-        int listCount = orderStats.Count;
-        double[] Data = new double[24];
-
-        // for (int i = 0; i < 23; i++)
-        // {
-        //     // if (orderStats.Where(x => x.Hour == i)) 
-        //     if(orderStats.Any(stat => stat.Hour == i))
-        //     {
-        //         orderStats.FirstOrDefault(stat => stat.Hour == i);
-        //         Data[i] = orderStats[i].OrderCount;  
-        //     }
-        //     else
-        //     {
-        //         Data[i] = 0;
-        //     }
-        // }
-        for (int i = 0; i < 23; i++)
+        if (selectedDate.HasValue)
         {
-            var stat = orderStats.FirstOrDefault(stat => stat.Hour == i);
+            var orderStats = await DashboardServices.GetOrderStatsByUserChosenDate(selectedDate.Value);
 
-            if (stat != null)
+            Series.Clear();
+            double[] Data = new double[24];
+
+            for (int i = 0; i< 23; i++)
             {
-                int index = orderStats.IndexOf(stat);
-                Data[i-1] = orderStats[index].OrderCount;
+                var stat = orderStats.FirstOrDefault(stat => stat.Hour == i);
+
+                if (stat != null)
+                {
+                    int index = orderStats.IndexOf(stat);
+                Data[i - 1] = orderStats[index].OrderCount;
+                }
+                else
+                {
+                    Data[i] = 0;
+                }
             }
-            else
-            {
-                Data[i] = 0;
-            }
+
+            Series.Add(new ChartSeries
+                {
+                    Name = "Orders",
+                    Data = Data
+                });
         }
-
-        Series.Add(new ChartSeries
-            {
-                Name = "Orders",
-                Data = Data
-            });
+        else
+        {
+            // Handle case where the date is not selected
+        }
     }
+    
+    // for (int i = 0; i< 23; i++)
+    // {
+    //     var stat = orderStats.FirstOrDefault(stat => stat.Hour == i);
+
+    //     if (stat != null)
+    //     {
+    //         int index = orderStats.IndexOf(stat);
+    // Data[i - 1] = orderStats[index].OrderCount;
+    //     }
+    //     else
+    //     {
+    //         Data[i] = 0;
+    //     }
+    // }
 }
 
