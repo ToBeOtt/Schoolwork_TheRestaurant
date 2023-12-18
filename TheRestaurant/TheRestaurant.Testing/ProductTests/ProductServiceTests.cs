@@ -62,6 +62,7 @@ namespace TheRestaurant.Testing.ProductTests
                 VATId: 1
             );
 
+
             var mockRepo = new Mock<IProductRepository>();
             mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Product>()));
 
@@ -88,6 +89,7 @@ namespace TheRestaurant.Testing.ProductTests
                 IsDeleted = false,
                 IsFoodItem = true,
             };
+
 
             var updatedProductRequest = new EditProductRequest(
                 Name: "Updated Product",
