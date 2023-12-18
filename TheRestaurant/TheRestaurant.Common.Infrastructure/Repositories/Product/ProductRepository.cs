@@ -61,7 +61,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
             .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
             .ToListAsync();
 
-            // Filter the deleted allergies from ProductAllergies
+            
             foreach (var product in products)
             {
                 product.ProductAllergies = product.ProductAllergies
