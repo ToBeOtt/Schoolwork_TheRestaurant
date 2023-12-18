@@ -1,0 +1,85 @@
+﻿@page "/Admin/AddOrderStatus"
+@page "/Admin/EditOrderStatus/{orderStatusId:int}" 
+@using TheRestaurant.Contracts.DTOs
+@using MudBlazor
+@using TheRestaurant.Presentation.Client.Components;
+@using TheRestaurant.Presentation.Client.Shared.Admin
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<AdminLayout>
+    <AdminContent>
+        <MudGrid Spacing="2" Justify="Justify.Center">
+
+            <MudItem xs="12">
+
+                <div class="mx-5">
+                    
+                <h2 class="my-3">@title</h2>
+
+
+                    <EditForm Model="@orderStatusDto" OnValidSubmit="Save">
+                        <DataAnnotationsValidator />
+                        <div class="">
+                            <label>Status</label>
+                            <div class="col-md-4">
+                                <InputText @bind-Value="orderStatusDto.Status" class="form-control" />
+                                <ValidationMessage For="() => orderStatusDto.Status" />
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="col-md-4">
+                                <a class="btn btn-sm btn-danger" href="/Admin/OrderStatusList">Annullera</a>
+                                <input type="submit" value="@title" class="btn btn-sm btn-@btnColor" />
+                            </div>
+                        </div>
+                    </EditForm>
+                </div> 
+
+            </MudItem>
+
+        </MudGrid>
+    </AdminContent>
+</AdminLayout>
+
+
+@code {
+
+    private string title = "Lägg till ny orderstatus";
+     private string btnColor = "success";
+
+    [Parameter]
+    public int orderStatusId { get; set; }
+
+    public OrderStatusDto? orderStatusDto = new();
+}
+
+@functions {
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (orderStatusId != 0)
+        {
+            title = "Redigera orderstatus";
+            btnColor = "warning";
+            orderStatusDto = await HttpClient.GetFromJsonAsync<OrderStatusDto>($"api/OrderStatus/{orderStatusId}");
+        }
+
+    }
+
+
+    protected async Task Save()
+    {
+        if (orderStatusId == 0)
+        {
+            await HttpClient.PostAsJsonAsync("/api/OrderStatus", orderStatusDto);
+        }
+        else
+        {
+            orderStatusDto.Id = orderStatusId;
+            await HttpClient.PutAsJsonAsync($"/api/OrderStatus/{orderStatusId}", orderStatusDto);
+        }
+
+        NavigationManager.NavigateTo("/Admin/OrderStatusList");
+    }
+}

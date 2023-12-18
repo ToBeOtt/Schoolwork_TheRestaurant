@@ -57,6 +57,7 @@ namespace Common.Infrastructure
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
 
             services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
+            services.AddTransient<IOrderStatusService, OrderStatusService>();
             services.AddTransient<ICartRepository, CartRepository>();
             services.AddTransient<IDashboardRepository, DashboardRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
