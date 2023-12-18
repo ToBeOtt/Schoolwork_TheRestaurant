@@ -1,10 +1,5 @@
 ﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheRestaurant.Application.Interfaces.IVat;
 using TheRestaurant.Domain.Entities.Menu;
 
@@ -24,19 +19,20 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Vat
             return vat;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task SoftDeleteAsync(int id)
         {
             var vat = await _context.VATs.FindAsync(id);
             if (vat != null)
             {
-                _context.VATs.Remove(vat);
+                vat.IsDeleted = true;
+                _context.VATs.Update(vat);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<List<VAT>> GetAllAsync()
         {
-            return await _context.VATs.ToListAsync();
+            return await _context.VATs.Where(v => v.IsDeleted != true).ToListAsync();
         }
 
         public async Task<VAT> GetByIdAsync(int id)

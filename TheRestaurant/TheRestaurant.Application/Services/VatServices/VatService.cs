@@ -27,9 +27,9 @@ namespace TheRestaurant.Application.Services.VatServices
             return vat;
         }
 
-        public async Task DeleteVatAsync(int id)
+        public async Task SoftDeleteVatAsync(int id)
         {
-            await _vatRepository.DeleteAsync(id);
+            await _vatRepository.SoftDeleteAsync(id);
         }
 
         public async Task<List<VAT>> GetAllVatsAsync()

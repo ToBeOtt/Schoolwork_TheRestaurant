@@ -35,11 +35,16 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 			return listOfWeeklySalesNrs;
 		}
 
-        public async Task<List<OrderCountByHourDto>> GetOrderStatsByHour()
+        public async Task<List<OrderCountByHourDto>> GetOrderStatsByUserChosenDate(DateTime selectedDate)
         {
             try
             {
-                var responseWrapper = await _httpClient.GetFromJsonAsync<ApiResponse<List<OrderCountByHourDto>>>("Dashboard/GetOrderStatsByHour");
+                string formattedDate = selectedDate.ToString("yyyy-MM-dd");
+                string requestUri = $"Dashboard/GetOrderStatsByUserChosenDate?selectedDate={formattedDate}";
+
+                System.Diagnostics.Debugger.Break();
+
+                var responseWrapper = await _httpClient.GetFromJsonAsync<ApiResponse<List<OrderCountByHourDto>>>(requestUri);
                 if (responseWrapper != null && responseWrapper.IsSuccess)
                 {
                     var data = responseWrapper.Data;
@@ -56,6 +61,7 @@ namespace TheRestaurant.Presentation.Client.ClientServices
                 return new List<OrderCountByHourDto>();
             }
         }
+
 
         public async Task<List<ProductSaleCountDto>> GetProductSaleCountAsync()
         {
