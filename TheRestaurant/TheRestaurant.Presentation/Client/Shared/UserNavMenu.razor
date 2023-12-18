@@ -1,30 +1,64 @@
 ﻿@using MudBlazor
+@using TheRestaurant.Presentation.Client.ClientServices
+@inject AuthService authService 
+@inject ServerAuthenticationStateProvider AuthState
+
+@if(!showLoggedIn)
+{
+    <MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Success"
+             href="/login">
+        Logga in
+    </MudIconButton>
+}
+
+else
+{
+    <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Error"
+             href="/logout">
+        Logga ut
+    </MudIconButton>
+}
 
 
-<MudMenu Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Primary">
-    
-    @* <MudMenuItem>
-        <MudNavLink 
-            Icon="@Icons.Material.Filled.HowToReg" Color="Color.Primary"
-            href="/register">
-            Registrering
-        </MudNavLink>
-     </MudMenuItem> *@
+
+@code {
+    bool showLoggedIn;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await AuthState.GetAuthenticationStateAsync();
+        showLoggedIn = user.User.IsInRole("admin") || user.User.IsInRole("manager");
+
+        authService.IsLoggedIn += OnAuthChanged;
+    }
+
+    private async void OnAuthChanged()
+    {
+        var user = await AuthState.GetAuthenticationStateAsync();
+        showLoggedIn = user.User.IsInRole("admin") || user.User.IsInRole("manager");
+        StateHasChanged();
+    }
+
+    private void DisposeEvents()
+    {
+        authService.IsLoggedIn -= OnAuthChanged;
+    }
+}
+
+@* <MudMenu Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Primary">
 
     <MudMenuItem>
-        <MudNavLink 
-            Icon="@Icons.Material.Filled.Login" Color="Color.Primary"
-            href="/login">
+        <MudNavLink Icon="@Icons.Material.Filled.Login" Color="Color.Primary"
+                    href="/login">
             Logga in
         </MudNavLink>
-     </MudMenuItem>
+    </MudMenuItem>
 
     <MudMenuItem>
-        <MudNavLink 
-            Icon="@Icons.Material.Filled.Logout" Color="Color.Primary"
-            href="/logout">
+        <MudNavLink Icon="@Icons.Material.Filled.Logout" Color="Color.Primary"
+                    href="/logout">
             Logga ut
         </MudNavLink>
     </MudMenuItem>
 
-</MudMenu>
+</MudMenu> *@

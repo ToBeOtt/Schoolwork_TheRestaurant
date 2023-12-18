@@ -30,7 +30,9 @@
 
             <MudCardActions Class="px-5 py-2">
                 <MudTooltip Text="@ErrorMessage">
-                    <MudButton 
+                    <MudGrid>
+                        <MudItem xs="6">
+                             <MudButton 
                         Class="mr-6 pb-2)"
                         Variant="Variant.Filled"
                         Color="Color.Tertiary"
@@ -39,6 +41,16 @@
                         >
                         Beställ
                     </MudButton>
+                        </MudItem>
+                        <MudItem
+                            xs="6">
+                            <MudText 
+                                Color="Color.Primary"
+                                Typo="Typo.h6">
+                                @prod.Price kr
+                            </MudText>
+                        </MudItem>
+                    </MudGrid>
                 </MudTooltip>
             </MudCardActions>
 
