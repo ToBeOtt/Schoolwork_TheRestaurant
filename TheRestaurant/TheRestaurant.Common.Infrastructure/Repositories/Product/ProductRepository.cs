@@ -55,27 +55,12 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
 
         public async Task<List<Domain.Entities.Menu.Product>> GetAllEagerLoadedAsync()
         {
-            var products = await _context.Products
-            .Where(p => p.IsDeleted != true)
-            .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
-            .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
-            .ToListAsync();
-
-            
-            foreach (var product in products)
-            {
-                product.ProductAllergies = product.ProductAllergies
-                    .Where(pa => !pa.Allergy.IsDeleted)
-                    .ToList();
-            }
-
-            return products;
-
-            //return await _context.Products
-            //    .Where(p => p.IsDeleted != true)
-            //    .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
-            //    .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
-            //    .ToListAsync();
+           
+            return await _context.Products
+                .Where(p => p.IsDeleted != true)
+                .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)
+                .Include(p => p.ProductCategories).ThenInclude(pc => pc.Category)
+                .ToListAsync();
         }
 
         public async Task<List<string>> GetAllCategoryNames()
