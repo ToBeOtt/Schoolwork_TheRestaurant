@@ -40,7 +40,7 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             try
             {
                 string formattedDate = selectedDate.ToString("yyyy-MM-dd");
-                string requestUri = $"Dashboard/GetOrderStatsByUserChosenDate?date={formattedDate}";
+                string requestUri = $"Dashboard/GetOrderStatsByUserChosenDate?selectedDate={formattedDate}";
 
                 System.Diagnostics.Debugger.Break();
 

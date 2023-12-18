@@ -1,7 +1,7 @@
 ﻿@using TheRestaurant.Presentation.Client.ClientServices
 @inject ClientDashboardServices DashboardServices
 
-<MudDatePicker Date="@selectedDate" Label="startDate" DateChanged="OnDateChange" />
+<MudDatePicker Date="@selectedDate" Label="Date" DateChanged="OnDateChange" />
 <MudButton OnClick="LoadChartData">Load Chart Data</MudButton>
 <p>Selected Date: @selectedDate?.ToString("yyyy-MM-dd")</p>
 
@@ -9,7 +9,7 @@
 ChartSeries="@Series" 
 XAxisLabels="@XAxisLabels" 
 Width="100%" 
-Height="350px">
+Height="700px">
 
 </MudChart>
 
@@ -25,7 +25,6 @@ Height="350px">
         selectedDate = date;
         StateHasChanged();
     }
-
     private async Task LoadChartData()
     {
         if (selectedDate.HasValue)
@@ -61,6 +60,7 @@ Height="350px">
             // Handle case where the date is not selected
         }
     }
+    
     // for (int i = 0; i< 23; i++)
     // {
     //     var stat = orderStats.FirstOrDefault(stat => stat.Hour == i);
