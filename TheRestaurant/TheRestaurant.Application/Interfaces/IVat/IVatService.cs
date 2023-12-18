@@ -14,6 +14,6 @@ namespace TheRestaurant.Application.Interfaces.IVat
         Task<VAT> GetVatByIdAsync(int id);
         Task<VAT> CreateVatAsync(VatRequest vatRequest);
         Task<VAT> UpdateVatAsync(int id, VatRequest vatRequest);
-        Task DeleteVatAsync(int id);
+        Task SoftDeleteVatAsync(int id);
     }
 }
