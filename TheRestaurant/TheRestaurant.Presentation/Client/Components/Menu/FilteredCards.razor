@@ -52,7 +52,20 @@
                         </MudItem>
                     </MudGrid>
                 </MudTooltip>
+                <div class="select-size">
+                    @if (prod.Category.Any(c => c.Equals("T-shirt", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        <MudSelect T="string" Label="Storlek">
+                            @foreach (var size in sizes)
+                            {
+                            <MudSelectItem Value="@size">@size</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                </div>
             </MudCardActions>
+
+            
 
             @*  Details expansion info menu *@
 
@@ -111,6 +124,7 @@
 
     public string ErrorMessage;
     public bool IsButtonDeactivated { get; set; }
+    private List<string> sizes = new List<string> { "S", "M", "L", "XL" };
 
     protected override async Task OnInitializedAsync()
     {
