@@ -5,21 +5,20 @@
     <MudDatePicker @bind-Date="orderStartDate" Label="Start Date" ValueChanged="(date) => orderStartDate = date" MinDate="minDate" />
     <MudDatePicker @bind-Date="orderEndDate" Label="End Date" ValueChanged="(date) => orderEndDate = date" MaxDate="maxDate" />
     <MudButton OnClick="ReloadChart">Reload Chart</MudButton>
-<MudChart 
-    ChartType="ChartType.Line"
-    ChartSeries="@Series" @bind-SelectedIndex="Index" 
-    XAxisLabels="@XAxisLabels" 
-    Width="100%" 
-    Height="350px">
-</MudChart>
+    <MudChart 
+        ChartType="ChartType.Bar"
+        ChartSeries="@Series"
+        XAxisLabels="@XAxisLabels"
+        Width="100%"
+        Height="350px">
+    </MudChart>
 </div>
 @code {
-    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
     private DateTime? orderStartDate;
     private DateTime? orderEndDate;
     DateTime minDate = DateTime.Today.AddMonths(-1);
-    DateTime maxDate = DateTime.Today;
-   
+    DateTime maxDate = DateTime.Today.AddDays(1);
+
     public List<ChartSeries> Series = new List<ChartSeries>();
 
     public string[] XAxisLabels { get; set; }
@@ -38,6 +37,7 @@
             }
         };
 
-        XAxisLabels = data.Select(d => d.OrderDate.ToString()).ToArray(); // Convert DateTime to string
+        XAxisLabels = data.Select(d => $"{d.Date.ToString("MM-dd")}\n({d.OrderCount})").ToArray();
     }
 }
+
