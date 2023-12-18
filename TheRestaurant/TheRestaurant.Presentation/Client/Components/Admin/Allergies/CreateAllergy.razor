@@ -38,7 +38,7 @@
     private async void AllergySubmit()
     {
 
-        var request = new AllergyRequest(Name: allergy.Name);
+        var request = new AllergyRequest(Name: allergy.Name, IsDeleted: false);
         HttpResponseMessage response = await HttpClient.PostAsJsonAsync(apiCreateAllergyUrl, request);
 
         if (response.IsSuccessStatusCode)

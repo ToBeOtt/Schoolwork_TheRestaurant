@@ -1,7 +1,10 @@
-﻿@inject HttpClient HttpClient
+﻿@using TheRestaurant.Contracts.Requests.Allergy
+
+@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject RoleService RoleService
+@inject ISnackbar Snackbar
 
 
 @using TheRestaurant.Contracts.DTOs
@@ -24,57 +27,71 @@
         <MudTh>Id</MudTh>
         <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<AllergyDto, object>(x=>x.Name)">Namn</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
-        <MudTh>Synlighet</MudTh>
+        <MudTh> <MudTableSortLabel Enabled="filtering" InitialDirection="SortDirection.Ascending" SortBy="new Func<AllergyDto, object>(x=>x.IsDeleted)">Synlighet</MudTableSortLabel></MudTh>
+
         @if (IsManager)
         {
             <MudTh>
                 <MudButton FullWidth Variant="Variant.Filled" Color="Color.Secondary" OnClick="@((e) => CreateAllergy(maxWidth))">Ny Allergi</MudButton>
              </MudTh>
         }
-        
-     </HeaderContent>
-     <RowTemplate>
-         <MudTd DataLabel="Id">@context.Id</MudTd>
-         <MudTd DataLabel="Namn">@context.Name</MudTd>
-         <MudTd>
-             <MudSpacer />
-         </MudTd>
-         <MudTd>
-             Om den är soft deleted...
-           @*   @if (@context.IsHidden == true)
+
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Namn">@context.Name</MudTd>
+        <MudTd>
+            <MudSpacer />
+        </MudTd>
+        <MudTd>
+            @if (@context.IsDeleted == true)
             {
 
-                <MudSwitch @bind-Checked="@context.IsHidden" Label="Dold" Color="Color.Primary" />
-                //<MudSwitch @bind-Checked="@(() => HiddenStatus(context.IsHidden, context.Id))" Label="Dold" Color="Color.Primary" />
+                <MudText>Dold</MudText>
 
             }
             else
             {
-                <MudSwitch @bind-Checked="@context.IsHidden" Label="Synlig" Color="Color.Primary" />
-            } *@
+                <MudText>Synlig</MudText>
+            }
 
         </MudTd>
-         @if (IsManager)
+        @if (IsManager)
         {
             <MudTd>
                 <MudButtonGroup Variant="Variant.Filled" Color="Color.Primary" DisableElevation>
                  <MudIconButton Icon="@Icons.Material.Filled.EditNote" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
                                     OnClick="@((e) => UpdateAllergy(maxWidth, context))" />
-                     <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
+                     @if (context.IsDeleted is true)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" Variant="Variant.Filled" Color="Color.Primary"
+                                              DisableElevation
+                                        OnClick="@((e) => SoftDelete(!context.IsDeleted ,context.Id))" />
+                    }
+                    else
+                    {
+                        <MudIconButton Icon="@Icons.Material.Outlined.RemoveRedEye" Variant="Variant.Filled" Color="Color.Primary"
+                                              DisableElevation
+                                        OnClick="@((e) => SoftDelete(!context.IsDeleted ,context.Id))" />
+
+                    }
+
+
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" DisableElevation
                                     OnClick="@((e) => DeleteAllergy(maxWidth ,context))" />
 
                  </MudButtonGroup>
              </MudTd>
         }
-        
-
-     </RowTemplate>
-
- </MudTable>
 
 
+    </RowTemplate>
 
- @code {
+</MudTable>
+
+
+
+@code {
     private List<AllergyDto> allergies;
     private bool loading;
     private bool placeholderSwitch;
@@ -98,13 +115,31 @@
     }
 
     //Currently not used.
-    private async Task HiddenStatus(bool isHidden, int id)
+    private async Task SoftDelete(bool IsDeleted, int id)
     {
-        var allergy = await HttpClient.GetFromJsonAsync<AllergyDto>("/api/allergy/{id}");
+        var allergy = await HttpClient.GetFromJsonAsync<AllergyDto>($"/api/allergy/{id}");
 
-        allergy.IsHidden = isHidden;
+        allergy.IsDeleted = IsDeleted;
 
-        await HttpClient.PutAsJsonAsync<AllergyDto>($"/api/allergy/edit/{allergy.Id}", allergy);
+        var request = new AllergyRequest(Name: allergy.Name, IsDeleted: allergy.IsDeleted);
+        var response = await HttpClient.PutAsJsonAsync($"/api/allergy/edit/{allergy.Id}", request);
+
+        if (response.IsSuccessStatusCode && IsDeleted == false)
+        {
+            Snackbar.Add($"Allergi {allergy.Name} synlig", Severity.Success);
+            allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
+            StateHasChanged();
+        }
+        else if (response.IsSuccessStatusCode)
+        {
+            Snackbar.Add($"Allergi {allergy.Name} dold", Severity.Success);
+            allergies = await HttpClient.GetFromJsonAsync<List<AllergyDto>>("/api/allergy");
+            StateHasChanged();
+        }
+        else
+        {
+            Snackbar.Add("Döljning av allergi misslyckades", Severity.Error);
+        }
     }
 
     private async Task CreateAllergy(DialogOptions options)

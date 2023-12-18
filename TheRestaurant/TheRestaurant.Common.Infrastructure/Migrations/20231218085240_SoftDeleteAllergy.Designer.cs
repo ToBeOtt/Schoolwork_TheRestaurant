@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231218085240_SoftDeleteAllergy")]
+    partial class SoftDeleteAllergy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -971,9 +974,6 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Property<double>("Adjustment")
                         .HasColumnType("float");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -987,21 +987,18 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         {
                             Id = 1,
                             Adjustment = 1.1200000000000001,
-                            IsDeleted = false,
                             Name = "Food"
                         },
                         new
                         {
                             Id = 2,
                             Adjustment = 1.0600000000000001,
-                            IsDeleted = false,
                             Name = "Merchandise"
                         },
                         new
                         {
                             Id = 3,
                             Adjustment = 1.25,
-                            IsDeleted = false,
                             Name = "Alcohol"
                         });
                 });
@@ -1042,99 +1039,77 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         {
                             Id = 31,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 18, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9455),
-
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 4,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 18, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9459),
-
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 5,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 18, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9461),
-
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 34,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 16, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9463),
-
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 10,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 15, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9465),
-
                             OrderStatusId = 3
                         },
                         new
                         {
                             Id = 11,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 14, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9468),
-
                             OrderStatusId = 4
                         },
                         new
                         {
                             Id = 6,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 17, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9470),
-
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 32,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 17, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9472),
-
                             OrderStatusId = 2
                         },
                         new
                         {
                             Id = 33,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 17, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9474),
-
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 1,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 18, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9404),
-
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 2,
                             IsDeleted = false,
-
                             OrderDate = new DateTime(2023, 12, 17, 9, 52, 40, 447, DateTimeKind.Local).AddTicks(9448),
-
                             OrderStatusId = 3
                         });
                 });

@@ -65,7 +65,16 @@ namespace TheRestaurant.Application.Services.ProductServices
 
             var products = await _productRepository.GetAllEagerLoadedAsync();
 
-            foreach(var product in products)
+            //Start Remove all IsDeleted allergies - Andreas Code
+            foreach (var product in products)
+            {
+                product.ProductAllergies = product.ProductAllergies
+                    .Where(pa => !pa.Allergy.IsDeleted)
+                    .ToList();
+            }
+            //Stop Remove all IsDeleted allergies - Andreas Code
+
+            foreach (var product in products)
             {
                 var listOfAllergies = new List<string>();
                 if(listOfAllergies != null)

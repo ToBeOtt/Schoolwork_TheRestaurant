@@ -13,8 +13,8 @@ namespace TheRestaurant.Contracts.DTOs
         [Required(ErrorMessage ="Namn måste anges.")]
         [MaxLength(30, ErrorMessage ="Max 30 tecken långt.")]
         public string Name { get; set; }
-        //public bool IsDeleted { get; set; }
-        public bool IsHidden { get; set; }
+        public bool IsDeleted { get; set; }
+        
 
 
     }
