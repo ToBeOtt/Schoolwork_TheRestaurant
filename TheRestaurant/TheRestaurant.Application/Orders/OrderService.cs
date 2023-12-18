@@ -7,6 +7,7 @@ using TheRestaurant.Contracts.Requests.Order;
 using TheRestaurant.Contracts.Responses.Orders;
 using TheRestaurant.Contracts.Responses.ServiceResponse;
 using TheRestaurant.Domain.Entities.Orders;
+using TheRestaurant.Presentation.Shared.DTO.Dashboard;
 
 namespace TheRestaurant.Application.Orders
 {
@@ -297,6 +298,27 @@ namespace TheRestaurant.Application.Orders
 
             return await response.SuccessResponse(response, response.Data);
         }
+
+        public async Task<ServiceResponse<List<OrderCountDto>>> GetOrderStatsByDateRange(DateTime orderStartDate, DateTime orderEndDate)
+        {
+            ServiceResponse<List<OrderCountDto>> response = new ServiceResponse<List<OrderCountDto>>();
+
+            try
+            {
+                var orderStats = await _orderRepository.GetOrderStatsByDateRange(orderStartDate, orderEndDate);
+                response.Data = orderStats;
+            }
+            catch (Exception ex)
+            {
+                // Log and handle the exception
+                return await response.ErrorResponse(response, "Failed to fetch order stats", _logger);
+            }
+
+            return await response.SuccessResponse(response, response.Data);
+        }
+
+
+
 
 
 
