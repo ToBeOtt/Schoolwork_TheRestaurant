@@ -50,17 +50,17 @@ namespace TheRestaurant.Testing.ProductTests
         //public async Task CreateProduct_ShouldCreateProduct_ValidInput()
         //{
 
-            var createRequest = new CreateProductRequest(
-                Name: "New Product",
-                PriceBeforeVat: 10.99,
-                Description: "Description",
-                MenuPhoto: new byte[0],
-                IsFoodItem: true,
-                IsDeleted: false,
-                SelectedCategoryIds: new List<int>(),
-                SelectedAllergyIds: new List<int>(),
-                VATId: 1
-            );
+            //var createRequest = new CreateProductRequest(
+            //    Name: "New Product",
+            //    PriceBeforeVat: 10.99,
+            //    Description: "Description",
+            //    MenuPhoto: new byte[0],
+            //    IsFoodItem: true,
+            //    IsDeleted: false,
+            //    SelectedCategoryIds: new List<int>(),
+            //    SelectedAllergyIds: new List<int>(),
+            //    VATId: 1
+            //);
         //    var createRequest = new CreateProductRequest(
         //        Name: "New Product",
         //        Price: 10.99,
@@ -103,17 +103,17 @@ namespace TheRestaurant.Testing.ProductTests
         //    };
 
 
-            var updatedProductRequest = new EditProductRequest(
-                Name: "Updated Product",
-                PriceBeforeVat: 200,
-                Description: "Updated Description",
-                MenuPhoto: new byte[0],
-                IsFoodItem: true,
-                IsDeleted: false,
-                SelectedCategoryIds: new List<int>(),
-                SelectedAllergyIds: new List<int>(),
-                VatId: 1
-                );
+            //var updatedProductRequest = new EditProductRequest(
+            //    Name: "Updated Product",
+            //    PriceBeforeVat: 200,
+            //    Description: "Updated Description",
+            //    MenuPhoto: new byte[0],
+            //    IsFoodItem: true,
+            //    IsDeleted: false,
+            //    SelectedCategoryIds: new List<int>(),
+            //    SelectedAllergyIds: new List<int>(),
+            //    VatId: 1
+            //    );
         //    var updatedProductRequest = new EditProductRequest(
         //        Name: "Updated Product",
         //        Price: 200,
