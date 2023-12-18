@@ -92,11 +92,11 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
 
         // Delete
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVat(int id)
+        public async Task<IActionResult> SoftDeleteVat(int id)
         {
             try
             {
-                await _vatService.DeleteVatAsync(id);
+                await _vatService.SoftDeleteVatAsync(id);
                 return NoContent();
             }
             catch (Exception ex)

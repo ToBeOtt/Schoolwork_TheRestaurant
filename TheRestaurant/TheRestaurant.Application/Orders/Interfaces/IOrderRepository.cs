@@ -24,7 +24,7 @@ namespace TheRestaurant.Application.Orders.Interfaces
 
 
         // Order-status handling
-        Task<OrderStatus> GetOrderStatusByName(string statusName);
+        //Task<OrderStatus> GetOrderStatusByName(string statusName);
         Task<List<Order>> GetOrdersByStatus(string status);
 
     }

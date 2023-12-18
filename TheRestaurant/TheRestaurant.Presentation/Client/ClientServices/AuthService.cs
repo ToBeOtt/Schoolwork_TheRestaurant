@@ -24,6 +24,14 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             _navigationManager = navigationManager;
             _clientCartService = clientCartService;
         }
+
+        public event Action IsLoggedIn;
+
+        public async Task UpdateAuthState()
+        {
+            IsLoggedIn?.Invoke();
+        }
+
         public async Task<bool> Login(LoginRequest request)
         {
             var json = JsonSerializer.Serialize(request);
@@ -39,6 +47,9 @@ namespace TheRestaurant.Presentation.Client.ClientServices
                 var token = await response.Content.ReadAsStringAsync();
 
                 await _localStorage.SetItemAsync("authToken", token);
+
+                // Invoke event to UI icons will change
+                IsLoggedIn?.Invoke();
 
                 // Set header to authorized so controller can authorize user
                 _httpClient.DefaultRequestHeaders.Authorization = 

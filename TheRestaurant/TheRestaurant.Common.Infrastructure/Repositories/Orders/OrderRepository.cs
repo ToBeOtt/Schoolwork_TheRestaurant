@@ -111,12 +111,12 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                           .ToListAsync();
         }
 
-        public async Task<OrderStatus> GetOrderStatusByName(string statusName)
-        {
-            return await _dbContext.OrderStatus
-                                    .Where(x => x.Status == statusName)
-                                    .SingleOrDefaultAsync();
-        }
+        //public async Task<OrderStatus> GetOrderStatusByName(string statusName)
+        //{
+        //    return await _dbContext.OrderStatus
+        //                            .Where(x => x.Status == statusName)
+        //                            .SingleOrDefaultAsync();
+        //}
 
         public async Task<List<ProductSaleCountDto>> GetProductSaleCount()
         {
