@@ -1,10 +1,5 @@
 
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Moq;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Services.ProductServices;
 using TheRestaurant.Contracts.Requests.Product;
@@ -57,14 +52,14 @@ namespace TheRestaurant.Testing.ProductTests
 
             var createRequest = new CreateProductRequest(
                 Name: "New Product",
-                Price: 10.99,
+                PriceBeforeVat: 10.99,
                 Description: "Description",
                 MenuPhoto: new byte[0],
                 IsFoodItem: true,
                 IsDeleted: false,
                 SelectedCategoryIds: new List<int>(),
                 SelectedAllergyIds: new List<int>(),
-                VAT: "Alcohol"
+                VATId: 1
             );
 
 
@@ -98,13 +93,14 @@ namespace TheRestaurant.Testing.ProductTests
 
             var updatedProductRequest = new EditProductRequest(
                 Name: "Updated Product",
-                Price: 200,
+                PriceBeforeVat: 200,
                 Description: "Updated Description",
                 MenuPhoto: new byte[0],
                 IsFoodItem: true,
                 IsDeleted: false,
                 SelectedCategoryIds: new List<int>(),
-                SelectedAllergyIds: new List<int>()
+                SelectedAllergyIds: new List<int>(),
+                VatId: 1
                 );
 
 

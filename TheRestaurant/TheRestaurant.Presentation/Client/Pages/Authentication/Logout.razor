@@ -1,5 +1,7 @@
 ﻿@page "/logout"
 @using Blazored.LocalStorage
+@using TheRestaurant.Presentation.Client.ClientServices
+@inject AuthService authService
 @inject NavigationManager NavigationManager
 @inject ILocalStorageService LocalStorage
 @inject ServerAuthenticationStateProvider authState
@@ -11,6 +13,9 @@
     {
         await LocalStorage.RemoveItemAsync("authToken");
         await LocalStorage.RemoveItemAsync("TokenExpiration");
+
+        // Invoke event to UI icons will change
+        await authService.UpdateAuthState();
 
         authState.NotifyAuthenticationStateChanged();
 
