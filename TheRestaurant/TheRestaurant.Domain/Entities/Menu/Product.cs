@@ -26,7 +26,7 @@
         public void SetPriceWithVAT(Product product)
         {
             var calculatedPrice = this.Price = (PriceBeforeVAT * VAT.Adjustment);
-            product.Price = (int)Math.Round(calculatedPrice);
+            product.Price = (int)Math.Round(calculatedPrice, 2);
         }
 
     }
