@@ -8,9 +8,11 @@ public static class ProductSeeds
     {
 
         modelBuilder.Entity<VAT>().HasData(
-            new VAT { Id = 1, Name = "Food", Adjustment = 1.12 },
-            new VAT { Id = 2, Name = "Merchandise", Adjustment = 1.06 },
-            new VAT { Id = 3, Name = "Alcohol", Adjustment = 1.25 }
+            new VAT { Id = 1, Name = "Mat", Adjustment = 1.12 },
+            new VAT { Id = 2, Name = "Böcker", Adjustment = 1.06 },
+            new VAT { Id = 3, Name = "Aklohol", Adjustment = 1.25 },
+            new VAT { Id = 4, Name = "Varor/Kläder", Adjustment = 1.25 }
+
         );
 
         modelBuilder.Entity<Product>().HasData(
