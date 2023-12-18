@@ -56,13 +56,13 @@
                     </MudText>
                 </MudTh>
 
-                <MudTh>
-                    <MudText Class="fw-bold"
-                             Align="Align.End"
-                             Typo="Typo.subtitle1">
-                        Varav Moms
-                    </MudText>
-                </MudTh>
+                @*   <MudTh>
+                <MudText Class="fw-bold"
+                Align="Align.End"
+                Typo="Typo.subtitle1">
+                Varav Moms
+                </MudText>
+                </MudTh> *@
             </HeaderContent>
             <RowTemplate>
                 <MudTd>
@@ -75,73 +75,58 @@
                         @context.Price @Currency
                     </MudText>
                 </MudTd>
-                <MudTd>
-                    <MudText Align="Align.End">
-                        @VatDiffrence(context.Price, context.PriceWithoutVAT) @Currency
-                    </MudText>
-                </MudTd>
+                @*  <MudTd>
+                <MudText Align="Align.End">
+                @VatDiffrence(context.Price, context.PriceWithoutVAT) @Currency
+                </MudText>
+                </MudTd> *@
             </RowTemplate>
 
             <FooterContent>
-                <MudTd>
-                    <MudSpacer/>
-                </MudTd>
-                <MudTd>
-                    <MudText Class="pt-8 pb-1"
-                             Typo="Typo.h6">
-                        Total : @Receipt.Totalprice @Currency
-                    </MudText>
-                </MudTd>
-                <MudTd>
-                    <MudText Align="Align.End"
-                             Class="ml-2"
-                             Typo="Typo.caption">
-                        varav moms : @AddUpVat().ToString() @Currency
-                    </MudText>
-                </MudTd>
-                
-                <MudText Class="ml-2" Align="Align.Start" Typo="Typo.caption">
-                    Öresavrundning: @(Receipt.Totalprice - AddUpVat()) @Currency
-                </MudText>
-               
-                
+
             </FooterContent>
 
+
         </MudTable>
+
+
+        <MudStack Spacing="1" AlignItems="AlignItems.Center">
+            <MudText Class="fw-bold"
+                     Typo="Typo.h6">
+                Total: @Receipt.Totalprice @Currency
+            </MudText>
+            <MudText Typo="Typo.caption">
+                Exkl moms: @(Receipt.Totalprice - AddUpVat()) @Currency
+            </MudText>
+            <MudText Typo="Typo.caption">
+                moms:@AddUpVat().ToString() @Currency
+            </MudText>
+        </MudStack>
+
         <MudTable Items="@DistinctVats()"
                     Square
                    Elevation="0"
                    Dense="true">
-             <ToolBarContent>
-                 
-                 <MudText Align="Align.Start" Typo="Typo.caption">
-                     Exkl moms: @(Receipt.Totalprice - AddUpVat()) @Currency
-                </MudText>
-                <MudSpacer></MudSpacer>
-                <MudText Align="Align.End" Typo="Typo.caption">
-                    Inkl moms: @Receipt.Totalprice @Currency
-                </MudText>
-            </ToolBarContent>
-            <HeaderContent>
-                <MudTh />
-                <MudTh>
-                    <MudText Typo="Typo.caption">
-                        Momssats
-                    </MudText>
-                </MudTh>
-                <MudTh>
-                    <MudText Typo="Typo.caption">
-                        Moms
-                    </MudText>
-                </MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd>
-                    <MudSpacer />
-                </MudTd>
-                <MudTd>
-                    <MudText Typo="Typo.caption">
-                        @((context.Key-1).ToString("P2"))
+             <HeaderContent>
+                 <MudTh />
+                 <MudTh>
+                     <MudText Typo="Typo.caption">
+                         Momssats
+                     </MudText>
+                 </MudTh>
+                 <MudTh>
+                     <MudText Typo="Typo.caption">
+                         Moms
+                     </MudText>
+                 </MudTh>
+             </HeaderContent>
+             <RowTemplate>
+                 <MudTd>
+                     <MudSpacer />
+                 </MudTd>
+                 <MudTd>
+                     <MudText Typo="Typo.caption">
+                         @((context.Key-1).ToString("P2"))
                     </MudText>
                 </MudTd>
                 <MudTd>
@@ -152,6 +137,9 @@
 
             </RowTemplate>
         </MudTable>
+
+
+
     </DialogContent>
 
     <DialogActions>
