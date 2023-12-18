@@ -40,6 +40,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                 .Include(x => x.Employee)
                 .Include(x => x.OrderRows)
                     .ThenInclude(o => o.Product)
+                    .ThenInclude(v => v.VAT)
                 .Include(x => x.OrderStatus)
                 .Where(x => x.Id == orderId && x.IsDeleted != true).FirstOrDefaultAsync();
         }

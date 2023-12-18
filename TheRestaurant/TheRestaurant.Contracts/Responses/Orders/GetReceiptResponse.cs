@@ -4,13 +4,14 @@
        int ProductId,
        string ProductName,
        double Price,
-       double PriceWithoutVAT);
+       double PriceWithoutVAT,
+       double VAT);
 
     public class GetReceiptResponse
     {
         public int OrderNr { get; set; }
         public DateTime OrderDate { get; set; }
-        public string EmployeeResponsible { get; set; } 
+        public string EmployeeResponsible { get; set; }
         public List<ProductForReceipt> Products { get; set; }
         public double Totalprice { get; set; }
 
@@ -23,5 +24,5 @@
             Products = new List<ProductForReceipt>();
         }
     }
-        
+
 }
