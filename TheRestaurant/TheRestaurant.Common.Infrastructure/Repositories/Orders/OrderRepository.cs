@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TheRestaurant.Application.Orders.Interfaces;
 using TheRestaurant.Domain.Entities.Orders;
+using TheRestaurant.Presentation.Shared.DTO.Dashboard;
 
 namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
 {
@@ -135,6 +136,14 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Orders
                 .Where(order => order.OrderDate.Date == selectedDate.Date)
                 .GroupBy(order => order.OrderDate.Hour)
                 .Select(group => new OrderCountByHourDto(group.Key, group.Count()))
+                .ToListAsync();
+        }
+        public async Task<List<OrderCountDto>> GetOrderStatsByDateRange(DateTime orderStartDate, DateTime orderEndDate)
+        {
+            return await _dbContext.Orders
+                .Where(order => order.OrderDate.Date >= orderStartDate.Date && order.OrderDate.Date <= orderEndDate.Date)
+                .GroupBy(order => order.OrderDate.Date)
+                .Select(group => new OrderCountDto(group.Key.ToString("yyyy-MM-dd"), group.Count(), group.Key))
                 .ToListAsync();
         }
     }
