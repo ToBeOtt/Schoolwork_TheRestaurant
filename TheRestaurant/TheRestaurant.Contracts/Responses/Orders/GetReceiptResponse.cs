@@ -4,7 +4,8 @@
        int ProductId,
        string ProductName,
        double Price,
-       double PriceWithoutVAT);
+       double PriceWithoutVAT,
+       double VAT);
 
     public class GetReceiptResponse
     {

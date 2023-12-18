@@ -17,8 +17,7 @@
             </MudItem>
 
             <MudItem xs="4">
-                <MudText 
-                         Typo="Typo.h6">
+                <MudText Typo="Typo.h6">
                     @Receipt.OrderDate.ToShortDateString() - @Receipt.OrderDate.ToShortTimeString()
                 </MudText>
             </MudItem>
@@ -34,51 +33,84 @@
     </TitleContent>
     <DialogContent>
         <MudTable Items="@Receipt.Products"
-                  Hover=true 
-            Bordered=false 
-            Striped=false
-            Elevation="0">
+                  Hover=true
+                  Bordered=false
+                  Striped=false
+                  Elevation="0">
 
             <HeaderContent>
                 <MudTh>
-                    <MudText 
-                        Class="fw-bold"
-                        Typo="Typo.subtitle1">
+                    <MudText Class="fw-bold"
+                             Typo="Typo.subtitle1">
                         Köpta produkter
                     </MudText>
                 </MudTh>
                 <MudTh>
                     <MudText Class="fw-bold"
                              Typo="Typo.subtitle1">
-                        Utan moms
+                        Pris
                     </MudText>
                 </MudTh>
 
                 <MudTh>
                     <MudText Class="fw-bold"
                              Typo="Typo.subtitle1">
-                        Med moms
+                        Varav Moms
                     </MudText>
                 </MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd>@context.ProductName</MudTd>
-                    <MudTd>@context.PriceWithoutVAT</MudTd>
-                    <MudTd>@context.Price</MudTd>
-            </RowTemplate>
+                <MudTd>@context.Price</MudTd>
+                <MudTd>@(context.Price - context.PriceWithoutVAT)</MudTd>
+                </RowTemplate>
 
-            <FooterContent>
-                <MudText 
-                    Class="pt-8 pb-3 ml-2"
-                    Typo="Typo.h6">
-                        Totalpris: @Receipt.Totalprice
-                </MudText>
+                <FooterContent>
+                    <MudText Class="pt-8 pb-3 ml-2"
+                             Typo="Typo.h6">
+                        Total : @Receipt.Totalprice
+                    </MudText>
+                    <MudText Class="ml-2"
+                             Typo="Typo.caption">
+                        varav moms : @AddUpVat().ToString()
+                    </MudText>
+                    <MudTable Items="@DistinctVats()">
+                        <ToolBarContent>
+                            <MudText Align="Align.Start" Typo="Typo.caption">
+                                Exkl moms: @(Receipt.Totalprice - AddUpVat())
+                            </MudText>
+                            <MudSpacer></MudSpacer>
+                            <MudText Align="Align.End" Typo="Typo.caption">
+                                Inkl moms: 
+                            </MudText>
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>
+                            <MudText Typo="Typo.caption">
+                                    Momssats
+                                </MudText>
+                            </MudTh>
+                            <MudTh>
+                                <MudText Typo="Typo.caption">
+                                    Moms
+                                </MudText>
+                            </MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd></MudTd>
+                            <MudTd>
+                                <MudText Typo="Typo.caption">
+                                    @((context - 1).ToString("P2"))
+                            </MudText>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
             </FooterContent>
 
-            </MudTable>
-        </DialogContent>
+        </MudTable>
+    </DialogContent>
 
-        <DialogActions>
+    <DialogActions>
         <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmPrintReceipt">Skriv ut</MudButton>
          <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
      </DialogActions>
@@ -95,16 +127,40 @@
     public int DetailsId { get; set; }
 
     private GetReceiptResponse Receipt;
+    
 
     protected override async Task OnInitializedAsync()
     {
         Receipt = await OrderService.FetchReceipt(DetailsId);
+        
     }
 
     private void Cancel()
     {
         MudDialog.Cancel();
     }
+
+    private double AddUpVat()
+    {
+        double vatTotal = 0;
+
+        foreach (var product in Receipt.Products)
+        {
+            vatTotal += product.Price - product.PriceWithoutVAT;
+        }
+
+        return Math.Round(vatTotal,2);
+    }
+
+    private List<double> DistinctVats()
+    {
+        List<double> vatList = new();
+
+        vatList = Receipt.Products.Select(v => v.VAT).Distinct().ToList();
+
+        return vatList;
+    }
+
 
     private bool YesToReceipt;
 
