@@ -10,6 +10,7 @@
 
     public record ProductAndQuantity(
         string ProductName,
+        string? Size,
         int Quantity);
    
 }

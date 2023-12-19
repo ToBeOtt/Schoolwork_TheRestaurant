@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using TheRestaurant.Application.Interfaces.IOrderStatus;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Orders.Interfaces;
@@ -148,11 +149,12 @@ namespace TheRestaurant.Application.Orders
             foreach (var item in pendingOrdersList)
             {
                 var productAndQuantityList = item.OrderRows
-                    .GroupBy(orderRow => orderRow.Product.Name)
+                    .GroupBy(orderRow => orderRow.Product.Id)
                     .Select(group => new ProductAndQuantity
                     (
-                        ProductName: group.Key,
-                        Quantity: group.Count()
+                        ProductName: item.OrderRows.Where(x => group.Key == x.Product.Id).Select(x => x.Product.Name).FirstOrDefault(),
+                        Quantity: group.Count(),
+                        Size: item.OrderRows.Where(x => group.Key == x.ProductId).Select(x=> x.Product.Size).FirstOrDefault()
                     ))
                     .OrderBy(productAndQuantity => productAndQuantity.ProductName)
                     .ToList();
@@ -190,7 +192,8 @@ namespace TheRestaurant.Application.Orders
                     .Select(group => new ProductAndQuantity
                     (
                         ProductName: group.Key,
-                        Quantity: group.Count()
+                        Quantity: group.Count(),
+                        Size: item.OrderRows.Select(x => x.Product.Size).FirstOrDefault()
                     ))
                     .OrderBy(productAndQuantity => productAndQuantity.ProductName)
                     .ToList();
