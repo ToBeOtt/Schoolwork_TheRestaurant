@@ -10,28 +10,28 @@ namespace TheRestaurant.Common.Infrastructure.Data
         public static void CategorySeed(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Appetizers", IsDeleted = false },
-                new Category { Id = 2, Name = "Salads", IsDeleted = false },
-                new Category { Id = 3, Name = "Soups", IsDeleted = true },
+                new Category { Id = 1, Name = "Förrätter", IsDeleted = false },
+                new Category { Id = 2, Name = "Sallader", IsDeleted = false },
+                new Category { Id = 3, Name = "Soppor", IsDeleted = true },
                 new Category { Id = 4, Name = "Pasta", IsDeleted = false },
-                new Category { Id = 5, Name = "Steak", IsDeleted = false },
-                new Category { Id = 6, Name = "Lamb", IsDeleted = true },
-                new Category { Id = 7, Name = "Seafood", IsDeleted = false },
-                new Category { Id = 8, Name = "Vegetarian", IsDeleted = false },
-                new Category { Id = 9, Name = "Burgers", IsDeleted = false },
-                new Category { Id = 10, Name = "Sandwiches", IsDeleted = false },
+                new Category { Id = 5, Name = "Biff", IsDeleted = false },
+                new Category { Id = 6, Name = "Lamm", IsDeleted = true },
+                new Category { Id = 7, Name = "Skaldjur", IsDeleted = false },
+                new Category { Id = 8, Name = "Vegetariskt", IsDeleted = false },
+                new Category { Id = 9, Name = "Burgare", IsDeleted = false },
+                new Category { Id = 10, Name = "Smörgåsar", IsDeleted = false },
                 new Category { Id = 11, Name = "Pizza", IsDeleted = false },
-                new Category { Id = 12, Name = "Rice", IsDeleted = false },
+                new Category { Id = 12, Name = "Ris", IsDeleted = false },
                 new Category { Id = 13, Name = "Sushi", IsDeleted = true },
-                new Category { Id = 14, Name = "Non Alcoholic Beverages", IsDeleted = false },
-                new Category { Id = 15, Name = "Alcoholic Beverages", IsDeleted = true },
-                new Category { Id = 16, Name = "Desserts", IsDeleted = false },
-                new Category { Id = 17, Name = "Poultry", IsDeleted = false },
+                new Category { Id = 14, Name = "Alkoholfria drycker", IsDeleted = false },
+                new Category { Id = 15, Name = "Alkoholhaltiga drycker", IsDeleted = true },
+                new Category { Id = 16, Name = "Desserter", IsDeleted = false },
+                new Category { Id = 17, Name = "Fågel", IsDeleted = false },
                 new Category { Id = 18, Name = "Merch", IsDeleted = false },
-                new Category { Id = 19, Name = "Kokbok", IsDeleted = false },
+                new Category { Id = 19, Name = "Kokböcker", IsDeleted = false },
                 new Category { Id = 20, Name = "T-shirt", IsDeleted = false },
-                new Category { Id = 21, Name = "Kaffe mugg", IsDeleted = false },
-                new Category { Id = 22, Name = "Såspanna", IsDeleted = false }
+                new Category { Id = 21, Name = "Muggar", IsDeleted = false },
+                new Category { Id = 22, Name = "Såspannor", IsDeleted = false }
             );
         }
 
