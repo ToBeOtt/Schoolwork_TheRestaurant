@@ -4,6 +4,7 @@ using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TheRestaurant.Common.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231219110117_seed-tshirts")]
+    partial class seedtshirts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -513,8 +516,8 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                     b.Property<double>("PriceBeforeVAT")
                         .HasColumnType("float");
 
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Size")
+                        .HasColumnType("int");
 
                     b.Property<int>("VATId")
                         .HasColumnType("int");
@@ -722,7 +725,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Svart T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "XS",
+                            Size = 0,
                             VATId = 4
                         },
                         new
@@ -734,7 +737,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Svart T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "SM",
+                            Size = 1,
                             VATId = 4
                         },
                         new
@@ -746,7 +749,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Svart T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "M",
+                            Size = 2,
                             VATId = 4
                         },
                         new
@@ -758,7 +761,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Svart T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "L",
+                            Size = 3,
                             VATId = 4
                         },
                         new
@@ -770,7 +773,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Svart T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "XL",
+                            Size = 4,
                             VATId = 4
                         },
                         new
@@ -782,7 +785,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Vit T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "XS",
+                            Size = 0,
                             VATId = 4
                         },
                         new
@@ -794,7 +797,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Vit T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "SM",
+                            Size = 1,
                             VATId = 4
                         },
                         new
@@ -806,7 +809,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Vit T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "M",
+                            Size = 2,
                             VATId = 4
                         },
                         new
@@ -818,7 +821,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Vit T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "L",
+                            Size = 3,
                             VATId = 4
                         },
                         new
@@ -830,7 +833,7 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                             Name = "Vit T-shirt",
                             Price = 250.0,
                             PriceBeforeVAT = 200.0,
-                            Size = "XL",
+                            Size = 4,
                             VATId = 4
                         });
                 });
@@ -1184,77 +1187,77 @@ namespace TheRestaurant.Common.Infrastructure.Migrations
                         {
                             Id = 31,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 19, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5638),
+                            OrderDate = new DateTime(2023, 12, 19, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5201),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 4,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 19, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5642),
+                            OrderDate = new DateTime(2023, 12, 19, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5205),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 5,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 19, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5644),
+                            OrderDate = new DateTime(2023, 12, 19, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5207),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 34,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 17, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5646),
+                            OrderDate = new DateTime(2023, 12, 17, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5210),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 10,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 16, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5649),
+                            OrderDate = new DateTime(2023, 12, 16, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5212),
                             OrderStatusId = 3
                         },
                         new
                         {
                             Id = 11,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 15, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5651),
+                            OrderDate = new DateTime(2023, 12, 15, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5214),
                             OrderStatusId = 4
                         },
                         new
                         {
                             Id = 6,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 18, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5654),
+                            OrderDate = new DateTime(2023, 12, 18, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5217),
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 32,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 18, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5656),
+                            OrderDate = new DateTime(2023, 12, 18, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5219),
                             OrderStatusId = 2
                         },
                         new
                         {
                             Id = 33,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 18, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5658),
+                            OrderDate = new DateTime(2023, 12, 18, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5221),
                             OrderStatusId = 5
                         },
                         new
                         {
                             Id = 1,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 19, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5570),
+                            OrderDate = new DateTime(2023, 12, 19, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5140),
                             OrderStatusId = 1
                         },
                         new
                         {
                             Id = 2,
                             IsDeleted = false,
-                            OrderDate = new DateTime(2023, 12, 18, 12, 4, 9, 537, DateTimeKind.Local).AddTicks(5629),
+                            OrderDate = new DateTime(2023, 12, 18, 12, 1, 17, 610, DateTimeKind.Local).AddTicks(5197),
                             OrderStatusId = 3
                         });
                 });
