@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
+using TheRestaurant.Contracts.DTOs.OrderDTOs;
 using TheRestaurant.Presentation.Shared.DTO.Cart;
-using TheRestaurant.Presentation.Shared.DTO.Product;
 using TheRestaurant.Presentation.Shared.Requests;
 
 namespace TheRestaurant.Presentation.Client.ClientServices
@@ -32,15 +32,18 @@ namespace TheRestaurant.Presentation.Client.ClientServices
 
             foreach (var product in listOfProducts)
             {
-                ClientProductDto dto = new(
-                   Id: product.Id,
-                   Name: product.Name,
-                   Price: product.Price,
-                   IsFoodItem: product.IsFoodItem,
-                   Description: product.Description,
-                   MenuPhoto: product.MenuPhoto,
-                   Category: product.Category,
-                   Allergen: product.Allergen);
+                ClientProductDto dto = new ClientProductDto
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    IsFoodItem = product.IsFoodItem,
+                    Description = product.Description,
+                    MenuPhoto = product.MenuPhoto,
+                    Category = product.Category,
+                    Allergen = product.Allergen,
+                    Size = product.Size,
+                };
                 listOfMappedProducts.Add(dto);
             }
             return listOfMappedProducts;

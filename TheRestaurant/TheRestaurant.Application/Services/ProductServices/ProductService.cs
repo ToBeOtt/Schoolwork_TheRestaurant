@@ -1,5 +1,6 @@
 ﻿using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Application.Services.ProductServices.DTO;
+using TheRestaurant.Contracts.DTOs.OrderDTOs;
 using TheRestaurant.Contracts.Requests.Product;
 using TheRestaurant.Contracts.Responses.ServiceResponse;
 using TheRestaurant.Domain.Entities.Menu;
@@ -30,6 +31,7 @@ namespace TheRestaurant.Application.Services.ProductServices
                 ProductCategories = new List<ProductCategory>(),
                 VATId = request.VATId,
                 VAT = VAT,
+                 
             };
             product.SetPriceWithVAT(product);
 
@@ -93,16 +95,19 @@ namespace TheRestaurant.Application.Services.ProductServices
                         listOfCategories.Add(category.Category.Name);
                     }
                 }
-                   
-                ClientProductDto dto = new(
-                   Id: product.Id,
-                   Name: product.Name,
-                   Price: product.Price,
-                   IsFoodItem: product.IsFoodItem,
-                   Description: product.Description,
-                   MenuPhoto: Convert.ToBase64String(product.MenuPhoto),
-                   Category: listOfCategories,
-                   Allergen: listOfAllergies);
+
+                ClientProductDto dto = new ClientProductDto
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    IsFoodItem = product.IsFoodItem,
+                    Description = product.Description,
+                    MenuPhoto = Convert.ToBase64String(product.MenuPhoto),
+                    Category = listOfCategories,
+                    Allergen = listOfAllergies,
+                    Size = product.Size,
+                };
 
                 ListOfDtos.Add(dto);
             }

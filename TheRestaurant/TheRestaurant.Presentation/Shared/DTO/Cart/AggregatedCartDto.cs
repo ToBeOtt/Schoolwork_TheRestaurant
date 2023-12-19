@@ -4,7 +4,8 @@
         int IdOfOrderAggregate,
         string Name,
         double TotalPrice,
-        int Count
+        int Count,
+        string? Size
         );
 }
 

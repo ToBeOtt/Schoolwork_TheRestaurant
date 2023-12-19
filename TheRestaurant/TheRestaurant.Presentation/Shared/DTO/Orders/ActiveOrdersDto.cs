@@ -8,7 +8,11 @@
        string EmployeeName
        );
 
-    public record ProductAndQuantity(
-        string ProductName,
-        int Quantity);
+    public class ProductAndQuantity
+    {
+        public string ProductName { get; set; }
+        public string? Size { get; set; }
+        public int Quantity { get; set; }
+    }
+        
 }

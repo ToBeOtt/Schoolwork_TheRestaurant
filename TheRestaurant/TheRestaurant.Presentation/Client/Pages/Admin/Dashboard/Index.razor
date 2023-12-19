@@ -6,9 +6,10 @@
 
 <AdminLayout>
     <AdminContent>
+        <PageTitle>Statistik för färdigställda ordrar och mängden sålda produkter</PageTitle>
         <MudGrid>
 
-List-chart for orders 
+            <MudText>Välj ett datumspan för att se orderstatistik.</MudText>
             <MudItem xs="12">
                 <MudPaper 
                     Elevation="0"
@@ -16,18 +17,21 @@ List-chart for orders
                     <OrderChartByDate />
                 </MudPaper>
             </MudItem> 
-Produkter sålda.
-            <MudItem xs="6">
-                <MudPaper Elevation="0"
-                          Class="d-flex align-center justify-center py-3">
-                    <ProductDonutChart />
-                </MudPaper>
-            </MudItem> 
 
-Välj en dag att för att se hur många ordrar som lades den dagen samt vilka tider de lades.
+            <MudText>Produkter sålda.</MudText>
             <MudItem xs="12">
                 <MudPaper Elevation="0"
-                        Class="d-flex align-center justify-center mud-width-full py-3">
+                        Class="d-flex align-center justify-center py-3">
+                    <ProductDonutChart />
+                </MudPaper>
+            </MudItem>
+
+            <MudText>Välj en dag att för att se hur många ordrar som lades den dagen samt vilka tider de lades.</MudText>
+            <MudItem xs="12">
+                
+                <MudPaper Elevation="0"
+
+                        Class="d-flex align-center justify-left mud-width-full py-3">
                     <OrderChartByDay />
                 </MudPaper>
             </MudItem> 

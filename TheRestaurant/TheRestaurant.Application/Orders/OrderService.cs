@@ -249,14 +249,17 @@ namespace TheRestaurant.Application.Orders
             // Loop through each individual item
             foreach (var item in order.OrderRows)
             {
-                var product = new ProductForReceipt(
-                    ProductId: item.ProductId,
-                    ProductName: item.Product.Name,
-                    Price: item.Product.Price,
-                    PriceWithoutVAT: item.Product.PriceBeforeVAT,
-                    VAT: item.Product.VAT.Adjustment);
+                var product = new ProductForReceipt
+                {
+                    ProductId = item.ProductId,
+                    ProductName = item.Product.Name,
+                    Price = item.Product.Price,
+                    PriceWithoutVAT = item.Product.PriceBeforeVAT,
+                    VAT = item.Product.VAT.Adjustment,
+                    Size = item.Product.Size,
+                };
 
-                dto.Products.Add(product);
+            dto.Products.Add(product);
             }
             // Add total price-calculation
             dto.Totalprice = dto.Products.Sum(x => x.Price);
