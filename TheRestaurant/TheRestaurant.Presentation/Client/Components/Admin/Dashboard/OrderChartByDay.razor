@@ -2,7 +2,7 @@
 @inject ClientDashboardServices DashboardServices
 
 <MudDatePicker Variant="Variant.Filled" Date="@selectedDate" Label="Datum" DateChanged="OnDateChange" MinDate="minDate" MaxDate="maxDate" />
-<MudButton Variant="Variant.Filled" OnClick="LoadChartData">Load Chart Data</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="LoadChartData">Load Chart Data</MudButton>
 
 <MudChart ChartType="ChartType.Bar"
             ChartSeries="@Series"
@@ -25,6 +25,10 @@
     private void OnDateChange(DateTime? date)
     {
         selectedDate = date;
+        if (selectedDate.HasValue)
+        {
+            LoadChartData();
+        }
         StateHasChanged();
     }
     private async Task LoadChartData()
