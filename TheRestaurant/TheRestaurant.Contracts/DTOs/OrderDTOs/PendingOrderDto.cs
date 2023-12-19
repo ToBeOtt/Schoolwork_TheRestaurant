@@ -17,6 +17,7 @@ namespace TheRestaurant.Contracts.DTOs.OrderDTOs
 
     public record ProductAndQuantity(
        string ProductName,
+       string? Size,
        int Quantity);
 
    
