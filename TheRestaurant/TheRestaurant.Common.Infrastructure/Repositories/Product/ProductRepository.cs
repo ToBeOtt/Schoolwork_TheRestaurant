@@ -13,19 +13,19 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
         {
             _context = context;
         }
-        public async Task AddAsync(Domain.Entities.Menu.Product menuItem)
+        public async Task AddAsync(Domain.Entities.Menu.Product product)
         {
-            _context.Products.Add(menuItem);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
         }
 
         public async Task SoftDeleteAsync(int id)
         {
-            var itemToDelete = await _context.Products.FindAsync(id);
-            if (itemToDelete != null)
+            var productToDelete = await _context.Products.FindAsync(id);
+            if (productToDelete != null)
             {
-                itemToDelete.IsDeleted = true;
-                _context.Products.Update(itemToDelete);
+                productToDelete.IsDeleted = true;
+                _context.Products.Update(productToDelete);
                 await _context.SaveChangesAsync();
             }
             else
@@ -36,7 +36,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
 
         public async Task<List<Domain.Entities.Menu.Product>> GetAllAsync()
         {
-            return await _context.Products.Where(item => !item.IsDeleted).ToListAsync();
+            return await _context.Products.Where(product => !product.IsDeleted).ToListAsync();
         }
 
         public async Task<Domain.Entities.Menu.Product> GetByIdAsync(int id)
@@ -47,9 +47,9 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task UpdateAsync(Domain.Entities.Menu.Product menuItem)
+        public async Task UpdateAsync(Domain.Entities.Menu.Product product)
         {
-            _context.Update(menuItem);
+            _context.Update(product);
             await _context.SaveChangesAsync();
         }
 
