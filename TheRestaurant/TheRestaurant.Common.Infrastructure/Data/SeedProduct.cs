@@ -43,7 +43,6 @@ public static class ProductSeeds
             new Product { Id = 25, Name = "Vit T-shirt", Description = "Klassisk vit T-shirt i mjukt och bekvämt material", PriceBeforeVAT = 200, Price = Math.Round(200 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4, Size = "M" },
             new Product { Id = 26, Name = "Vit T-shirt", Description = "Klassisk vit T-shirt i mjukt och bekvämt material", PriceBeforeVAT = 200, Price = Math.Round(200 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4, Size = "L" },
             new Product { Id = 27, Name = "Vit T-shirt", Description = "Klassisk vit T-shirt i mjukt och bekvämt material", PriceBeforeVAT = 200, Price = Math.Round(200 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4, Size = "XL" }
-
         );
 
         modelBuilder.Entity<ProductCategory>().HasData(
