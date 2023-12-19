@@ -2,21 +2,20 @@
 using TheRestaurant.Application.Interfaces.ICategory;
 using TheRestaurant.Application.Services;
 using TheRestaurant.Contracts.DTOs;
-using TheRestaurant.Domain.Entities.Menu;
-using TheRestaurant.Testing.Mocks;
 
-namespace TheRestaurant.Testing.CategoryTests
+
+namespace TheRestaurant.Testing.UnitTests.TheRestaurant.Application.UnitTests.CategoryTests
 {
     public class CategoryServiceTests
     {
         readonly Mock<ICategoryRepository> _mockRepository;
         public CategoryServiceTests()
         {
-            _mockRepository= MockRepositoreis.GetMockCategoryRepository();
+            _mockRepository = MockCategoryRepository.GetMock();
         }
 
         [Fact]
-        public async Task GetAllAsync()
+        public async Task GetAllAsyncTest()
         {
             // Arrange
             var categoryService = new CategoryService(_mockRepository.Object);
@@ -31,7 +30,7 @@ namespace TheRestaurant.Testing.CategoryTests
         }
 
         [Fact]
-        public async Task GetAsync()
+        public async Task GetAsyncTest()
         {
             // Arrange
             var categoryService = new CategoryService(_mockRepository.Object);
@@ -47,11 +46,11 @@ namespace TheRestaurant.Testing.CategoryTests
         }
 
         [Fact]
-        public async Task AddAsync()
+        public async Task AddAsyncTest()
         {
             // Arrange
             var categoryService = new CategoryService(_mockRepository.Object);
-            
+
             var newCategory = new CategoryDto { Id = 4, Name = "Pasta", IsDeleted = false };
 
             //// Act
@@ -66,15 +65,15 @@ namespace TheRestaurant.Testing.CategoryTests
         }
 
         [Fact]
-        public async Task UpdateAsync()
+        public async Task UpdateAsyncTest()
         {
             // Arrange
             var categoryService = new CategoryService(_mockRepository.Object);
 
-            var newCategory = new CategoryDto { Id = 1, Name = "Lamb", IsDeleted = true };
+            var category = new CategoryDto { Id = 1, Name = "Lamb", IsDeleted = true };
 
             //// Act
-            var updated = await categoryService.AddAsync(newCategory);
+            var updated = await categoryService.UpdateAsync(category);
 
             // Assert
             Assert.NotNull(updated);
@@ -83,7 +82,7 @@ namespace TheRestaurant.Testing.CategoryTests
         }
 
         [Fact]
-        public async Task DeleteAsync()
+        public async Task DeleteAsyncTest()
         {
             // Arrange
             var categoryService = new CategoryService(_mockRepository.Object);
@@ -101,7 +100,7 @@ namespace TheRestaurant.Testing.CategoryTests
         }
 
         [Fact]
-        public async Task Exists()
+        public async Task ExistsTest()
         {
             // Arrange
             var categoryService = new CategoryService(_mockRepository.Object);
@@ -117,6 +116,6 @@ namespace TheRestaurant.Testing.CategoryTests
 
 
         }
-   
+
     }
 }

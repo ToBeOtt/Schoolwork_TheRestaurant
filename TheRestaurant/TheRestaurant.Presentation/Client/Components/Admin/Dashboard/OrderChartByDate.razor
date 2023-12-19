@@ -2,16 +2,22 @@
 @inject ClientDashboardServices DashboardService
 
 <div>
-    <MudDatePicker @bind-Date="orderStartDate" Label="Start Date" ValueChanged="(date) => orderStartDate = date" MinDate="minDate" />
-    <MudDatePicker @bind-Date="orderEndDate" Label="End Date" ValueChanged="(date) => orderEndDate = date" MaxDate="maxDate" />
-    <MudButton OnClick="ReloadChart">Reload Chart</MudButton>
-    <MudChart 
-        ChartType="ChartType.Bar"
-        ChartSeries="@Series"
-        XAxisLabels="@XAxisLabels"
-        Width="100%"
-        Height="350px">
-    </MudChart>
+    <MudDatePicker Variant="Variant.Filled" @bind-Date="orderStartDate" Label="Start datum" ValueChanged="(date) => orderStartDate = date" MinDate="minDate" />
+    <MudDatePicker Variant="Variant.Filled" @bind-Date="orderEndDate" Label="Slut datum" ValueChanged="(date) => orderEndDate = date" MaxDate="maxDate" />
+    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="ReloadChart">Reload Chart</MudButton>
+    @if (Series.Count == 0)
+    {
+        <p>@ErrorMessage</p>
+    }
+    else
+    {
+        <MudChart ChartType="ChartType.Bar"
+                  ChartSeries="@Series"
+                  XAxisLabels="@XAxisLabels"
+                  Width="100%"
+                  Height="350px">
+        </MudChart>
+    }
 </div>
 @code {
     private DateTime? orderStartDate;
@@ -20,15 +26,25 @@
     DateTime maxDate = DateTime.Today.AddDays(1);
 
     public List<ChartSeries> Series = new List<ChartSeries>();
+    public string ErrorMessage { get; set; }
 
     public string[] XAxisLabels { get; set; }
 
     protected async Task ReloadChart()
     {
-        var data = await DashboardService.GetOrderStatsByDateRange(orderStartDate.Value, orderEndDate.Value);
+        try
+        {
+            var data = await DashboardService.GetOrderStatsByDateRange(orderStartDate.Value, orderEndDate.Value);
 
-        // Map the data to the Series and XAxisLabels properties
-        Series = new List<ChartSeries>
+            if (data == null || !data.Any())
+            {
+                // Set the error message
+                ErrorMessage = "Ingen data hittades under den tiden som valdes.";
+                return;
+            }
+
+            // Map the data to the Series and XAxisLabels properties
+            Series = new List<ChartSeries>
         {
             new ChartSeries
             {
@@ -37,7 +53,16 @@
             }
         };
 
-        XAxisLabels = data.Select(d => $"{d.Date.ToString("MM-dd")}\n({d.OrderCount})").ToArray();
+            XAxisLabels = data.Select(d => $"{d.Date.ToString("MM-dd")}\n({d.OrderCount})").ToArray();
+
+            // Clear the error message
+            ErrorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            // Set the error message to the exception message
+            ErrorMessage = ex.Message;
+        }
     }
 }
 

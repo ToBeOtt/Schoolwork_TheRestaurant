@@ -4,6 +4,7 @@
 @using TheRestaurant.Presentation.Client.Components;
 @using TheRestaurant.Presentation.Client.Shared.Admin
 @inject HttpClient HttpClient
+@inject NavigationManager Navigation
 
 <AdminLayout>
     <AdminContent>
@@ -11,67 +12,94 @@
 
             <MudItem xs="12">
 
-                <div class="px-3 mb-5">
+                @if (orderStatusList != null)
+                {
+                    <MudTable Items="@orderStatusList"
+                              Dense=true
+                              Hover=true
+                              Bordered=false
+                              Striped=false
+                              Elevation="0">
 
-                    <div class=" d-flex justify-content-between mb-3">
-                        <h3>Orderstatus lista</h3>
+                        <ToolBarContent>
 
-                        <a class="btn btn-outline-success" href="/Admin/AddOrderStatus">Lägg till</a>
+                            <MudItem xs="9">
+                                <MudText Typo="Typo.h5">Orderstatus </MudText>
+                            </MudItem>
+                            
+
+                        </ToolBarContent>
+
+                        <HeaderContent>
+
+                            <MudTh Class="fw-bold">Id</MudTh>
+                            <MudTh Class="fw-bold">Status</MudTh>
+                            <MudTh Class="fw-bold">Aktiv</MudTh>
+                            <MudTh Class="fw-bold">Inställningar</MudTh>
+                            
+
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Id">@context.Id</MudTd>
+                                <MudTd DataLabel="Namn">@context.Status</MudTd>
+
+                                @if (context.IsDeleted)
+                            {
+                                <MudTd DataLabel="unactive">
+                                    <MudIcon Icon="@Icons.Material.Filled.Close"
+                                             Color="Color.Error" />
+                                </MudTd>
+                            }
+                            else
+                            {
+                                <MudTd DataLabel="active">
+                                    <MudIcon Icon="@Icons.Material.Filled.Check"
+                                             Color="Color.Success" />
+                                </MudTd>
+                            }
+
+                            <MudTd>
+                                <MudButtonGroup Variant="Variant.Filled"
+                                                Color="Color.Primary"
+                                                            DisableElevation>
+                                 <MudTooltip Text="Redigera kategori">
+                                     
+                                     </MudTooltip>
+                                     @if (context.IsDeleted)
+                                    {
+                                        <MudTooltip Text="Aktivera kategori">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Upgrade"
+                                                           Variant="Variant.Filled"
+                                                           Color="Color.Primary"
+                                                                  DisableElevation
+                                                        OnClick="() =>  ActivateOrderStatus(context.Id)" />
+                                     </MudTooltip>
+                                    }
+                                    else
+                                    {
+                                        <MudTooltip Text="Inaktivera kategori">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                           Variant="Variant.Filled"
+                                                           Color="Color.Primary"
+                                                                  DisableElevation
+                                                        OnClick="() => InactiveOrderStatus(context.Id)" />
+                                     </MudTooltip>
+                                    }
+
+
+                                </MudButtonGroup>
+                            </MudTd>
+
+                        </RowTemplate>
+                    </MudTable>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        No Data
                     </div>
+                }
 
-
-                    @if (orderStatusList != null)
-                    {
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Status</th>
-                                    <th>Är Aktiv</th>
-                                    <th>Inställningar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in orderStatusList)
-                                {
-                                    <tr>
-                                        <td>@item.Id</td>
-                                        <td>@item.Status</td>
-                                        @if (item.IsDeleted)
-                                        {
-                                            <td>Nej</td>
-                                        }
-                                        else
-                                        {
-                                            <td>Ja</td>
-                                        }
-
-                                        <td>
-                                            <a class="btn btn-sm btn-outline-warning me-1" href="/Admin/EditOrderStatus/@item.Id">Redigera</a>
-                                            @* <a class="btn btn-sm btn-outline-danger" href="/Admin/DeleteCategory/@item.Id">Delete</a> *@
-                                            @if (item.IsDeleted)
-                                            {
-                                                <a class="btn btn-sm btn-outline-success" href="/Admin/ActiveOrderStatus/@item.Id">Aktiv</a>
-                                            }
-                                            else
-                                            {
-                                                <a class="btn btn-sm btn-outline-danger" href="/Admin/InactiveOrderStatus/@item.Id">Inaktiv</a>
-                                            }
-
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <div class="alert alert-warning">
-                            No Data
-                        </div>
-                    }
-
-                </div>
                 <br />
                 <br />
 
@@ -89,5 +117,8 @@
         orderStatusList = await HttpClient.GetFromJsonAsync<OrderStatusDto[]>("api/OrderStatus");
     }
 
+    private async Task ActivateOrderStatus(int id) => Navigation.NavigateTo($"/Admin/ActiveOrderStatus/{id}");
+
+    private async Task InactiveOrderStatus(int id) => Navigation.NavigateTo($"/Admin/InactiveOrderStatus/{id}");
 }
 

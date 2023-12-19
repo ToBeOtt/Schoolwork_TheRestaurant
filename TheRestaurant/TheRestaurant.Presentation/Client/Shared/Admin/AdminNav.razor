@@ -28,20 +28,16 @@
         </MudNavGroup>
 
         @*OrderStatus*@
-        <MudNavGroup Title="Orderstatus" Icon="@Icons.Material.Filled.PausePresentation" Expanded="false">
-            <MudNavLink Href="/Admin/OrderStatusList" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa Orderstatus</MudNavLink>
-            <MudNavLink Href="/Admin/AddOrderStatus" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
-        </MudNavGroup>
+        <MudNavLink Icon="@Icons.Material.Filled.PausePresentation" Href="/Admin/OrderStatusList" ActiveClass="active-link">Orderstatus</MudNavLink>
+
 
         @*Products*@
         <MudNavLink Href="admin/product/view" Icon="@Icons.Material.Filled.ViewList" ActiveClass="active-link">Produkter</MudNavLink>
                     
 
         @* Categories *@
-        <MudNavGroup Title="Kategorier" Icon="@Icons.Material.Filled.Category" Expanded="false">
-            <MudNavLink Href="/Admin/CategoryList" Icon="@Icons.Material.Filled.List" ActiveClass="active-link">Visa kategorier</MudNavLink>
-            <MudNavLink Href="/Admin/AddCategory" Icon="@Icons.Material.Filled.Add" ActiveClass="active-link">Lägg till</MudNavLink>
-        </MudNavGroup>
+        <MudNavLink Icon="@Icons.Material.Filled.Category" Href="/Admin/CategoryList" ActiveClass="active-link">Kategorier</MudNavLink>
+
 
         @* Allergies *@
         <MudNavLink Icon="@Icons.Material.Filled.HealthAndSafety" Href="/admin/allergy/view" ActiveClass="active-link">Allergier</MudNavLink>

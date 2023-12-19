@@ -4,6 +4,7 @@
 @using TheRestaurant.Presentation.Client.Components;
 @using TheRestaurant.Presentation.Client.Shared.Admin
 @inject HttpClient HttpClient
+@inject NavigationManager Navigation
 
 <AdminLayout>
     <AdminContent>
@@ -11,66 +12,104 @@
 
             <MudItem xs="12">
 
-                <div class="px-3 mb-5">
+                @if (categories != null)
+                {
+                    <MudTable Items="@categories"
+                              Dense=true
+                              Hover=true
+                              Bordered=false
+                              Striped=false
+                              Elevation="0">
 
-                    <div class=" d-flex justify-content-between mb-3">
-                        <h3>Kategorier</h3>
+                        <ToolBarContent>
 
-                        <a class="btn btn-outline-success" href="/Admin/AddCategory">Lägg till</a>
+                            <MudItem xs="9">
+                                <MudText Class="" Typo="Typo.h5"> Kategorier</MudText>
+                            </MudItem>
+                            <MudItem xs="3">
+                                @* <MudText Typo="Typo.h5">Orderstatus </MudText> *@
+                                <MudButton Variant="Variant.Filled"
+                                           Color="Color.Secondary"
+                                           OnClick="() => AddCategory()">
+                                    Ny kategori
+                                </MudButton>
+                            </MudItem>
+
+                        </ToolBarContent>
+
+                        <HeaderContent>
+
+                            <MudTh Class="fw-bold">Id</MudTh>
+                            <MudTh Class="fw-bold">Namn</MudTh>
+                            <MudTh Class="fw-bold">Aktiv</MudTh>
+                            <MudTh Class="fw-bold">Inställningar</MudTh>
+
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Id">@context.Id</MudTd>
+                                <MudTd DataLabel="Namn">@context.Name</MudTd>
+
+                                @if (context.IsDeleted)
+                            {
+                                <MudTd DataLabel="unactive">
+                                    <MudIcon Icon="@Icons.Material.Filled.Close"
+                                             Color="Color.Error" />
+                                </MudTd>
+                            }
+                            else
+                            {
+                                <MudTd DataLabel="active">
+                                    <MudIcon Icon="@Icons.Material.Filled.Check"
+                                             Color="Color.Success" />
+                                </MudTd>
+                            }
+
+                            <MudTd>
+                                <MudButtonGroup Variant="Variant.Filled"
+                                                Color="Color.Primary"
+                                                            DisableElevation>
+                                 <MudTooltip Text="Redigera kategori">
+                                     <MudIconButton Icon="@Icons.Material.Filled.EditNote"
+                                                    Variant="Variant.Filled"
+                                                    Color="Color.Primary"
+                                                                  DisableElevation
+                                                        OnClick="() => EditCategory(context.Id)" />
+                                     </MudTooltip>
+                                     @if (context.IsDeleted)
+                                    {
+                                        <MudTooltip Text="Aktivera kategori">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Upgrade"
+                                                           Variant="Variant.Filled"
+                                                           Color="Color.Primary"
+                                                                  DisableElevation
+                                                        OnClick="() =>  ActivateCategory(context.Id)" />
+                                     </MudTooltip>
+                                    }
+                                    else
+                                    {
+                                        <MudTooltip Text="Inaktivera kategori">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                           Variant="Variant.Filled"
+                                                           Color="Color.Primary"
+                                                                  DisableElevation
+                                                        OnClick="() => InactiveCategory(context.Id)" />
+                                     </MudTooltip>
+                                    }
+
+
+                                </MudButtonGroup>
+                            </MudTd>
+
+                        </RowTemplate>
+                    </MudTable>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        No Data
                     </div>
+                }
 
-
-                    @if (categories != null)
-                    {
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Namn</th>
-                                    <th>Är Aktiv</th>
-                                    <th>Inställningar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in categories)
-                                {
-                                    <tr>
-                                        <td>@item.Id</td>
-                                        <td>@item.Name</td>
-                                        @if (item.IsDeleted)
-                                        {
-                                            <td>Nej</td>
-                                        }
-                                        else
-                                        {
-                                            <td>Ja</td>
-                                        }
-
-                                        <td>
-                                            <a class="btn btn-sm btn-outline-warning" href="/Admin/EditCategory/@item.Id">Redigera</a>
-                                            @if (item.IsDeleted)
-                                            {
-                                                <a class="btn btn-sm btn-outline-success mx-1" href="/Admin/ActiveCategory/@item.Id">Aktiv</a>
-                                            }
-                                            else
-                                            {
-                                                <a class="btn btn-sm btn-outline-danger mx-1" href="/Admin/InactiveCategory/@item.Id">Inaktiv</a>
-                                            }
-                                            <a class="btn btn-sm btn-danger d-none" href="/Admin/DeleteCategory/@item.Id">Radera</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <div class="alert alert-warning">
-                            No Data
-                        </div>
-                    }
-
-                </div>
                 <br />
                 <br />
 
@@ -87,6 +126,14 @@
     {
         categories = await HttpClient.GetFromJsonAsync<CategoryDto[]>("api/Category");
     }
+
+    private async Task ActivateCategory(int id) => Navigation.NavigateTo($"/Admin/ActiveCategory/{id}");
+
+    private async Task InactiveCategory(int id) => Navigation.NavigateTo($"/Admin/InactiveCategory/{id}");
+
+    private async Task EditCategory(int id) => Navigation.NavigateTo($"Admin/EditCategory/{id}");
+
+    private async Task AddCategory() => Navigation.NavigateTo("Admin/AddCategory");
 
 }
 
