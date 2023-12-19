@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using TheRestaurant.Application.Interfaces.ICategory;
 using TheRestaurant.Domain.Entities.Menu;
 
-namespace TheRestaurant.Testing.Mocks
+namespace TheRestaurant.Testing.UnitTests.TheRestaurant.Application.UnitTests.CategoryTests
 {
-    public static class MockRepositoreis
+    public static class MockCategoryRepository
     {
-        public static  Mock<ICategoryRepository> GetMockCategoryRepository()
+        public static Mock<ICategoryRepository> GetMock()
         {
             var categories = new List<Category>()
             {
@@ -26,10 +26,11 @@ namespace TheRestaurant.Testing.Mocks
             mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(categories);
 
             // GetByIdAsync
-            mockRepo.Setup(r => r.GetAsync((It.IsAny<int>()))).ReturnsAsync((int id) =>
+            mockRepo.Setup(r => r.GetAsync(It.IsAny<int>())).ReturnsAsync((int id) =>
             {
                 var result = from c in categories where c.Id == id select c;
-                var category = new Category { 
+                var category = new Category
+                {
                     Id = id,
                     Name = result.First().Name,
                     IsDeleted = result.First().IsDeleted
@@ -49,9 +50,6 @@ namespace TheRestaurant.Testing.Mocks
             // UpdateAsync
             mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Category>())).ReturnsAsync((Category category) =>
             {
-                //var result = from c in categories where c.Id == category.Id select c;
-                //result.First().Name = category.Name;
-                //result.First().IsDeleted = category.IsDeleted;
                 return category;
             });
 
