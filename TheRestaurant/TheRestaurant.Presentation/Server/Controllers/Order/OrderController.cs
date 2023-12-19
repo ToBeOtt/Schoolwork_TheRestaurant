@@ -110,7 +110,6 @@ namespace TheRestaurant.Presentation.Server.Controllers.Order
 
             return Ok(result.Data);
         }
-        
 
         [HttpPost("UpdateOrderStatus")]
         public async Task<ActionResult> UpdateOrderStatus

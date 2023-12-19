@@ -188,12 +188,12 @@ namespace TheRestaurant.Application.Orders
             foreach(var item in activeOrdersList)
             {
                 var productAndQuantityList = item.OrderRows
-                    .GroupBy(orderRow => orderRow.Product.Name)
+                    .GroupBy(orderRow => orderRow.Product.Id)
                     .Select(group => new ProductAndQuantity
                     (
-                        ProductName: group.Key,
+                        ProductName: item.OrderRows.Where(x => group.Key == x.Product.Id).Select(x => x.Product.Name).FirstOrDefault(),
                         Quantity: group.Count(),
-                        Size: item.OrderRows.Select(x => x.Product.Size).FirstOrDefault()
+                        Size: item.OrderRows.Where(x => group.Key == x.ProductId).Select(x => x.Product.Size).FirstOrDefault()
                     ))
                     .OrderBy(productAndQuantity => productAndQuantity.ProductName)
                     .ToList();

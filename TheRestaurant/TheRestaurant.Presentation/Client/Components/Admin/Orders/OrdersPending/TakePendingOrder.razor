@@ -27,7 +27,14 @@
                  <MudTh>Antal</MudTh>
              </HeaderContent>
              <RowTemplate>
-                 <MudTd>@context.ProductName (@context.Size)</MudTd>
+                @if(@context.Size != null)
+                {
+                    <MudTd>@context.ProductName (@context.Size)</MudTd>
+                }
+                else
+                {
+                    <MudTd>@context.ProductName</MudTd>
+                }
                  <MudTd><MudSpacer /></MudTd>
                  <MudTd>@context.Quantity</MudTd>
              </RowTemplate>
