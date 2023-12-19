@@ -1,16 +1,14 @@
 ﻿@using TheRestaurant.Presentation.Client.ClientServices
 @inject ClientDashboardServices DashboardServices
 
-<MudDatePicker Date="@selectedDate" Label="Date" DateChanged="OnDateChange" MinDate="minDate" MaxDate="maxDate" />
-<MudButton OnClick="LoadChartData">Load Chart Data</MudButton>
+<MudDatePicker Variant="Variant.Filled" Date="@selectedDate" Label="Datum" DateChanged="OnDateChange" MinDate="minDate" MaxDate="maxDate" />
+<MudButton Variant="Variant.Filled" OnClick="LoadChartData">Load Chart Data</MudButton>
 
 <MudChart ChartType="ChartType.Bar"
             ChartSeries="@Series"
             XAxisLabels="@XAxisLabels" 
             Width="100%"
             Height="700px">
->
-
 </MudChart>
 
 
@@ -45,7 +43,7 @@
                 if (stat != null)
                 {
                     int index = orderStats.IndexOf(stat);
-                Data[i - 1] = orderStats[index].OrderCount;
+                    Data[i - 1] = orderStats[index].OrderCount;
                 }
                 else
                 {
@@ -61,7 +59,7 @@
         }
         else
         {
-            // Handle case where the date is not selected
+            return;
         }
     }
 }
