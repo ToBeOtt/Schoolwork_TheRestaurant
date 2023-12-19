@@ -82,7 +82,7 @@ namespace TheRestaurant.Application.Orders
 
             GetCustomerOrderResponse dto = new(
                 OrderNr: order.Id,
-                ProductName: order.OrderRows.Select(item => item.Product.Name).ToList(),
+                ProductName: order.OrderRows.Select(item => item.Product.Name + " " + item.Product.Size).ToList(),
                 Status: order.OrderStatus.Status,
                 SumToPay: order.OrderRows.Sum(item => item.Product.Price)
                 );

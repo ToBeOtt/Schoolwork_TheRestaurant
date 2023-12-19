@@ -7,23 +7,31 @@
     <TitleContent>
         <MudText Typo="Typo.h6">Markera order som klar?</MudText>
     </TitleContent>
-        <DialogContent>
-            <MudTable Items="@ActiveOrder.ProductAndQuantity" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
-                <HeaderContent>
-                    <MudTh>Namn</MudTh>
-                    <MudTh>Antal</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                     <MudTd>@context.ProductName</MudTd>
-                        <MudTd>@context.Quantity</MudTd>
-                    </RowTemplate>
+    <DialogContent>
+        <MudTable Items="@ActiveOrder.ProductAndQuantity" Dense=true Hover=true Bordered=false Striped=false Elevation="0">
+            <HeaderContent>
+                <MudTh>Namn</MudTh>
+                <MudTh>Antal</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                @if (@context.Size != null)
+                {
+                    <MudTd>@context.ProductName (@context.Size)</MudTd>
+                }
+                else
+                {
+                    <MudTd>@context.ProductName</MudTd>
+                }
+                <MudTd><MudSpacer /></MudTd>
+                <MudTd>@context.Quantity</MudTd>
+            </RowTemplate>
 
-                </MudTable>
+        </MudTable>
 
-        </DialogContent>
+    </DialogContent>
 
-        <DialogActions>
-            <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmOrderFinished">Ja</MudButton>
+    <DialogActions>
+        <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation FullWidth OnClick="ConfirmOrderFinished">Ja</MudButton>
          <MudButton Class="ma-1" Variant="Variant.Filled" Color="Color.Primary" DisableElevation FullWidth OnClick="Cancel">Avbryt</MudButton>
      </DialogActions>
 
