@@ -16,25 +16,25 @@ public static class ProductSeeds
         );
 
         modelBuilder.Entity<Product>().HasData(
-            new Product { Id = 1, Name = "Hamburgare med pommes", Description = "Hamburgare med krispiga pommes", PriceBeforeVAT = 79, Price = Math.Round(79 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 2, Name = "Kebabpizza", Description = "God kebabpizza med färska grönsaker", PriceBeforeVAT = 99, Price = Math.Round(99 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 3, Name = "Grillad lax", Description = "Grillad lax med dill och citronsås", PriceBeforeVAT = 129, Price = Math.Round(129 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 4, Name = "Caesarsallad", Description = "Krispig sallad med kyckling och caesardressing", PriceBeforeVAT = 89, Price = Math.Round(89 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 5, Name = "Mozzarella Sticks", Description = "Friterade mozzarella sticks med dipp", PriceBeforeVAT = 49, Price = Math.Round(49 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 6, Name = "Chokladfondant", Description = "Varm chokladkaka med flytande kärna", PriceBeforeVAT = 69, Price = Math.Round(69 * 1.12, 2), IsFoodItem = true, IsDeleted = false , VATId = 1 },
-            new Product { Id = 7, Name = "Vegetarisk curry", Description = "Kryddig vegetarisk curry med ris", PriceBeforeVAT = 109, Price = Math.Round(109 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 8, Name = "Tom Yum Soppa", Description = "Syrlig thailändsk soppa med räkor", PriceBeforeVAT = 119, Price = Math.Round(119 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 9, Name = "Lammkotletter", Description = "Grillade lammkotletter med rosmarin", PriceBeforeVAT = 149, Price = Math.Round(149 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 10, Name = "Blåbärspaj", Description = "Blåbärspaj med vaniljsås", PriceBeforeVAT = 59, Price = Math.Round(59 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
-            new Product { Id = 11, Name = "Cola", Description = "Klassisk kolsyrad läsk med unik smak", PriceBeforeVAT = 20, Price = Math.Round(20 * 1.12, 2), IsFoodItem = false, IsDeleted = false, VATId = 1 },
-            new Product { Id = 12, Name = "Fanta", Description = "Fruktig apelsinläsk med kolsyra", PriceBeforeVAT = 20, Price = Math.Round(20 * 1.12, 2), IsFoodItem = false, IsDeleted = false , VATId = 1 },
-            new Product { Id = 13, Name = "Lokalt mikrobryggeri öl", Description = "Öl från lokala mikrobryggerier", PriceBeforeVAT = 40, Price = Math.Round(40 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 3 },
-            new Product { Id = 14, Name = "Husets röda vin", Description = "Välbalanserat rödvin från husets urval", PriceBeforeVAT = 60, Price = Math.Round(60 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 3 },
-            new Product { Id = 15, Name = "Kaffe mugg", Description = "Isolerad resemugg", PriceBeforeVAT = 120, Price = Math.Round(120 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4 },
-            new Product { Id = 16, Name ="Kokbok", Description = "Kokbok som innehåller alla våra goda recept", PriceBeforeVAT = 99, Price = Math.Round(99 * 1.06, 2), IsFoodItem = false, IsDeleted = false, VATId = 2 },
-            new Product { Id = 17, Name = "Såspanna", Description = "Högkvalitativ såspanna perfekt för alla typer av såser", PriceBeforeVAT = 450, Price = Math.Round(450 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4 },
-            new Product { Id = 18, Name = "Svart T-shirt", Description = "Elegant svart T-shirt i högkvalitativt material", PriceBeforeVAT = 200, Price = Math.Round(200 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4 },
-            new Product { Id = 19, Name = "Vit T-shirt", Description = "Klassisk vit T-shirt i mjukt och bekvämt material", PriceBeforeVAT = 200, Price = Math.Round(200 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4 }
+            new Product { Id = 1, Name = "Hamburgare med pommes", Description = "Hamburgare med krispiga pommes", PriceBeforeVAT = 88.39, Price = Math.Round(88.39 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 2, Name = "Kebabpizza", Description = "God kebabpizza med färska grönsaker", PriceBeforeVAT = 106.25, Price = Math.Round(106.25 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 3, Name = "Grillad lax", Description = "Grillad lax med dill och citronsås", PriceBeforeVAT = 124.11, Price = Math.Round(124.11 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 4, Name = "Caesarsallad", Description = "Krispig sallad med kyckling och caesardressing", PriceBeforeVAT = 88.39, Price = Math.Round(88.39 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 5, Name = "Mozzarella Sticks", Description = "Friterade mozzarella sticks med dipp", PriceBeforeVAT = 52.68, Price = Math.Round(52.68 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 6, Name = "Chokladfondant", Description = "Varm chokladkaka med flytande kärna", PriceBeforeVAT = 70.54, Price = Math.Round(70.54 * 1.12, 2), IsFoodItem = true, IsDeleted = false , VATId = 1 },
+            new Product { Id = 7, Name = "Vegetarisk curry", Description = "Kryddig vegetarisk curry med ris", PriceBeforeVAT = 115.18, Price = Math.Round(115.18 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 8, Name = "Tom Yum Soppa", Description = "Syrlig thailändsk soppa med räkor", PriceBeforeVAT = 124.11, Price = Math.Round(124.11 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 9, Name = "Lammkotletter", Description = "Grillade lammkotletter med rosmarin", PriceBeforeVAT = 150.89, Price = Math.Round(150.89 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 10, Name = "Blåbärspaj", Description = "Blåbärspaj med vaniljsås", PriceBeforeVAT = 61.61, Price = Math.Round(61.61 * 1.12, 2), IsFoodItem = true, IsDeleted = false, VATId = 1 },
+            new Product { Id = 11, Name = "Cola", Description = "Klassisk kolsyrad läsk med unik smak", PriceBeforeVAT = 22.32, Price = Math.Round(22.32 * 1.12, 2), IsFoodItem = false, IsDeleted = false, VATId = 1 },
+            new Product { Id = 12, Name = "Fanta", Description = "Fruktig apelsinläsk med kolsyra", PriceBeforeVAT = 22.32, Price = Math.Round(22.32 * 1.12, 2), IsFoodItem = false, IsDeleted = false , VATId = 1 },
+            new Product { Id = 13, Name = "Lokalt mikrobryggeri öl", Description = "Öl från lokala mikrobryggerier", PriceBeforeVAT = 39.2, Price = Math.Round(39.2 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 3 },
+            new Product { Id = 14, Name = "Husets röda vin", Description = "Välbalanserat rödvin från husets urval", PriceBeforeVAT = 39.2, Price = Math.Round(39.2 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 3 },
+            new Product { Id = 15, Name = "Kaffe mugg", Description = "Isolerad resemugg", PriceBeforeVAT = 103.2, Price = Math.Round(103.2 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4 },
+            new Product { Id = 16, Name ="Kokbok", Description = "Kokbok som innehåller alla våra goda recept", PriceBeforeVAT = 244.34, Price = Math.Round(244.34 * 1.06, 2), IsFoodItem = false, IsDeleted = false, VATId = 2 },
+            new Product { Id = 17, Name = "Såspanna", Description = "Högkvalitativ såspanna perfekt för alla typer av såser", PriceBeforeVAT = 359.2, Price = Math.Round(359.2 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4 },
+            new Product { Id = 18, Name = "Svart T-shirt", Description = "Elegant svart T-shirt i högkvalitativt material", PriceBeforeVAT = 159.2, Price = Math.Round(159.2 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4 },
+            new Product { Id = 19, Name = "Vit T-shirt", Description = "Klassisk vit T-shirt i mjukt och bekvämt material", PriceBeforeVAT = 159.2, Price = Math.Round(159.2 * 1.25, 2), IsFoodItem = false, IsDeleted = false, VATId = 4 }
 
         );
 
