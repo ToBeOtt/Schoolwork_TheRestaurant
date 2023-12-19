@@ -1,9 +1,9 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
+using TheRestaurant.Contracts.Requests.Cart;
 using TheRestaurant.Presentation.Shared.DTO.Cart;
 using TheRestaurant.Presentation.Shared.DTO.Orders;
-using TheRestaurant.Presentation.Shared.Requests;
 using TheRestaurant.Presentation.Shared.Requests.Order;
 
 namespace TheRestaurant.Presentation.Client.ClientServices
@@ -46,7 +46,7 @@ namespace TheRestaurant.Presentation.Client.ClientServices
                 // error handling
             }
 
-            GetCartItemRequest request = new GetCartItemRequest(ListOfId: existingCartItems);
+            GetCartItemRequest request = new GetCartItemRequest(existingCartItems);
 
             var apiUrl = "/cart/GetProductsForCart";
 
@@ -71,7 +71,8 @@ namespace TheRestaurant.Presentation.Client.ClientServices
                                     Id = group.Key.Id,
                                     Name = group.Key.Name,
                                     TotalPrice = group.Sum(item => (double)item.Price),
-                                    Count = group.Count()
+                                    Count = group.Count(),
+                                    Size = group.FirstOrDefault()?.Size
                                 })
                                 .ToList();
 
@@ -81,7 +82,7 @@ namespace TheRestaurant.Presentation.Client.ClientServices
             foreach (var groupedItem in groupedCartItems)
             {
                 AggregatedCartDto dto = new
-                    (groupedItem.Id, groupedItem.Name, groupedItem.TotalPrice, groupedItem.Count);
+                    (groupedItem.Id, groupedItem.Name, groupedItem.TotalPrice, groupedItem.Count, groupedItem.Size);
                 SortedList.Add(dto);
             }
             return SortedList;

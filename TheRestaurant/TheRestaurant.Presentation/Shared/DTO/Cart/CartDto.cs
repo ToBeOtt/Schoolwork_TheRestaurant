@@ -4,7 +4,8 @@
         int Id,
         string Name,
         double Price,
-        int Count
+        int Count,
+        string? Size
         );
 
 }

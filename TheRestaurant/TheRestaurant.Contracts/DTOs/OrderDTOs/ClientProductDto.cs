@@ -1,4 +1,4 @@
-﻿namespace TheRestaurant.Presentation.Shared.DTO.Product
+﻿namespace TheRestaurant.Contracts.DTOs.OrderDTOs
 {
     public class ClientProductDto
     {
@@ -10,9 +10,7 @@
         public string MenuPhoto { get; set; }
         public List<string> Category { get; set; }
         public List<string> Allergen { get; set; }
-
         public string? Size { get; set; }
 
     }
-
 }

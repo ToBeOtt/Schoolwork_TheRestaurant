@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TheRestaurant.Application.Cart.Interfaces;
+using TheRestaurant.Contracts.Requests.Cart;
 using TheRestaurant.Contracts.Responses;
 using TheRestaurant.Contracts.Responses.ServiceResponse;
 
@@ -19,11 +20,11 @@ namespace TheRestaurant.Application.Cart
             _cartRepository = cartRepository;
         }
 
-        public async Task<ServiceResponse<List<CartResponse>>> FetchAllCartItems(List<int> cartItemIds)
+        public async Task<ServiceResponse<List<CartResponse>>> FetchAllCartItems(GetCartItemRequest request)
         {
             ServiceResponse<List<CartResponse>> response = new();
 
-            var listOfCartItems = await _cartRepository.GetAllCartItems(cartItemIds);
+            var listOfCartItems = await _cartRepository.GetAllCartItems(request.ListOfCartItems);
             if (listOfCartItems == null)
                 return await response.ErrorResponse
                     (response, "CartItems could not be found", _logger);
