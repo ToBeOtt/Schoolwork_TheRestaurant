@@ -1,5 +1,5 @@
-﻿@using TheRestaurant.Presentation.Client.ClientServices
-@using TheRestaurant.Presentation.Shared.DTO.Product
+﻿@using TheRestaurant.Contracts.DTOs.OrderDTOs
+@using TheRestaurant.Presentation.Client.ClientServices
 @inject ClientCartService CartService
 @inject RoleService RoleService
 
@@ -18,7 +18,7 @@
                 <MudText Class="single-row-text"
                          Typo="Typo.h5"
                          Color="Color.Primary">
-                    @prod.Name
+                    @prod.Name @prod.Size
                 </MudText>
 
                 <MudText Class="single-row-text"
@@ -52,7 +52,27 @@
                         </MudItem>
                     </MudGrid>
                 </MudTooltip>
+                @* <div class="select-size">
+                    @if (prod.Name.Contains("T-shirt", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <MudSelect 
+                            T="string" 
+                            Label="Storlek"
+                            @bind-Value="ShirtSize"
+                            >
+                            @foreach (var size in sizes)
+                            {
+                                <MudSelectItem     
+                                    Value="@size">
+                                    @size
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                </div> *@
             </MudCardActions>
+
+            
 
             @*  Details expansion info menu *@
 
@@ -109,8 +129,11 @@
     [Parameter]
     public List<ClientProductDto> Products { get; set; }
 
+
     public string ErrorMessage;
     public bool IsButtonDeactivated { get; set; }
+
+    private List<string> sizes = new List<string> { "XS", "S", "M", "L", "XL" };
 
     protected override async Task OnInitializedAsync()
     {

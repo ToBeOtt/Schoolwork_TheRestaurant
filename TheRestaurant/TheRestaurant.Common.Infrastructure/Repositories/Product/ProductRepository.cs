@@ -55,6 +55,7 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Product
 
         public async Task<List<Domain.Entities.Menu.Product>> GetAllEagerLoadedAsync()
         {
+           
             return await _context.Products
                 .Where(p => p.IsDeleted != true)
                 .Include(p => p.ProductAllergies).ThenInclude(pa => pa.Allergy)

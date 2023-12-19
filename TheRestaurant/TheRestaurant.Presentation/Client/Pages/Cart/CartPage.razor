@@ -23,7 +23,9 @@
 
     <RowTemplate>
         <MudTd DataLabel="Nr">@context.Count</MudTd>
-        <MudTd DataLabel="Sign">@context.Name</MudTd>
+        <MudTd DataLabel="Sign">
+                    @context.Name @context.Size
+        </MudTd>
         <MudTd DataLabel="Name">@context.TotalPrice</MudTd>
         <MudTd DataLabel="Ta bort"> 
             <MudIconButton 

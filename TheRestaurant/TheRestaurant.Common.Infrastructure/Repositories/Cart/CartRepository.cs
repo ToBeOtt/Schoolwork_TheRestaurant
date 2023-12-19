@@ -1,12 +1,6 @@
 ﻿using Common.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TheRestaurant.Application.Cart.Interfaces;
 using TheRestaurant.Contracts.Responses;
 
@@ -31,17 +25,24 @@ namespace TheRestaurant.Common.Infrastructure.Repositories.Cart
             foreach (var id in ListOfCartId)
             {
                 var product = await _context.Products
+                    .Include(x => x.ProductCategories)   
+                        .ThenInclude(x => x.Category)
                     .Where(x => x.Id == id)
                     .SingleOrDefaultAsync();
 
                 if (product != null)
                 {
                     CartResponse cartItem = new CartResponse
-                    (
-                        Id: product.Id,
-                        Name: product.Name,
-                        Price: product.Price
-                    );
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Price =  product.Price
+                    };
+
+                    if(product.Name.Contains("T-shirt"))
+                    {
+                        cartItem.Size = product.Size;
+                    }
 
                     cartItems.Add(cartItem);
                 }

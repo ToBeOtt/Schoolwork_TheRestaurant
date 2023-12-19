@@ -1,5 +1,5 @@
-﻿@using TheRestaurant.Presentation.Client.ClientServices
-@using TheRestaurant.Presentation.Shared.DTO.Product
+﻿@using TheRestaurant.Contracts.DTOs.OrderDTOs
+@using TheRestaurant.Presentation.Client.ClientServices
 @inject ClientMenuService menuService
 
 <style>
@@ -32,6 +32,9 @@
         letter-spacing: .0075em;
     }
     
+    .select-size{
+        max-width:100px;
+    }
 </style>
 
 <MudText 

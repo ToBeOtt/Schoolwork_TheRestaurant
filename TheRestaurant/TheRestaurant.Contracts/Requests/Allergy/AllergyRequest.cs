@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace TheRestaurant.Contracts.Requests.Allergy
 {
     public record AllergyRequest (
-        string Name
+        string Name,
+        bool IsDeleted
         );
     
 }

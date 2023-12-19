@@ -1,13 +1,18 @@
 ﻿namespace TheRestaurant.Presentation.Shared.DTO.Product
 {
-    public record ClientProductDto(
-         int Id,
-         string Name,
-         double Price,
-         bool IsFoodItem,
-         string Description,
-         string MenuPhoto,
-         List<string> Category,
-         List<string> Allergen
-         );
+    public class ClientProductDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public bool IsFoodItem { get; set; }
+        public string Description { get; set; }
+        public string MenuPhoto { get; set; }
+        public List<string> Category { get; set; }
+        public List<string> Allergen { get; set; }
+
+        public string? Size { get; set; }
+
+    }
+
 }

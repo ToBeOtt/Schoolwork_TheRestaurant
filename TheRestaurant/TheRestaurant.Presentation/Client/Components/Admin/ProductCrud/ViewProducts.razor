@@ -8,30 +8,83 @@
     <p>@ErrorMessage</p>
 }
 
-@if (products != null)
-{
-    <MudGrid Justify="Justify.FlexStart">
-        @foreach (var product in products)
-        {
-            <MudItem xs="12" sm="6" md="4" lg="4">
-                <MudCard Class="mud-secondary" Style="margin: 15px;">
-                    <MudCardMedia Image="@GetImageSource(product.MenuPhoto)" Style="height: 150px; object-fit: cover;" />
-                    <MudCardContent Style="min-height: 180px;">
-                        <!-- Set a minimum height -->
-                        <MudText Typo="Typo.h5" Color="Color.Primary">@product.Name</MudText>
-                        <MudText Typo="Typo.body2" Color="Color.Primary">Pris: @product.Price</MudText>
-                        <MudText Typo="Typo.body2" Color="Color.Primary">@product.Description</MudText>
-                    </MudCardContent>
-                    <MudCardActions Class="d-flex justify-space-between">
-                        <MudButton Class="ml-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ShowConfirmation(product.Id))">Radera</MudButton>
-                        <MudButton Variant="Variant.Text" OnClick="@(() =>NavigateToViewSpecificProduct(product.Id))">Detaljer</MudButton>
-                        <MudButton Class="mr-2" Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => NavigateToEditProduct(product.Id))">Edit</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
-        }
-    </MudGrid>
-}
+<MudGrid Spacing="2" Justify="Justify.Center">
+
+    <MudItem xs="12">
+        <div class="px-3 mb-5">
+            <div class="d-flex justify-content-between mb-3">
+                <h3>Produkt Lista</h3>
+                <!-- Assuming you have a way to navigate to create a new product -->
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@NavigateToCreateProduct">Create New</MudButton>
+            </div>
+
+            @if (products != null && products.Count > 0)
+            {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Active</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in products)
+                        {
+                            <tr>
+                                <td>@product.Id</td>
+                                <td>
+                                    <MudButton OnClick="@(() => NavigateToViewSpecificProduct(product.Id))" Style="padding: 0; border: none; background: none;">
+                                        <img src="@GetImageSource(product.MenuPhoto)" alt="@product.Name" style="width: 100px; height: 75px; object-fit: cover; cursor: pointer;" />
+                                    </MudButton>
+                                </td>
+                                <td>@product.Name</td>
+                                <td>@product.Price kr</td>
+                                <td>@product.Description</td>
+                                <td>
+                                    @if (!product.IsDeleted)
+                                    {
+                                        <MudIcon Icon="@Icons.Filled.Check" Color="Color.Success" />
+                                    }
+                                    else
+                                    {
+                                        <MudIcon Icon="@Icons.Filled.Close" Color="Color.Error" />
+                                    }
+                                </td>
+                                <td>
+                                    <MudButton Color="Color.Secondary" Variant="Variant.Outlined" OnClick="@(() => NavigateToEditProduct(product.Id))">
+                                        <MudIcon Icon="@Icons.Filled.Edit"/>
+                                    </MudButton>
+                                    @if (!product.IsDeleted)
+                                    {
+                                        <MudButton Color="Color.Secondary" Variant="Variant.Outlined" OnClick="@(() => DeleteProduct(product.Id))">
+                                            <MudIcon Icon="@Icons.Filled.Delete"/>
+                                        </MudButton>
+                                    }
+                                    else
+                                    {
+                                        <MudButton Color="Color.Secondary" Variant="Variant.Outlined" OnClick="@(() => ReactivateProduct(product.Id))">
+                                            <MudIcon Icon="@Icons.Filled.CheckCircle"/>
+                                        </MudButton>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <MudText Typo="Typo.body1">Laddar...</MudText>
+            }
+        </div>
+    </MudItem>
+
+</MudGrid>
 <DeleteProductConfirmation @ref="deleteProductConfirmation" OnConfirmDelete="DeleteProduct" />
 
 @code {
@@ -99,7 +152,17 @@
             ErrorMessage = $"An exception occurred: {ex.Message}";
             Console.WriteLine($"An exception occurred: {ex}");
         }
-        
+
+
+    }
+
+    private void NavigateToCreateProduct()
+    {
+        NavigationManager.NavigateTo($"/admin/product/create");
+    }
+
+    private void ReactivateProduct(int id)
+    {
         
     }
 }
