@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TheRestaurant.Application.Interfaces.IVat;
 using TheRestaurant.Contracts.Requests.Vat;
 
 namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
-    [Route("admin/[controller]")]
+    
     [ApiController]
+    [Route("admin/[controller]")]
+    [Authorize(Roles = "admin,manager")]
     public class VatController : ControllerBase
     {
         private readonly IVatService _vatService;
