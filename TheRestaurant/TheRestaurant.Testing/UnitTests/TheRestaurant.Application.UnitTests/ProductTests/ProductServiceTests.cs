@@ -5,7 +5,7 @@ using TheRestaurant.Application.Services.ProductServices;
 using TheRestaurant.Contracts.Requests.Product;
 using TheRestaurant.Domain.Entities.Menu;
 
-namespace TheRestaurant.Testing.ProductTests
+namespace TheRestaurant.Testing.UnitTests.TheRestaurant.Application.UnitTests.ProductTests
 {
     public class ProductServiceTests
     {
@@ -52,7 +52,7 @@ namespace TheRestaurant.Testing.ProductTests
 
             var createRequest = new CreateProductRequest(
                 Name: "New Product",
-                PriceBeforeVat: 10.99,
+                PriceBeforeVat: 100,
                 Description: "Description",
                 MenuPhoto: new byte[0],
                 IsFoodItem: true,
@@ -62,9 +62,10 @@ namespace TheRestaurant.Testing.ProductTests
                 VATId: 1
             );
 
-
+            var mockVat = new VAT { Id = 1, Name = "Mat", Adjustment = 1.12, IsDeleted = false };
             var mockRepo = new Mock<IProductRepository>();
             mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Product>()));
+            mockRepo.Setup(repo => repo.GetVATById(It.IsAny<int>())).ReturnsAsync(mockVat);
 
             var productService = new ProductService(mockRepo.Object);
 
@@ -87,7 +88,8 @@ namespace TheRestaurant.Testing.ProductTests
                 Price = 100,
                 MenuPhoto = new byte[0],
                 IsDeleted = false,
-                IsFoodItem = true,
+                IsFoodItem = false,
+                VATId = 4
             };
 
 
@@ -96,12 +98,14 @@ namespace TheRestaurant.Testing.ProductTests
                 PriceBeforeVat: 200,
                 Description: "Updated Description",
                 MenuPhoto: new byte[0],
-                IsFoodItem: true,
+                IsFoodItem: false,
                 IsDeleted: false,
                 SelectedCategoryIds: new List<int>(),
                 SelectedAllergyIds: new List<int>(),
-                VatId: 1
+                VatId: 4
                 );
+
+            var mockVat = new VAT { Adjustment = 1.25 };
 
             var mockRepo = new Mock<IProductRepository>();
 
@@ -112,6 +116,8 @@ namespace TheRestaurant.Testing.ProductTests
             // Mock UpdateAsync to simulate updating the existing product 
             mockRepo.Setup(repo => repo.UpdateAsync(It.IsAny<Product>()))
                     .Callback<Product>(updatedProduct => existingProduct = updatedProduct);
+
+            mockRepo.Setup(repo => repo.GetVATById(It.IsAny<int>())).ReturnsAsync(mockVat);
 
             var productService = new ProductService(mockRepo.Object);
 
@@ -206,12 +212,12 @@ namespace TheRestaurant.Testing.ProductTests
 
             var secondDto = response.Data[1];
 
-            Assert.Equal(products[1].Id , secondDto.Id);
+            Assert.Equal(products[1].Id, secondDto.Id);
             Assert.Equal(products[1].Name, secondDto.Name);
         }
     }
 }
-﻿//using Moq;
+//using Moq;
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
