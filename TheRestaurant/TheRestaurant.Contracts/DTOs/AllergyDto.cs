@@ -14,8 +14,6 @@ namespace TheRestaurant.Contracts.DTOs
         [MaxLength(30, ErrorMessage ="Max 30 tecken långt.")]
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
-        
-
 
     }
 }
