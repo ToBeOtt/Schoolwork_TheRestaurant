@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.Design;
+using System.Data;
 using TheRestaurant.Application.Interfaces.IProduct;
 using TheRestaurant.Contracts.Requests.Product;
 using TheRestaurant.Domain.Entities.Menu;
@@ -9,6 +11,7 @@ namespace TheRestaurant.Presentation.Server.Controllers.Admin
 {
     [ApiController]
     [Route("admin/[controller]")]
+    [Authorize(Roles = "admin,manager")]
     public class ProductsController : ControllerBase
     {
         private readonly ILogger<ProductsController> _logger;
