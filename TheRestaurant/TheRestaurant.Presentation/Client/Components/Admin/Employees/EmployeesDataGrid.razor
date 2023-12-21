@@ -7,13 +7,17 @@
 
     <MudItem xs="12">
         <MudText Class="p-10 px-5"
-                 Typo="Typo.h4">
+                 Typo="Typo.h5">
             Anställda
         </MudText>
     </MudItem>
 
     <MudItem>
-        <MudDataGrid Items="@FilteredEmployees">
+        <MudDataGrid 
+            Elevation="0"
+            Dense=true
+            Hover=true
+            Items="@FilteredEmployees">
             <ToolBarContent>
                 <MudSelect 
                     Class="m-10 pb-10"
@@ -28,43 +32,50 @@
                 </MudSelect>
             </ToolBarContent>
             <Columns>
-                <TemplateColumn Title="AnställningsNr">
+                <TemplateColumn Title="AnställningsNr" Class="fw-bold">
                     <CellTemplate>
                         @($"{context.Item.Id.Substring(0, Math.Min(10, context.Item.Id.Length))} ...")
                     </CellTemplate>
                 </TemplateColumn>
 
-                <PropertyColumn Property="x => x.Alias" Title="Namn" />
-                <PropertyColumn Property="x => x.Email" Title="Epost" />
-                <PropertyColumn Property="x => x.HireDate" Title="Anställningsdatum" Format="yyyy-MM-dd" />
+                <PropertyColumn Property="x => x.Alias" Title="Namn" Class="fw-bold"/>
+                <PropertyColumn Property="x => x.Email" Title="Epost" Class="fw-bold" />
+                <PropertyColumn Property="x => x.HireDate" Title="Anställningsdatum" Class="fw-bold" Format="yyyy-MM-dd" />
 
-                <TemplateColumn Title="Edit">
+                <TemplateColumn 
+                    Title="Inställningar"
+                    Class="fw-bold" 
+                    Filter="false" 
+                    Sortable="false">
+                    <HeaderTemplate>
+                        <MudButton 
+                            FullWidth Variant="Variant.Filled" 
+                            Color="Color.Secondary"
+                            OnClick="@AddEmployee">
+                             Ny anställd
+                        </MudButton>
+                    </HeaderTemplate>
                     <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => EditEmployee(context.Item.Id))" />
-                    </CellTemplate>
-                </TemplateColumn>
-                
-                
-                <TemplateColumn Title="Delete">
-                    <CellTemplate>
+                        <MudIconButton 
+                            Class="mx-2"
+                            Variant="Variant.Filled"
+                            Icon="@Icons.Material.Filled.EditNote" 
+                            Color="Color.Primary" 
+                            OnClick="@(() => EditEmployee(context.Item.Id))" />
+
                         @if (!context.Item.IsDeleted)
                         {
-                            <MudIconButton Size="@Size.Small" Color="Color.Error" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteEmployee(context.Item.Id))" />
+                            <MudIconButton 
+                                Variant="Variant.Filled"
+                                Color="Color.Primary" 
+                                Icon="@Icons.Material.Filled.Delete" 
+                                OnClick="@(() => DeleteEmployee(context.Item.Id))" />
                         }
                     </CellTemplate>
-                </TemplateColumn>
+                </TemplateColumn>   
+               
             </Columns>
         </MudDataGrid>
-    </MudItem>
-
-    <MudItem Class="justify-content-center"
-             xs="12">
-        <MudIconButton 
-            Class="mx-10"
-            Size="@Size.Large"
-            Color="Color.Tertiary"
-            Icon="@Icons.Material.Outlined.Add"
-            OnClick="@AddEmployee" />
     </MudItem>
 
     <MudItem>
